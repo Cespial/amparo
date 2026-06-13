@@ -104,7 +104,7 @@ export function SiteNav() {
     <header className="sticky top-0 z-50 w-full bg-navy text-navy-foreground shadow-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
         {/* Logo */}
-        <Link href="/atlas" className="flex items-center gap-2.5 shrink-0">
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
           <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-lg">
             <Shield className="size-5 text-white" aria-hidden />
           </span>
