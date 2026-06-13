@@ -8,24 +8,51 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useCasoStore } from "@/lib/store";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Map as MapIcon } from "lucide-react";
 import { AtlasKpis } from "./atlas-kpis";
 import { AtlasLeyenda } from "./atlas-leyenda";
+import { AtlasRanking } from "./atlas-ranking";
+import { AtlasComparador } from "./atlas-comparador";
+import { AtlasAcciones } from "./atlas-acciones";
 import { AtlasPanelDesktop, AtlasPanelMovil } from "./atlas-panel";
-import { type MetricaAtlas, statsPorCodigo } from "./atlas-data";
+import { type MetricaAtlas, METRICAS, statsPorCodigo } from "./atlas-data";
+import { useIsMobile } from "./use-is-mobile";
 import { useT } from "@/lib/i18n";
 
-// MapLibre necesita el navegador: carga sólo en cliente.
+// MapLibre necesita el navegador: carga sólo en cliente. El skeleton queda
+// oscuro a propósito (es el área del mapa dark dentro de una tarjeta blanca).
 const AtlasMapa = dynamic(() => import("./atlas-mapa"), {
   ssr: false,
   loading: () => <Skeleton className="h-full w-full rounded-2xl bg-[#161B22]" />,
 });
 
+/** Métrica inicial leída de ?metrica= (cliente); por defecto, la tasa por 10k. */
+function metricaInicial(): MetricaAtlas {
+  if (typeof window === "undefined") return "tasaPor10k";
+  const m = new URLSearchParams(window.location.search).get("metrica");
+  return m && m in METRICAS ? (m as MetricaAtlas) : "tasaPor10k";
+}
+
+/** Departamento inicial leído de ?depto= (cliente); null si no es válido. */
+function deptoInicial(): string | null {
+  if (typeof window === "undefined") return null;
+  const d = new URLSearchParams(window.location.search).get("depto");
+  return d && statsPorCodigo.has(d) ? d : null;
+}
+
 export function AtlasShell() {
   const t = useT("atlas");
-  const [metrica, setMetrica] = useState<MetricaAtlas>("tasaPor10k");
-  const [seleccionado, setSeleccionado] = useState<string | null>(null);
+  const isMobile = useIsMobile();
+  // Estado inicial hidratado desde los query params (?metrica=, ?depto=) para
+  // que un enlace compartido reproduzca la vista. Lazy initializer (cliente) —
+  // sin efecto ni setState en montaje.
+  const [metrica, setMetrica] = useState<MetricaAtlas>(() => metricaInicial());
+  const [seleccionado, setSeleccionado] = useState<string | null>(
+    () => deptoInicial(),
+  );
   const [sheetAbierto, setSheetAbierto] = useState(false);
   const [mostrarIps, setMostrarIps] = useState(false);
+  const [mostrarRedPublica, setMostrarRedPublica] = useState(false);
 
   const casos = useCasoStore((s) => s.casos);
 
@@ -45,22 +72,34 @@ export function AtlasShell() {
 
   function seleccionar(codigo: string | null) {
     setSeleccionado(codigo);
-    if (codigo && statsPorCodigo.has(codigo)) setSheetAbierto(true);
+    // BUG-FIX: el Sheet móvil (overlay fixed inset-0 con backdrop-blur) sólo
+    // debe abrirse en móvil. En desktop el panel lateral derecho ya muestra el
+    // detalle; abrir el Sheet aquí tapaba la página con un velo borroso.
+    if (codigo && statsPorCodigo.has(codigo) && isMobile) setSheetAbierto(true);
   }
 
   return (
     <div className="flex flex-col gap-4">
       <AtlasKpis resueltosSinJuez={resueltosSinJuez} />
 
+      {/* Barra de acciones: comparador A vs B (izq.) + compartir/descargar (der.).
+          Aditivo y AAA claro; no toca el mapa ni las capas existentes. */}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <AtlasComparador preseleccionA={seleccionado} />
+        <AtlasAcciones metrica={metrica} seleccionado={seleccionado} />
+      </div>
+
       {/* Mapa + lateral. En móvil una sola columna; en desktop 2fr/1fr. */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex flex-col gap-3">
-          <div className="glow-card glow-card--teal relative h-[58vh] min-h-[360px] overflow-hidden p-0 lg:h-[640px]">
+          {/* Marco claro (surface-card) con un mapa DARK enmarcado por dentro. */}
+          <div className="surface-card relative h-[58vh] min-h-[360px] overflow-hidden p-0 lg:h-[640px]">
             <AtlasMapa
               metrica={metrica}
               seleccionado={seleccionado}
               onSeleccionar={seleccionar}
               mostrarIps={mostrarIps}
+              mostrarRedPublica={mostrarRedPublica}
             />
           </div>
           <AtlasLeyenda
@@ -68,6 +107,14 @@ export function AtlasShell() {
             onMetrica={setMetrica}
             mostrarIps={mostrarIps}
             onToggleIps={setMostrarIps}
+            mostrarRedPublica={mostrarRedPublica}
+            onToggleRedPublica={setMostrarRedPublica}
+          />
+          {/* Ranking + distribución nacional (chrome claro AAA, NO sobre el mapa). */}
+          <AtlasRanking
+            metrica={metrica}
+            seleccionado={seleccionado}
+            onSeleccionar={seleccionar}
           />
         </div>
 
@@ -80,23 +127,22 @@ export function AtlasShell() {
               onCerrar={() => setSeleccionado(null)}
             />
           ) : (
-            <div className="glow-card flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-              <div className="grid size-12 place-items-center rounded-full border border-[#30363D] bg-[#0D1117] shadow-[0_0_18px_-6px_rgba(27,107,109,0.8)]">
-                <span className="text-2xl" aria-hidden>
-                  🗺️
-                </span>
+            <div className="surface-card flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+              <div className="grid size-12 place-items-center rounded-full border border-border bg-secondary text-brand">
+                <MapIcon className="size-6" aria-hidden />
               </div>
-              <p className="font-heading text-base font-medium text-[#E6EDF3]">
+              <p className="font-heading text-base font-medium text-foreground">
                 {t("hint.title")}
               </p>
-              <p className="text-sm text-[#8B949E]">{t("hint.text")}</p>
+              <p className="text-sm text-muted-foreground">{t("hint.text")}</p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Panel móvil: Sheet inferior. */}
-      {seleccionado && (
+      {/* Panel móvil: Sheet inferior. Sólo se monta en móvil para que su overlay
+          (fixed inset-0 + backdrop-blur) nunca cubra la página en desktop. */}
+      {seleccionado && isMobile && (
         <AtlasPanelMovil
           abierto={sheetAbierto}
           onOpenChange={(v) => {

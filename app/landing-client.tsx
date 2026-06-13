@@ -17,6 +17,7 @@ import {
   User,
 } from "lucide-react";
 import { useT } from "@/lib/i18n";
+import { Reveal, CountUpStat } from "@/components/landing/reveal";
 
 export function LandingClient() {
   const t = useT("landing");
@@ -112,78 +113,103 @@ export function LandingClient() {
       {/* ───────────── Hero ───────────── */}
       <section className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:py-24">
         <div className="max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur">
-            <ShieldCheck className="size-3.5 text-brand" />
-            {t("hero.badge")}
-          </span>
+          <Reveal delay={0}>
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground backdrop-blur">
+              <ShieldCheck className="size-3.5 text-brand" />
+              {t("hero.badge")}
+            </span>
+          </Reveal>
 
-          <h1 className="mt-5 font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            {t("hero.titleLead")}{" "}
-            <span className="text-brand">{t("hero.titleEmphasis")}</span>
-          </h1>
+          <Reveal delay={80}>
+            <h1 className="mt-5 font-heading text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              {t("hero.titleLead")}{" "}
+              <span className="text-brand">{t("hero.titleEmphasis")}</span>
+            </h1>
+          </Reveal>
 
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground text-pretty sm:text-xl">
-            {t("hero.bodyLead")}{" "}
-            <strong className="text-foreground">
-              {t("hero.bodyEmphasis")}
-            </strong>
-            {t("hero.bodyRest")}
-          </p>
+          <Reveal delay={160}>
+            <p className="mt-5 text-lg leading-relaxed text-muted-foreground text-pretty sm:text-xl">
+              {t("hero.bodyLead")}{" "}
+              <strong className="text-foreground">
+                {t("hero.bodyEmphasis")}
+              </strong>
+              {t("hero.bodyRest")}
+            </p>
+          </Reveal>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/asistente"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            >
-              <Mic className="size-4" />
-              {t("hero.ctaTalk")}
-            </Link>
-            <Link
-              href="/demandante"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
-            >
-              {t("hero.ctaStart")}
-              <ArrowRight className="size-4" />
-            </Link>
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-            <Link
-              href="/atlas"
-              className="inline-flex items-center gap-1.5 font-medium text-foreground transition-colors hover:text-brand"
-            >
-              <MapIcon className="size-4 text-brand" />
-              {t("hero.linkMap")}
-            </Link>
-            <span className="hidden sm:inline text-muted-foreground/50">·</span>
-            <span>{t("hero.trust")}</span>
-          </div>
-        </div>
-
-        {/* Tarjeta de cifras — el problema en números */}
-        <div className="surface-navy p-7 sm:p-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
-            {t("stats.heading")}
-          </p>
-          <div className="mt-6 space-y-6">
-            {STATS.map((s) => (
-              <div
-                key={s.unidad}
-                className="border-b border-white/10 pb-5 last:border-0 last:pb-0"
+          <Reveal delay={240}>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/asistente"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               >
-                <div className="flex items-baseline gap-2">
-                  <span className="font-heading text-3xl font-semibold text-white sm:text-4xl">
-                    {s.cifra}
-                  </span>
-                  <span className="text-sm font-medium text-white/70">
-                    {s.unidad}
-                  </span>
-                </div>
-                <p className="mt-1 text-sm text-white/60">{s.nota}</p>
-              </div>
-            ))}
-          </div>
+                <Mic className="size-4" />
+                {t("hero.ctaTalk")}
+              </Link>
+              <Link
+                href="/demandante"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 text-base font-semibold text-foreground transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-input hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                {t("hero.ctaStart")}
+                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </Reveal>
+
+          <Reveal delay={320}>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
+              <Link
+                href="/atlas"
+                className="inline-flex items-center gap-1.5 rounded-md font-medium text-foreground transition-colors hover:text-brand focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                <MapIcon className="size-4 text-brand" />
+                {t("hero.linkMap")}
+              </Link>
+              <span className="hidden sm:inline text-muted-foreground/50">·</span>
+              <span>{t("hero.trust")}</span>
+            </div>
+          </Reveal>
+
+          {/* Sello de credibilidad — datos reales, fuente y decisión humana */}
+          <Reveal delay={400}>
+            <Link
+              href="/metodologia"
+              className="group mt-6 inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 rounded-xl border border-border bg-white/60 px-3.5 py-2 text-xs font-medium text-muted-foreground backdrop-blur transition-colors hover:border-input hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            >
+              <BadgeCheck className="size-4 text-success" aria-hidden />
+              <span className="text-foreground">{t("hero.seal.data")}</span>
+              <span className="text-muted-foreground/40" aria-hidden>
+                ·
+              </span>
+              <span>{t("hero.seal.source")}</span>
+              <span className="text-muted-foreground/40" aria-hidden>
+                ·
+              </span>
+              <span>{t("hero.seal.human")}</span>
+              <ArrowRight className="size-3.5 text-brand transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          </Reveal>
         </div>
+
+        {/* Tarjeta de cifras — el problema en números (count-up al entrar) */}
+        <Reveal delay={200} className="lg:justify-self-end lg:w-full">
+          <div className="surface-navy p-7 sm:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/55">
+              {t("stats.heading")}
+            </p>
+            <div className="mt-6 space-y-6">
+              {STATS.map((s, i) => (
+                <CountUpStat
+                  key={s.unidad}
+                  figure={s.cifra}
+                  unit={s.unidad}
+                  note={s.nota}
+                  delay={300 + i * 220}
+                />
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* ───────────── Cómo funciona ───────────── */}
@@ -199,7 +225,12 @@ export function LandingClient() {
 
         <ol className="mt-10 grid gap-5 md:grid-cols-3">
           {PASOS.map((p, i) => (
-            <li key={p.titulo} className="surface-card p-7">
+            <Reveal
+              as="li"
+              key={p.titulo}
+              delay={i * 110}
+              className="surface-card p-7 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+            >
               <div className="flex items-center gap-3">
                 <span className="grid size-11 place-items-center rounded-xl bg-secondary text-brand">
                   <p.icon className="size-5" />
@@ -214,7 +245,7 @@ export function LandingClient() {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {p.texto}
               </p>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </section>
@@ -236,8 +267,8 @@ export function LandingClient() {
             </header>
 
             <ul className="grid gap-5 sm:grid-cols-2">
-              {VALORES.map((v) => (
-                <li key={v.titulo} className="flex gap-4">
+              {VALORES.map((v, i) => (
+                <Reveal as="li" key={v.titulo} delay={i * 90} className="flex gap-4">
                   <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-brand">
                     <v.icon className="size-5" />
                   </span>
@@ -249,7 +280,7 @@ export function LandingClient() {
                       {v.texto}
                     </p>
                   </div>
-                </li>
+                </Reveal>
               ))}
             </ul>
           </div>
@@ -271,26 +302,27 @@ export function LandingClient() {
         </header>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {ROLES.map((r) => (
-            <Link
-              key={r.href}
-              href={r.href}
-              className="surface-card group flex flex-col gap-3 p-6 transition-transform hover:-translate-y-0.5"
-            >
-              <span className="grid size-11 place-items-center rounded-xl bg-navy text-white">
-                <r.icon className="size-5" />
-              </span>
-              <div>
-                <h3 className="font-heading text-lg font-semibold tracking-tight">
-                  {r.label}
-                </h3>
-                <p className="mt-1 text-sm text-muted-foreground">{r.desc}</p>
-              </div>
-              <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-brand">
-                {t("explore.enter")}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-              </span>
-            </Link>
+          {ROLES.map((r, i) => (
+            <Reveal key={r.href} delay={i * 90} className="flex">
+              <Link
+                href={r.href}
+                className="surface-card group flex w-full flex-col gap-3 p-6 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                <span className="grid size-11 place-items-center rounded-xl bg-navy text-white transition-colors duration-200 group-hover:bg-primary">
+                  <r.icon className="size-5" />
+                </span>
+                <div>
+                  <h3 className="font-heading text-lg font-semibold tracking-tight">
+                    {r.label}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{r.desc}</p>
+                </div>
+                <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-brand">
+                  {t("explore.enter")}
+                  <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </Reveal>
           ))}
         </div>
       </section>

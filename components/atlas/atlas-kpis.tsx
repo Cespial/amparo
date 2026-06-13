@@ -24,7 +24,7 @@ interface KpiItem {
   clave: "tutelas" | "granted" | "ips" | "resolved";
   valor: string;
   Icono: typeof FileText;
-  /** Color del acento del ícono (estética Tensor dark). */
+  /** Color del acento del ícono (tonos de marca/semánticos AAA sobre blanco). */
   tono: string;
   ilustrativo: boolean;
 }
@@ -38,28 +38,28 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       clave: "tutelas",
       valor: fmt(k.totalTutelasSalud),
       Icono: FileText,
-      tono: "text-[#58a6ff]",
+      tono: "text-[var(--info)]",
       ilustrativo: false,
     },
     {
       clave: "granted",
       valor: `~${k.porcentajeConcedidas}%`,
       Icono: CheckCircle2,
-      tono: "text-[#3fb950]",
+      tono: "text-[var(--success)]",
       ilustrativo: false,
     },
     {
       clave: "ips",
       valor: fmt(k.ipsNacional),
       Icono: Hospital,
-      tono: "text-[#d29922]",
+      tono: "text-[var(--warning)]",
       ilustrativo: false,
     },
     {
       clave: "resolved",
       valor: fmt(resueltosSinJuez),
       Icono: Handshake,
-      tono: "text-[#1B6B6D]",
+      tono: "text-brand",
       ilustrativo: false,
     },
   ];
@@ -69,7 +69,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       {items.map((it) => (
         <Card
           key={it.clave}
-          className="glow-card glow-card--teal gap-0 border-0 bg-transparent py-0"
+          className="surface-card gap-0 py-0 ring-0"
         >
           <CardContent className="flex flex-col gap-2 p-4">
             <div className="flex items-center justify-between">
@@ -79,7 +79,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
               <Tooltip>
                 <TooltipTrigger
                   aria-label={t(`kpis.${it.clave}.sourceAria`)}
-                  className="text-[#8B949E]/70 transition-colors hover:text-[#E6EDF3]"
+                  className="text-muted-foreground transition-colors hover:text-foreground"
                 >
                   <Info className="size-3.5" />
                 </TooltipTrigger>
@@ -88,10 +88,10 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="glow-num text-2xl leading-none font-semibold text-[#E6EDF3] sm:text-3xl">
+            <div className="font-mono tabular-nums text-2xl leading-none font-semibold text-foreground sm:text-3xl">
               {it.valor}
             </div>
-            <p className="text-xs leading-tight text-[#8B949E]">
+            <p className="text-xs leading-tight text-muted-foreground">
               {t(`kpis.${it.clave}.label`)}
             </p>
           </CardContent>

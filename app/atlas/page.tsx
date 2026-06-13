@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 
 export default function AtlasPage() {
   return (
-    // Control room oscuro (estética Tensor) — contrasta a propósito con la app AAA clara.
-    <div className="min-h-full bg-[#0D1117] text-[#E6EDF3]">
+    // Chrome claro AAA (fondo lavanda heredado del body, texto foreground) — el
+    // MAPA por dentro sigue siendo dark, enmarcado en tarjetas blancas.
+    <div className="min-h-full text-foreground">
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
         <AtlasPageClient />
       </div>

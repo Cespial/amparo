@@ -67,6 +67,11 @@ export interface SentenciaRef {
   derechos: string[];
   /** Puntaje de relevancia (0-1) cuando proviene de un retrieval. Opcional. */
   score?: number;
+  /**
+   * URL de la fuente oficial (p.ej. relatoría de la Corte Constitucional).
+   * Permite citas clicables. Opcional: no toda sentencia la tiene.
+   */
+  fuenteUrl?: string;
 }
 
 /**
@@ -263,6 +268,41 @@ export interface Caso {
   sentenciasAplicables?: SentenciaRef[];
   /** Derecho de petición formal radicado ante la EPS (ruta de resolución directa). */
   peticion?: PeticionFormal;
+  /** Propuesta de mediación de consenso entre paciente y EPS (la cuarta parte). */
+  mediacion?: Mediacion;
+}
+
+/** Estado de la propuesta de mediación construida por Amparo (la cuarta parte). */
+export type EstadoMediacion = "propuesta" | "aceptada" | "rechazada";
+
+/**
+ * Propuesta de mediación de consenso entre el demandante (paciente) y la EPS.
+ *
+ * Inspirada en la "Habermas Machine" (Google DeepMind, Science 2024): en vez de
+ * un resultado gana/pierde, Amparo articula la posición LEGÍTIMA de cada parte y
+ * propone un CONSENSO concreto, razonado y fundado en el derecho a la salud, que
+ * ambas partes pueden calificar como justo y aceptar. Justicia procedimental +
+ * descongestión. Todo precedente citado proviene EXCLUSIVAMENTE del corpus.
+ */
+export interface Mediacion {
+  /** Posición legítima del demandante (paciente): acceso oportuno al servicio. */
+  posicionDemandante: string;
+  /** Posición legítima de la EPS: sostenibilidad, proceso, alcance de lo cubierto. */
+  posicionEPS: string;
+  /** Acuerdo de consenso concreto que da el servicio al paciente Y atiende el proceso de la EPS. */
+  consensoPropuesto: string;
+  /** Fundamento del consenso en el derecho a la salud, citando SOLO sentencias del corpus. */
+  fundamento: string;
+  /** Términos operativos del acuerdo (autorización en X días, prestador, plan de seguimiento, etc.). */
+  terminos: string[];
+  /** Sentencias del corpus que respaldan el consenso (subconjunto recuperado). Opcional. */
+  fundamentos?: SentenciaRef[];
+  /** ¿El demandante aceptó la propuesta? */
+  aceptadoDemandante?: boolean;
+  /** ¿La EPS aceptó la propuesta? */
+  aceptadoEPS?: boolean;
+  /** Estado del acuerdo de consenso. */
+  estado: EstadoMediacion;
 }
 
 /** Estadística ilustrativa de tutelas por departamento (para el Atlas). */

@@ -9,6 +9,7 @@
 
 import { heroeId } from "../seed";
 import type {
+  Mediacion,
   Prediccion,
   SentenciaRef,
   TriajeAdmisibilidad,
@@ -348,3 +349,53 @@ Notifíquese y cúmplase.
 
 ---
 *Proyecto de fallo generado por Amparo (asistido por IA). Material ilustrativo de apoyo al despacho; no sustituye el criterio del juez.*`;
+
+// --- Mediación héroe (la cuarta parte: consenso paciente ↔ EPS) ---
+//
+// Inspirada en la "Habermas Machine": articula la posición legítima de cada
+// parte y propone un consenso que ambas pueden calificar como justo. Cita SOLO
+// sentencias del corpus (SENTENCIAS_HEROE).
+
+export const MEDIACION_HEROE: Mediacion = {
+  posicionDemandante:
+    "Como paciente, Amparo Restrepo necesita el acceso oportuno a la artroplastia total de cadera que su médico tratante ordenó. Su posición es legítima: el dolor es incapacitante, el deterioro funcional avanza y, como adulta mayor de 68 años, es sujeto de especial protección constitucional. El servicio está incluido en el PBS y ya fue prescrito; cada día de demora agrava su condición y su dignidad.",
+  posicionEPS:
+    "La EPS Sura tiene una posición legítima en cuanto al debido proceso de autorización: requiere completar la auditoría médica de pertinencia, verificar la red de prestadores habilitados y agendar el procedimiento de forma ordenada para garantizar seguridad clínica y sostenibilidad del sistema. Su preocupación no es negar el derecho, sino encauzar el cómo y el cuándo dentro de un trámite trazable y con cargo correcto a la UPC.",
+  consensoPropuesto:
+    "Ambas partes coinciden en que el procedimiento debe realizarse: la diferencia es de proceso y oportunidad, no de fondo. El consenso propuesto da a la paciente el servicio que requiere Y atiende el proceso de la EPS: la EPS cierra su auditoría de pertinencia en un plazo breve y autoriza la artroplastia con un prestador concreto de su red, con fecha cierta de cirugía y un plan de seguimiento integral del postoperatorio; a cambio, la disputa se resuelve sin escalar a tutela, descongestionando la vía judicial. Es un acuerdo que ambas partes pueden calificar como justo: la paciente obtiene certeza y oportunidad; la EPS conserva su proceso de auditoría y agendamiento ordenado.",
+  fundamento:
+    "El consenso se funda en el derecho fundamental a la salud como derecho autónomo (T-760/2008): la EPS debe garantizar el acceso oportuno y de calidad a los servicios prescritos por el médico tratante, cuyo criterio prevalece sobre las consideraciones administrativas (T-195/2021). Tratándose de una adulta mayor con deterioro progresivo, opera una protección reforzada que torna inadmisible la dilación injustificada (T-016/2007). El acuerdo respeta a la vez la oportunidad debida al paciente y un trámite de autorización ordenado por parte de la EPS, sin que ninguno sacrifique su posición legítima.",
+  terminos: [
+    "La EPS Sura cierra la auditoría médica de pertinencia en un plazo máximo de cinco (5) días hábiles.",
+    "Autorización de la artroplastia total de cadera derecha con prestador concreto de la red habilitada, identificado en el acta.",
+    "Fecha cierta de cirugía dentro de los treinta (30) días siguientes a la autorización, comunicada por escrito a la paciente.",
+    "Atención integral del postoperatorio: rehabilitación, controles, insumos y medicamentos asociados, con cargo a la UPC.",
+    "Plan de seguimiento con un punto de contacto único en la EPS y reporte de avance a Amparo como cuarta parte.",
+    "Por su parte, la paciente acepta suspender la acción de tutela mientras la EPS cumpla los plazos acordados, dando al trámite de autorización la oportunidad de resolverse sin litigio.",
+    "Si la EPS incumple cualquier término, la paciente conserva intacta la vía de tutela sin necesidad de agotar trámite adicional.",
+  ],
+  fundamentos: SENTENCIAS_HEROE,
+  estado: "propuesta",
+};
+
+export const MEDIACION_HEROE_EN: Mediacion = {
+  posicionDemandante:
+    "As the patient, Amparo Restrepo needs timely access to the total hip replacement her treating physician ordered. Her position is legitimate: the pain is disabling, functional deterioration is advancing and, as a 68-year-old senior, she is a subject of special constitutional protection. The service is included in the PBS benefits plan and has already been prescribed; every day of delay worsens her condition and her dignity.",
+  posicionEPS:
+    "EPS Sura has a legitimate position regarding the due authorization process: it needs to complete the medical-appropriateness review, verify the network of authorized providers and schedule the procedure in an orderly way to ensure clinical safety and the system's sustainability. Its concern is not to deny the right, but to channel the how and the when within a traceable process correctly charged to the UPC capitation.",
+  consensoPropuesto:
+    "Both parties agree the procedure must take place: the disagreement is about process and timing, not substance. The proposed consensus gives the patient the service she needs AND honors the EPS's process: the EPS closes its appropriateness review within a short deadline and authorizes the hip replacement with a specific in-network provider, with a fixed surgery date and an integral post-operative follow-up plan; in return, the dispute is resolved without escalating to a tutela, decongesting the courts. It is an agreement both parties can call fair: the patient gains certainty and timeliness; the EPS keeps its orderly review and scheduling process.",
+  fundamento:
+    "The consensus rests on the fundamental right to health as an autonomous right (T-760/2008): the EPS must guarantee timely, quality access to services prescribed by the treating physician, whose judgment prevails over administrative considerations (T-195/2021). For a senior with progressive deterioration, reinforced protection applies, making unjustified delay inadmissible (T-016/2007). The agreement honors both the patient's due timeliness and the EPS's orderly authorization process, without either side sacrificing its legitimate position.",
+  terminos: [
+    "EPS Sura closes the medical-appropriateness review within a maximum of five (5) business days.",
+    "Authorization of the right total hip replacement with a specific in-network provider, named in the agreement record.",
+    "A fixed surgery date within the thirty (30) days following authorization, communicated to the patient in writing.",
+    "Integral post-operative care: rehabilitation, follow-ups, supplies and related medication, charged to the UPC capitation.",
+    "A follow-up plan with a single point of contact at the EPS and progress reporting to Amparo as the fourth party.",
+    "For her part, the patient agrees to hold the tutela action while the EPS meets the agreed deadlines, giving the authorization process the chance to resolve without litigation.",
+    "If the EPS breaches any term, the patient fully retains the tutela route with no need to exhaust any further process.",
+  ],
+  fundamentos: SENTENCIAS_HEROE,
+  estado: "propuesta",
+};

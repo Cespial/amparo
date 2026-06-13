@@ -208,6 +208,10 @@ export const demandante = {
 
     // --- PASO 5: resultado (documento listo) ---
     resultado: {
+      // Mientras la tutela se escribe en streaming (carácter a carácter).
+      redactandoTutela: "Redactando tu tutela…",
+      redactandoTutelaSub:
+        "Amparo está escribiendo tu acción de tutela. Verás el texto aparecer en tiempo real.",
       tutelaLista: "Tu tutela está lista",
       reclamacionLista: "Tu reclamación está lista",
       tutelaSub: "Revísala, descárgala o llévala al juzgado de reparto.",
@@ -470,6 +474,10 @@ export const demandante = {
     },
 
     resultado: {
+      // While the tutela is being written in streaming (character by character).
+      redactandoTutela: "Drafting your tutela…",
+      redactandoTutelaSub:
+        "Amparo is writing your tutela. You'll see the text appear in real time.",
       tutelaLista: "Your tutela is ready",
       reclamacionLista: "Your claim is ready",
       tutelaSub: "Review it, download it, or take it to the assigning court.",

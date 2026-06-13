@@ -9,7 +9,6 @@ import {
   Building2,
   Scale,
   Menu,
-  Shield,
   Mic,
   Presentation,
 } from "lucide-react";
@@ -117,16 +116,26 @@ export function SiteNav() {
   return (
     <header className="sticky top-0 z-50 w-full bg-navy text-navy-foreground shadow-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 sm:px-6">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-lg">
-            <Shield className="size-5 text-white" aria-hidden />
-          </span>
-          <span className="flex flex-col leading-tight">
-            <span className="text-base font-bold tracking-tight text-white">
+        {/* Logo lockup: escudo de marca + wordmark serif + tagline (tono dark) */}
+        <Link
+          href="/"
+          aria-label={t("brand.name")}
+          className="flex items-center gap-3 shrink-0"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/icons/icon.svg"
+            alt=""
+            aria-hidden
+            width={36}
+            height={36}
+            className="size-9 rounded-[10px] shrink-0"
+          />
+          <span className="flex flex-col leading-[1.12]">
+            <span className="font-serif text-[19px] font-semibold tracking-[-0.01em] text-white">
               {t("brand.name")}
             </span>
-            <span className="hidden text-[11px] text-white/60 sm:block">
+            <span className="hidden text-[10.5px] leading-tight text-white/60 sm:block">
               {t("brand.tagline")}
             </span>
           </span>
@@ -176,8 +185,19 @@ export function SiteNav() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-navy text-navy-foreground">
               <SheetHeader>
-                <SheetTitle className="flex items-center gap-2 text-white">
-                  <Shield className="size-5 text-primary" /> {t("brand.name")}
+                <SheetTitle className="flex items-center gap-2.5 text-white">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/icons/icon.svg"
+                    alt=""
+                    aria-hidden
+                    width={28}
+                    height={28}
+                    className="size-7 rounded-lg shrink-0"
+                  />
+                  <span className="font-serif text-lg font-semibold">
+                    {t("brand.name")}
+                  </span>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">

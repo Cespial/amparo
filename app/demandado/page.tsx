@@ -16,15 +16,18 @@ import {
 } from "lucide-react";
 import { useCasoStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
-import type { Caso, EventoCaso } from "@/lib/types";
+import type { Caso, EventoCaso, Mediacion } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
 import { DemandadoBandeja } from "@/components/demandado/demandado-bandeja";
 import { DemandadoAgente } from "@/components/demandado/demandado-agente";
 import { DemandadoImpacto } from "@/components/demandado/demandado-impacto";
+import { SalaMediacionDialog } from "@/components/mediacion/sala-mediacion-dialog";
+import { SalaMediacionPanel } from "@/components/mediacion/sala-mediacion-panel";
 import {
   estimarProbabilidadAmparo,
   nivelRiesgoEPS,
+  ordenarBandeja,
 } from "@/components/demandado/demandado-utils";
 
 function nuevoEvento(parcial: Omit<EventoCaso, "id" | "fecha">): EventoCaso {
@@ -39,12 +42,15 @@ const espera = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function DemandadoPage() {
   const t = useT("demandado");
+  const tm = useT("mediacion");
   const casos = useCasoStore((s) => s.casos);
   const updateCaso = useCasoStore((s) => s.updateCaso);
   const addEvento = useCasoStore((s) => s.addEvento);
 
   const [seleccionado, setSeleccionado] = useState<Caso | null>(null);
   const [dialogoAbierto, setDialogoAbierto] = useState(false);
+  const [mediacionCaso, setMediacionCaso] = useState<Caso | null>(null);
+  const [mediacionAbierta, setMediacionAbierta] = useState(false);
   const [autoActivo, setAutoActivo] = useState(false);
   const [procesandoId, setProcesandoId] = useState<string | null>(null);
   const [resueltosSesion, setResueltosSesion] = useState(0);
@@ -54,6 +60,13 @@ export default function DemandadoPage() {
   const enNegociacion = useMemo(
     () => casos.filter((c) => c.estado === "EN_NEGOCIACION_EPS"),
     [casos],
+  );
+
+  // Cola ordenada (mayor probabilidad de amparo / urgencia primero): alimenta el
+  // panel de mediación promovido, que destaca el caso "más obvio" de ceder.
+  const colaOrdenada = useMemo(
+    () => ordenarBandeja(enNegociacion),
+    [enNegociacion],
   );
 
   // Fija el universo de entrantes la primera vez que se observa la cola.
@@ -105,6 +118,35 @@ export default function DemandadoPage() {
     setDialogoAbierto(false);
     toast.warning(t("actions.keepToast"), {
       description: t("actions.keepToastDesc", { nombre: caso.demandante.nombre }),
+    });
+  }
+
+  // La cuarta parte: abre la sala de mediación de consenso para este caso.
+  function mediar(caso: Caso) {
+    setMediacionCaso(caso);
+    setDialogoAbierto(false);
+    setMediacionAbierta(true);
+  }
+
+  // Acuerdo por consenso: ambas partes aceptaron la propuesta de Amparo.
+  // Resuelve el caso sin juez (RESUELTO_EPS) y suma a la descongestión, sin tocar
+  // la lógica de "Autorizar/Mantener negación".
+  function acordarPorConsenso(caso: Caso, mediacion: Mediacion) {
+    updateCaso(caso.id, { estado: "RESUELTO_EPS", mediacion });
+    addEvento(
+      caso.id,
+      nuevoEvento({
+        tipo: "ia",
+        estado: "RESUELTO_EPS",
+        actor: "eps",
+        titulo: tm("status.bothAccepted"),
+        detalle: tm("record.decongestion"),
+      }),
+    );
+    setResueltosSesion((n) => n + 1);
+    if (totalEntrantes === null) setTotalEntrantes(enNegociacion.length);
+    toast.success(tm("status.bothAccepted"), {
+      description: tm("record.decongestion"),
     });
   }
 
@@ -203,6 +245,17 @@ export default function DemandadoPage() {
         />
       </div>
 
+      {/* Sala de mediación en PRIMER PLANO: la cuarta parte ya mediando un caso
+          concreto, sin esconderla a dos clics. Auto-carga el caso más obvio. */}
+      {colaOrdenada.length > 0 && (
+        <div className="mt-6">
+          <SalaMediacionPanel
+            casos={colaOrdenada}
+            onAcuerdo={acordarPorConsenso}
+          />
+        </div>
+      )}
+
       {/* Cuerpo: bandeja + copiloto */}
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_22rem]">
         <section>
@@ -250,6 +303,15 @@ export default function DemandadoPage() {
         onCerrar={() => setDialogoAbierto(false)}
         onAutorizar={autorizar}
         onMantener={mantener}
+        onMediar={mediar}
+      />
+
+      {/* Sala de mediación de consenso (la cuarta parte) */}
+      <SalaMediacionDialog
+        caso={mediacionCaso}
+        abierto={mediacionAbierta}
+        onCerrar={() => setMediacionAbierta(false)}
+        onAcuerdo={acordarPorConsenso}
       />
     </div>
   );

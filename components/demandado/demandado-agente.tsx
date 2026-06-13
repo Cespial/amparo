@@ -11,6 +11,7 @@ import {
   Bot,
   CheckCircle2,
   Gavel,
+  HeartHandshake,
   Loader2,
   Scale,
   ShieldX,
@@ -28,6 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { SentenciaChip } from "@/components/sentencia-chip";
 import { PeticionReloj } from "@/components/demandante/peticion-reloj";
 import { Expediente } from "@/components/transparencia/expediente";
 import {
@@ -50,6 +52,8 @@ export interface DemandadoAgenteProps {
   onCerrar: () => void;
   onAutorizar: (caso: Caso, analisis: { prob: number }) => void;
   onMantener: (caso: Caso) => void;
+  /** Abre la sala de mediación de consenso (la cuarta parte) para este caso. */
+  onMediar?: (caso: Caso) => void;
 }
 
 export function DemandadoAgente({
@@ -58,8 +62,10 @@ export function DemandadoAgente({
   onCerrar,
   onAutorizar,
   onMantener,
+  onMediar,
 }: DemandadoAgenteProps) {
   const t = useT("demandado");
+  const tm = useT("mediacion");
   const [analizando, setAnalizando] = useState(false);
   const [analisis, setAnalisis] = useState<AnalisisEPS | null>(null);
 
@@ -235,12 +241,14 @@ export function DemandadoAgente({
                         <Gavel className="size-3.5" />
                         {t("agent.precedent")}
                       </p>
-                      <ul className="mt-2 space-y-1.5">
+                      <ul className="mt-2 space-y-2">
                         {analisis.sentencias.slice(0, 3).map((s) => (
-                          <li key={s.id} className="text-xs">
-                            <span className="font-mono font-semibold text-primary">
-                              {s.id}
-                            </span>{" "}
+                          <li
+                            key={s.id}
+                            className="flex flex-col items-start gap-1 text-xs"
+                          >
+                            {/* Cita CLICABLE a la relatoría de la Corte (degrada a span). */}
+                            <SentenciaChip sentencia={s} showTema={false} />
                             <span className="text-muted-foreground">
                               {s.subregla}
                             </span>
@@ -256,24 +264,38 @@ export function DemandadoAgente({
         </ScrollArea>
 
         {/* Acciones */}
-        <div className="flex flex-col-reverse gap-2 border-t bg-muted/50 p-4 sm:flex-row sm:justify-end">
-          <Button
-            variant="outline"
-            disabled={analizando}
-            onClick={() => onMantener(caso)}
-            className="gap-2"
-          >
-            <ShieldX className="size-4" />
-            {t("agent.keepDenial")}
-          </Button>
-          <Button
-            disabled={analizando}
-            onClick={() => onAutorizar(caso, { prob })}
-            className="gap-2"
-          >
-            <CheckCircle2 className="size-4" />
-            {t("agent.authorizeService")}
-          </Button>
+        <div className="flex flex-col gap-2 border-t bg-muted/50 p-4">
+          {/* La cuarta parte: mediar hacia un consenso (descongestión). */}
+          {onMediar && (
+            <Button
+              disabled={analizando}
+              onClick={() => onMediar(caso)}
+              className="w-full gap-2"
+            >
+              <HeartHandshake className="size-4" />
+              {tm("room.generate")}
+            </Button>
+          )}
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button
+              variant="outline"
+              disabled={analizando}
+              onClick={() => onMantener(caso)}
+              className="gap-2"
+            >
+              <ShieldX className="size-4" />
+              {t("agent.keepDenial")}
+            </Button>
+            <Button
+              variant="secondary"
+              disabled={analizando}
+              onClick={() => onAutorizar(caso, { prob })}
+              className="gap-2"
+            >
+              <CheckCircle2 className="size-4" />
+              {t("agent.authorizeService")}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

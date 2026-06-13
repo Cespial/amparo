@@ -60,6 +60,7 @@ import type {
   EventoCaso,
   PeticionFormal,
   PlazoLegal,
+  SentenciaRef,
   TipoServicio,
   Urgencia,
 } from "@/lib/types";
@@ -68,7 +69,9 @@ import { DemandanteStepper, type PasoDef } from "./demandante-stepper";
 import { DemandanteGauge } from "./demandante-gauge";
 import { DemandanteMarkdown } from "./demandante-markdown";
 import { PeticionReloj } from "./peticion-reloj";
+import { SentenciaChip } from "@/components/sentencia-chip";
 import { Expediente } from "@/components/transparencia/expediente";
+import { SalaMediacion } from "@/components/mediacion/sala-mediacion";
 import { useDictado } from "./use-dictado";
 import { hablar, detenerVoz } from "@/lib/voz";
 import { BotonVoz } from "@/components/boton-voz";
@@ -111,13 +114,10 @@ interface TriajeResultado {
 
 interface PrediccionResultado {
   probabilidadAmparo: number;
-  sentenciasCitadas: {
-    id: string;
-    titulo: string;
-    anio: number;
-    tema: string;
-    subregla: string;
-  }[];
+  // SentenciaRef completas: el endpoint /api/predecir las entrega desde el
+  // corpus, así que traen `fuenteUrl` cuando existe → la cita es clicable
+  // (<SentenciaChip>). Los fixtures héroe degradan a chip estático sin enlace.
+  sentenciasCitadas: SentenciaRef[];
   reglaAplicable: string;
   razonamiento: string;
 }
@@ -216,6 +216,9 @@ export function DemandanteWizard({
 
   // Cargas
   const [cargando, setCargando] = useState<null | string>(null);
+  // La tutela se escribe en streaming: este flag enciende el cursor de escritura
+  // y evita que se considere "lista" hasta que termine de redactarse.
+  const [redactandoStream, setRedactandoStream] = useState(false);
 
   // Modo voz: si está activo, Amparo lee en voz alta el primer mensaje de cada paso.
   const [modoVoz, setModoVoz] = useState(false);
@@ -451,89 +454,128 @@ export function DemandanteWizard({
 
   // ---- Paso 4 -> 5: generar documento + decidir ruta ----
 
+  /** Registra el evento + estado del caso según la ruta elegida. */
+  function registrarRuta(caso: Caso, via: "reclamacion" | "tutela") {
+    if (via === "reclamacion") {
+      // Formaliza la ruta EPS como derecho de petición: responsable + reloj SLA.
+      const nuevaPeticion = construirPeticion(caso, new Date());
+      updateCaso(caso.id, {
+        estado: "EN_NEGOCIACION_EPS",
+        peticion: nuevaPeticion,
+      });
+      addEvento(
+        caso.id,
+        evento(
+          caso.id,
+          "documento",
+          t("evento.peticionTitulo"),
+          "EN_NEGOCIACION_EPS",
+          {
+            actor: "demandante",
+            detalle: t("evento.peticionDetalle", {
+              dependencia: nuevaPeticion.dependencia,
+              dias: nuevaPeticion.slaDias,
+              tipo: nuevaPeticion.slaHabiles
+                ? t("resultado.diasHabiles")
+                : t("resultado.diasCalendario"),
+              radicado: nuevaPeticion.radicadoPeticion,
+            }),
+          },
+        ),
+      );
+      setPeticion(nuevaPeticion);
+      setEstadoFinal("EN_NEGOCIACION_EPS");
+      setRadicado(null);
+      setCronograma([]);
+    } else {
+      const base = new Date();
+      const crono = cronogramaTutela(base);
+      updateCaso(caso.id, {
+        estado: "ESCALADO_TUTELA",
+        cronograma: crono,
+        fechaBase: base.toISOString(),
+      });
+      addEvento(
+        caso.id,
+        evento(caso.id, "documento", t("evento.tutelaTitulo"), "ESCALADO_TUTELA", {
+          actor: "demandante",
+          detalle: t("evento.tutelaDetalle", {
+            radicado: formatearRadicado(caso.radicado),
+          }),
+        }),
+      );
+      setPeticion(null);
+      setEstadoFinal("ESCALADO_TUTELA");
+      setRadicado(caso.radicado);
+      setCronograma(crono);
+    }
+    seleccionarCaso(caso.id);
+    onCasoActivo?.(caso.id);
+  }
+
   async function decidir(via: "reclamacion" | "tutela") {
     const caso = getCaso(casoId);
     if (!caso) return;
     setCargando(via);
     setTipoDoc(via);
+
+    const cuerpo = esHeroe
+      ? { casoId: heroeId, tipo: via }
+      : { caso, tipo: via };
+
+    // --- Ruta tutela: documento en STREAMING (se escribe carácter a carácter) ---
+    if (via === "tutela") {
+      try {
+        const res = await fetch("/api/generar?stream=1", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cuerpo),
+        });
+        if (!res.ok || !res.body) throw new Error(String(res.status));
+
+        // Prepara la vista de resultado y muestra el documento mientras llega.
+        registrarRuta(caso, via);
+        setDocumento(""); // string (no null) → se pinta el lienzo de resultado
+        setRedactandoStream(true);
+        setPaso(5);
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let acc = "";
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          acc += decoder.decode(value, { stream: true });
+          setDocumento(acc); // pinta el Markdown progresivo
+        }
+        acc += decoder.decode(); // vacía el buffer final
+        setDocumento(acc);
+        setRedactandoStream(false);
+        leerSiModoVoz(t("say.docTutela"));
+      } catch {
+        setRedactandoStream(false);
+        toast.error(t("step5.toast.errorTitle"), {
+          description: t("step5.toast.errorDesc"),
+        });
+      } finally {
+        setCargando(null);
+      }
+      return;
+    }
+
+    // --- Ruta reclamación: respuesta JSON (no requiere streaming) ---
     try {
       const res = await fetch("/api/generar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          esHeroe ? { casoId: heroeId, tipo: via } : { caso, tipo: via },
-        ),
+        body: JSON.stringify(cuerpo),
       });
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as { tipo: string; documento: string };
       setDocumento(data.documento);
-
-      if (via === "reclamacion") {
-        // Formaliza la ruta EPS como derecho de petición: responsable + reloj SLA.
-        const nuevaPeticion = construirPeticion(caso, new Date());
-        updateCaso(caso.id, {
-          estado: "EN_NEGOCIACION_EPS",
-          peticion: nuevaPeticion,
-        });
-        addEvento(
-          caso.id,
-          evento(
-            caso.id,
-            "documento",
-            t("evento.peticionTitulo"),
-            "EN_NEGOCIACION_EPS",
-            {
-              actor: "demandante",
-              detalle: t("evento.peticionDetalle", {
-                dependencia: nuevaPeticion.dependencia,
-                dias: nuevaPeticion.slaDias,
-                tipo: nuevaPeticion.slaHabiles
-                  ? t("resultado.diasHabiles")
-                  : t("resultado.diasCalendario"),
-                radicado: nuevaPeticion.radicadoPeticion,
-              }),
-            },
-          ),
-        );
-        setPeticion(nuevaPeticion);
-        setEstadoFinal("EN_NEGOCIACION_EPS");
-        setRadicado(null);
-        setCronograma([]);
-      } else {
-        const base = new Date();
-        const crono = cronogramaTutela(base);
-        updateCaso(caso.id, {
-          estado: "ESCALADO_TUTELA",
-          cronograma: crono,
-          fechaBase: base.toISOString(),
-        });
-        addEvento(
-          caso.id,
-          evento(
-            caso.id,
-            "documento",
-            t("evento.tutelaTitulo"),
-            "ESCALADO_TUTELA",
-            {
-              actor: "demandante",
-              detalle: t("evento.tutelaDetalle", {
-                radicado: formatearRadicado(caso.radicado),
-              }),
-            },
-          ),
-        );
-        setPeticion(null);
-        setEstadoFinal("ESCALADO_TUTELA");
-        setRadicado(caso.radicado);
-        setCronograma(crono);
-      }
-
-      seleccionarCaso(caso.id);
-      onCasoActivo?.(caso.id);
+      registrarRuta(caso, via);
       setPaso(5);
-      leerSiModoVoz(
-        via === "tutela" ? t("say.docTutela") : t("say.docReclamacion"),
-      );
+      leerSiModoVoz(t("say.docReclamacion"));
     } catch {
       toast.error(t("step5.toast.errorTitle"), {
         description: t("step5.toast.errorDesc"),
@@ -558,6 +600,7 @@ export function DemandanteWizard({
     setTriaje(null);
     setPrediccion(null);
     setDocumento(null);
+    setRedactandoStream(false);
     setRadicado(null);
     setCronograma([]);
     setEstadoFinal(null);
@@ -925,25 +968,9 @@ export function DemandanteWizard({
                   <ScrollText className="size-5 text-primary" />
                   {t("step4.sentenciasTitulo")}
                 </h3>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="flex flex-wrap gap-2">
                   {prediccion.sentenciasCitadas.map((s) => (
-                    <div
-                      key={s.id}
-                      className="rounded-xl border bg-card p-3 shadow-sm"
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-sm font-semibold text-primary">
-                          {s.id}
-                        </span>
-                        <Badge variant="secondary" className="font-normal">
-                          {s.anio}
-                        </Badge>
-                      </div>
-                      <p className="mt-1 text-sm font-medium text-navy">{s.tema}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                        {s.subregla}
-                      </p>
-                    </div>
+                    <SentenciaChip key={s.id} sentencia={s} size="md" />
                   ))}
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
@@ -961,7 +988,7 @@ export function DemandanteWizard({
           )}
 
           {/* ---------- PASO 5 ---------- */}
-          {paso === 5 && !documento && (
+          {paso === 5 && documento === null && (
             <section className="space-y-5">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-navy">
@@ -1002,32 +1029,44 @@ export function DemandanteWizard({
           )}
 
           {/* ---------- PASO 5 — Resultado ---------- */}
-          {paso === 5 && documento && (
+          {paso === 5 && documento !== null && (
             <section className="space-y-5">
-              <div className="rounded-2xl border border-success/30 bg-success/5 p-4">
-                <div className="flex items-start justify-between gap-2">
-                  <p className="flex items-center gap-2 font-serif text-lg font-semibold text-success">
-                    <CheckCircle2 className="size-5" />
-                    {tipoDoc === "tutela"
-                      ? t("resultado.tutelaLista")
-                      : t("resultado.reclamacionLista")}
+              {redactandoStream ? (
+                <div className="rounded-2xl border border-primary/30 bg-primary/5 p-4">
+                  <p className="flex items-center gap-2 font-serif text-lg font-semibold text-primary">
+                    <Loader2 className="size-5 animate-spin" />
+                    {t("resultado.redactandoTutela")}
                   </p>
-                  <BotonVoz
-                    texto={
-                      tipoDoc === "tutela"
-                        ? t("say.docTutela")
-                        : t("say.docReclamacion")
-                    }
-                    conTexto={false}
-                    className="-mr-1 -mt-1 shrink-0 text-success"
-                  />
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {t("resultado.redactandoTutelaSub")}
+                  </p>
                 </div>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {tipoDoc === "tutela"
-                    ? t("resultado.tutelaSub")
-                    : t("resultado.reclamacionSub")}
-                </p>
-              </div>
+              ) : (
+                <div className="rounded-2xl border border-success/30 bg-success/5 p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="flex items-center gap-2 font-serif text-lg font-semibold text-success">
+                      <CheckCircle2 className="size-5" />
+                      {tipoDoc === "tutela"
+                        ? t("resultado.tutelaLista")
+                        : t("resultado.reclamacionLista")}
+                    </p>
+                    <BotonVoz
+                      texto={
+                        tipoDoc === "tutela"
+                          ? t("say.docTutela")
+                          : t("say.docReclamacion")
+                      }
+                      conTexto={false}
+                      className="-mr-1 -mt-1 shrink-0 text-success"
+                    />
+                  </div>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {tipoDoc === "tutela"
+                      ? t("resultado.tutelaSub")
+                      : t("resultado.reclamacionSub")}
+                  </p>
+                </div>
+              )}
 
               {/* Derecho de petición: responsable + reloj de SLA */}
               {peticion && tipoDoc === "reclamacion" && (
@@ -1040,6 +1079,22 @@ export function DemandanteWizard({
                   const casoActual = getCaso(casoId);
                   return casoActual ? (
                     <Expediente caso={casoActual} vista="demandante" />
+                  ) : null;
+                })()}
+
+              {/* Acuerdo de consenso alcanzado con la EPS (solo lectura): si la
+                  cuarta parte medió y ambas partes aceptaron, lo mostramos aquí. */}
+              {tipoDoc === "reclamacion" &&
+                (() => {
+                  const casoActual = getCaso(casoId);
+                  const med = casoActual?.mediacion;
+                  return med && med.estado === "aceptada" ? (
+                    <SalaMediacion
+                      mediacion={med}
+                      pacienteNombre={casoActual!.demandante.nombre}
+                      epsNombre={casoActual!.demandado.nombre}
+                      soloLectura
+                    />
                   ) : null;
                 })()}
 
@@ -1115,11 +1170,14 @@ export function DemandanteWizard({
                       : t("resultado.docReclamacion")}
                   </CardTitle>
                   <div className="flex gap-2">
-                    <BotonVoz texto={documento} variant="outline" size="sm" />
+                    {!redactandoStream && (
+                      <BotonVoz texto={documento} variant="outline" size="sm" />
+                    )}
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={copiarDocumento}
+                      disabled={redactandoStream}
                       className="gap-1.5"
                     >
                       <Copy className="size-4" /> {t("resultado.copiar")}
@@ -1129,6 +1187,12 @@ export function DemandanteWizard({
                 <CardContent>
                   <div className="max-h-[28rem] overflow-y-auto rounded-xl border bg-background/60 p-4">
                     <DemandanteMarkdown source={documento} />
+                    {redactandoStream && (
+                      <span
+                        className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 animate-pulse bg-primary align-middle motion-reduce:animate-none"
+                        aria-hidden
+                      />
+                    )}
                   </div>
                 </CardContent>
               </Card>

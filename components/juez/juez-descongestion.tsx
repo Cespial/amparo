@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useT } from "@/lib/i18n";
 import type { Caso } from "@/lib/types";
+import { useCountUp } from "./use-count-up";
 
 export function Descongestion({ casos }: { casos: Caso[] }) {
   const t = useT("juez");
@@ -25,6 +26,8 @@ export function Descongestion({ casos }: { casos: Caso[] }) {
       ? Math.round((resueltosSinJuez / totalResueltos) * 100)
       : 0;
 
+  const pct = useCountUp<HTMLParagraphElement>(pctDescongestion);
+
   return (
     <Card className="overflow-hidden">
       <CardContent className="p-5">
@@ -34,8 +37,11 @@ export function Descongestion({ casos }: { casos: Caso[] }) {
               <TrendingDown className="size-4 text-success" />
               {t("decongestion.label")}
             </p>
-            <p className="mt-1 font-heading text-3xl font-bold tabular-nums text-navy">
-              {pctDescongestion}%
+            <p
+              ref={pct.ref}
+              className="mt-1 font-heading text-3xl font-bold tabular-nums text-navy"
+            >
+              {pct.value}%
             </p>
             <p className="mt-0.5 text-xs text-muted-foreground">
               {t("decongestion.headline")}
@@ -79,10 +85,13 @@ function Metrica({
   valor: number;
   etiqueta: string;
 }) {
+  const { ref, value } = useCountUp<HTMLParagraphElement>(valor);
   return (
     <div className="rounded-lg bg-muted/50 px-2 py-2.5">
       <div className="flex items-center justify-center">{icon}</div>
-      <p className="mt-1 text-lg font-bold tabular-nums text-navy">{valor}</p>
+      <p ref={ref} className="mt-1 text-lg font-bold tabular-nums text-navy">
+        {value}
+      </p>
       <p className="text-[11px] leading-tight text-muted-foreground">
         {etiqueta}
       </p>

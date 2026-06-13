@@ -45,13 +45,13 @@ function PanelContenido({
     <div className="flex flex-col gap-4">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <div className="flex items-center gap-1.5 text-[#8B949E]">
+          <div className="flex items-center gap-1.5 text-muted-foreground">
             <MapPin className="size-4" />
             <span className="text-xs font-medium uppercase tracking-wide">
               {t("panel.kicker")}
             </span>
           </div>
-          <h3 className="font-heading text-xl font-semibold leading-tight text-[#E6EDF3]">
+          <h3 className="font-heading text-xl font-semibold leading-tight text-foreground">
             {st.nombre}
           </h3>
         </div>
@@ -60,7 +60,7 @@ function PanelContenido({
           size="icon-sm"
           onClick={onCerrar}
           aria-label={t("panel.closeAria")}
-          className="hidden text-[#8B949E] hover:bg-white/5 hover:text-[#E6EDF3] lg:inline-flex"
+          className="hidden text-muted-foreground hover:bg-accent hover:text-foreground lg:inline-flex"
         >
           <X className="size-4" />
         </Button>
@@ -69,61 +69,61 @@ function PanelContenido({
       <div className="grid grid-cols-2 gap-3">
         <Metric
           Icono={Scale}
-          tono="text-[#58a6ff]"
+          tono="text-[var(--info)]"
           etiqueta={t("panel.tutelas")}
           valor={fmt(st.totalTutelas)}
         />
         <Metric
           Icono={TrendingUp}
-          tono="text-[#d29922]"
+          tono="text-[var(--warning)]"
           etiqueta={t("panel.rate")}
           valor={fmt(st.tasaPor10k)}
         />
       </div>
 
-      <div className="rounded-[var(--radius-md)] border border-[#30363D] bg-[#0D1117] p-3">
+      <div className="rounded-[var(--radius-md)] border border-border bg-secondary p-3">
         <div className="mb-2 flex items-center justify-between">
-          <span className="flex items-center gap-1.5 text-sm font-medium text-[#E6EDF3]">
-            <Hospital className="size-4 text-[#58a6ff]" />
+          <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+            <Hospital className="size-4 text-[var(--info)]" />
             {t("panel.ipsHealth")}
           </span>
-          <span className="glow-num text-lg font-semibold text-[#E6EDF3]">
+          <span className="font-mono tabular-nums text-lg font-semibold text-foreground">
             {fmt(st.ipsTotal)}
           </span>
         </div>
-        <div className="flex h-2 overflow-hidden rounded-full bg-[#30363D]">
+        <div className="flex h-2 overflow-hidden rounded-full bg-muted ring-1 ring-foreground/10">
           <div
-            className="bg-[#3fb950]"
+            className="bg-[var(--success)]"
             style={{
               width: `${st.ipsTotal ? (st.ipsPublicas / st.ipsTotal) * 100 : 0}%`,
             }}
           />
           <div
-            className="bg-[#58a6ff]"
+            className="bg-[var(--info)]"
             style={{
               width: `${st.ipsTotal ? (st.ipsPrivadas / st.ipsTotal) * 100 : 0}%`,
             }}
           />
         </div>
-        <div className="glow-num mt-2 flex justify-between text-xs text-[#8B949E]">
+        <div className="mt-2 flex justify-between font-mono tabular-nums text-xs text-muted-foreground">
           <span>
-            <span className="text-[#3fb950]">{fmt(st.ipsPublicas)}</span>{" "}
+            <span className="text-[var(--success)]">{fmt(st.ipsPublicas)}</span>{" "}
             {t("panel.ipsPublic")}
           </span>
           <span>
-            <span className="text-[#58a6ff]">{fmt(st.ipsPrivadas)}</span>{" "}
+            <span className="text-[var(--info)]">{fmt(st.ipsPrivadas)}</span>{" "}
             {t("panel.ipsPrivate")}
           </span>
         </div>
       </div>
 
-      <Separator className="bg-[#30363D]" />
+      <Separator className="bg-border" />
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-[#8B949E]">{t("panel.casesInDemo")}</span>
+        <span className="text-muted-foreground">{t("panel.casesInDemo")}</span>
         <Badge
           variant="secondary"
-          className="glow-num border border-[#30363D] bg-[#0D1117] text-[#E6EDF3]"
+          className="font-mono tabular-nums border border-border bg-secondary text-foreground"
         >
           {casosEnDepto}
         </Badge>
@@ -132,7 +132,7 @@ function PanelContenido({
       <div className="flex flex-col gap-2">
         <Button
           render={<Link href="/demandante" />}
-          className="w-full border border-[#1B6B6D] bg-[#1B6B6D] text-white shadow-[0_0_18px_-4px_rgba(27,107,109,0.8)] hover:bg-[#17585a]"
+          className="w-full bg-primary text-primary-foreground hover:bg-[var(--primary-hover)]"
         >
           <UserPlus className="size-4" />
           {t("panel.startCase")}
@@ -140,14 +140,14 @@ function PanelContenido({
         <Button
           render={<Link href="/juez" />}
           variant="secondary"
-          className="w-full border border-[#30363D] bg-[#0D1117] text-[#E6EDF3] hover:border-[#1B6B6D]/60 hover:bg-[#161B22]"
+          className="w-full border border-border bg-secondary text-foreground hover:bg-accent"
         >
           <Gavel className="size-4" />
           {t("panel.viewInCourt")}
         </Button>
       </div>
 
-      <p className="text-[10px] leading-tight text-[#8B949E]">
+      <p className="text-[10px] leading-tight text-muted-foreground">
         {t("panel.source")}
       </p>
     </div>
@@ -166,14 +166,16 @@ function Metric({
   valor: string;
 }) {
   return (
-    <div className="rounded-[var(--radius-md)] border border-[#30363D] bg-[#0D1117] p-3">
+    <div className="rounded-[var(--radius-md)] border border-border bg-secondary p-3">
       <span className={tono}>
         <Icono className="size-4" aria-hidden />
       </span>
-      <div className="glow-num mt-1 text-lg font-semibold leading-none text-[#E6EDF3]">
+      <div className="mt-1 font-mono tabular-nums text-lg font-semibold leading-none text-foreground">
         {valor}
       </div>
-      <p className="mt-1 text-[11px] leading-tight text-[#8B949E]">{etiqueta}</p>
+      <p className="mt-1 text-[11px] leading-tight text-muted-foreground">
+        {etiqueta}
+      </p>
     </div>
   );
 }
@@ -181,7 +183,7 @@ function Metric({
 /** Versión desktop: tarjeta fija en la columna lateral. */
 export function AtlasPanelDesktop(props: AtlasPanelContenidoProps) {
   return (
-    <div className="glow-card glow-card--teal hidden p-4 lg:block">
+    <div className="surface-card hidden p-4 lg:block">
       <PanelContenido {...props} />
     </div>
   );
@@ -202,7 +204,7 @@ export function AtlasPanelMovil({
     <Sheet open={abierto} onOpenChange={onOpenChange}>
       <SheetContent
         side="bottom"
-        className="max-h-[85vh] overflow-auto border-[#30363D] bg-[#161B22] text-[#E6EDF3] lg:hidden"
+        className="max-h-[85vh] overflow-auto border-border bg-card text-foreground lg:hidden"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>{st?.nombre ?? t("panel.sheetFallbackTitle")}</SheetTitle>

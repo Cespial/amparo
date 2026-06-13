@@ -145,11 +145,18 @@ export const juez = {
       rulingDeadline: "Plazo de fallo: {dias} d",
       caseRuled: "Caso fallado",
       signRuling: "Firmar fallo",
-      confirmSignTitle: "Firmar fallo",
+      confirmSignTitle: "Su firma legitima el fallo",
+      confirmSignLead: "Amparo propone; usted decide.",
       confirmSignBody:
-        "Confirma la firma del fallo para {nombre} (radicado {radicado}). El caso pasará a estado Fallado y se notificará a las partes con término de impugnación de 3 días.",
-      confirmAndSign: "Confirmar y firmar",
+        "Su firma es la legitimidad de este fallo. La IA nunca decide sola: el análisis es solo un insumo y la última palabra es del juez.",
+      confirmSignCase:
+        "Fallo para {nombre} (radicado {radicado}). Al firmar, el caso pasa a estado Fallado y se notifica a las partes con término de impugnación de 3 días.",
+      confirmAndSign: "Firmar el fallo",
       cancel: "Cancelar",
+
+      // Sello / overlay de validación humana (tras firmar)
+      sealValidated: "Decisión humana validada",
+      sealSubtitle: "Firmada por el despacho · {radicado}",
 
       // Eventos / toasts de firma
       signEventTitle: "Fallo firmado por el despacho",
@@ -330,11 +337,18 @@ export const juez = {
       rulingDeadline: "Ruling deadline: {dias} d",
       caseRuled: "Case ruled",
       signRuling: "Sign ruling",
-      confirmSignTitle: "Sign ruling",
+      confirmSignTitle: "Your signature legitimizes the ruling",
+      confirmSignLead: "Amparo proposes; you decide.",
       confirmSignBody:
-        "Confirm signing the ruling for {nombre} (file no. {radicado}). The case will move to the Ruled state and the parties will be notified, with a 3-day window to appeal.",
-      confirmAndSign: "Confirm and sign",
+        "Your signature is what gives this ruling its legitimacy. The AI never decides on its own: the analysis is merely an input, and the last word belongs to the judge.",
+      confirmSignCase:
+        "Ruling for {nombre} (file no. {radicado}). On signing, the case moves to the Ruled state and the parties are notified, with a 3-day window to appeal.",
+      confirmAndSign: "Sign the ruling",
       cancel: "Cancel",
+
+      // Human-validation seal / overlay (after signing)
+      sealValidated: "Human decision validated",
+      sealSubtitle: "Signed by the chambers · {radicado}",
 
       signEventTitle: "Ruling signed by the chambers",
       signEventGranted:

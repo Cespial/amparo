@@ -1,0 +1,101 @@
+/* components/mediacion/mediacion-anim.module.css
+   Animaciones LOCALES del clímax del consenso (Habermas) en la Sala de mediación.
+   Todo el movimiento vive bajo @media (prefers-reduced-motion: no-preference):
+   con reduced-motion el resultado aparece estable (verde + sello visibles, sin
+   transición ni latido). No tocamos globals.css: es scope de otro frente. */
+
+/* ── Viraje a verde de las tarjetas de posición, EN SECUENCIA ──
+   Ambas tarjetas reciben .virajeVerde; la segunda añade .virajeTarde para que
+   el verde "caiga" después de la primera (consenso secuencial, no simultáneo).
+   El color final lo aplican las clases de Tailwind del componente; aquí solo
+   animamos un destello suave que acompaña el cambio. */
+.virajeVerde {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .virajeVerde {
+    animation: viraje-verde 0.55s ease-out both;
+  }
+  .virajeTarde {
+    animation-delay: 0.45s;
+  }
+}
+
+@keyframes viraje-verde {
+  0% {
+    box-shadow: 0 0 0 0 rgba(21, 128, 61, 0);
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.22);
+    transform: translateY(-2px) scale(1.012);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(21, 128, 61, 0);
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Latido único del ícono HeartHandshake al sellar el consenso ── */
+@media (prefers-reduced-motion: no-preference) {
+  .latidoUnico {
+    animation: latido-unico 0.9s ease-in-out 0.55s 1 both;
+    transform-origin: center;
+  }
+}
+
+@keyframes latido-unico {
+  0% {
+    transform: scale(1);
+  }
+  22% {
+    transform: scale(1.28);
+  }
+  44% {
+    transform: scale(0.96);
+  }
+  66% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Caída del sello "ACUERDO POR CONSENSO" sobre el panel ──
+   Cae desde arriba, rota un poco y se asienta. Con reduced-motion aparece quieto
+   y recto (sin rotación residual). */
+.selloBase {
+  transform-origin: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .selloCae {
+    animation: sello-cae 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) 0.65s both;
+  }
+}
+
+@keyframes sello-cae {
+  0% {
+    opacity: 0;
+    transform: translateY(-26px) rotate(-12deg) scale(1.5);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(2px) rotate(-7deg) scale(0.94);
+  }
+  72% {
+    transform: translateY(-1px) rotate(-7deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(-7deg) scale(1);
+  }
+}
+
+/* Estado de reposo del sello cuando NO hay animación disponible:
+   se mantiene levemente inclinado para que conserve el "look" de timbre. */
+.selloEstatico {
+  transform: rotate(-7deg);
+}

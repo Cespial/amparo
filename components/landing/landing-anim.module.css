@@ -1,0 +1,56 @@
+/* components/landing/landing-anim.module.css
+   Animaciones LOCALES de la landing y el deck (presentación, no lógica).
+   Scoped por CSS Module para no tocar app/globals.css (otra frente lo edita).
+   Respeta prefers-reduced-motion: sin movimiento, el contenido aparece estable. */
+
+/* Estado de reposo de un elemento revelable: invisible y ligeramente desplazado. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  will-change: opacity, transform;
+}
+
+/* Al entrar en viewport (o al montar), se orquesta la entrada escalonada.
+   El delay lo inyecta el componente vía variable --reveal-delay. */
+.revealIn {
+  animation: landing-reveal 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes landing-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transición de slide del deck: una entrada sutil al cambiar de lámina. */
+.slideEnter {
+  animation: landing-slide-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes landing-slide-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Sin movimiento: todo aparece de inmediato, estable y legible. */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .revealIn,
+  .slideEnter {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

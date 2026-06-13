@@ -39,9 +39,10 @@ export const pitch = {
       comoFunciona: "Cómo funciona",
       voz: "Voz · justicia procedimental",
       prediccion: "Sin caja negra",
+      credibilidad: "Credibilidad · verificable",
       resolver: "Resolver antes de pelear",
       juez: "Humano en el loop",
-      equidad: "Equidad · anti-arbitrariedad",
+      equidad: "Equidad · mediación Habermas",
       impacto: "Impacto · modelo",
       cierre: "Cierre",
     },
@@ -146,7 +147,28 @@ export const pitch = {
       probValue: "Alta",
     },
 
-    // 7 · Resolver sin juez
+    // 7 · Credibilidad — cada dato es real o está marcado
+    credibilidad: {
+      eyebrow: "Credibilidad · verificable",
+      headline: "Cada dato es real o está marcado.",
+      bullet1: {
+        lead: "Nada de cifras inventadas:",
+        strong: "cada dato es real o lleva un marcador",
+        rest: "que advierte que aún falta verificarlo.",
+      },
+      bullet2: {
+        lead: "Cada sentencia que citamos es",
+        strong: "verificable en la fuente",
+        rest: "—la Corte Constitucional—, no una referencia de adorno.",
+      },
+      cardTag: "Anti-alucinación",
+      cardTitle: "Nuestro propio sistema cazó una cita alucinada y la eliminó.",
+      cardBody:
+        "Una capa de verificación contrasta cada cita contra el corpus real antes de mostrarla. Cuando una referencia no existe, no llega a la persona ni al juez.",
+      cardQuote: "Si no se puede verificar, no se muestra.",
+    },
+
+    // 8 · Resolver sin juez
     resolver: {
       eyebrow: "Resolver antes de pelear",
       headline: "La mejor tutela es la que no llega al juez.",
@@ -198,9 +220,9 @@ export const pitch = {
       card1Title: "Estudio de Michigan",
       card1Text:
         "En cortes de tránsito, el proceso escrito y asíncrono redujo la disparidad racial que aparecía cara a cara. El diseño afecta la equidad.",
-      card2Title: "Habermas Machine · Science 2024",
+      card2Title: "Máquina de Habermas · Science 2024",
       card2Text:
-        "Una IA medió temas divisivos y construyó consenso; los participantes lo calificaron como más justo y claro, integrando voces minoritarias.",
+        "Una IA medió entre posturas enfrentadas y redactó posiciones de consenso: los participantes las calificaron como más justas y claras que las de un mediador humano, e integró las voces minoritarias. Es el modelo de mediación de Amparo entre persona y EPS.",
     },
 
     // 10 · Impacto / negocio
@@ -266,9 +288,10 @@ export const pitch = {
       comoFunciona: "How it works",
       voz: "Voice · procedural justice",
       prediccion: "No black box",
+      credibilidad: "Credibility · verifiable",
       resolver: "Resolve before the fight",
       juez: "Human in the loop",
-      equidad: "Fairness · anti-arbitrariness",
+      equidad: "Fairness · Habermas mediation",
       impacto: "Impact · model",
       cierre: "Closing",
     },
@@ -373,7 +396,28 @@ export const pitch = {
       probValue: "High",
     },
 
-    // 7 · Resolve without a judge
+    // 7 · Credibility — every figure is real or flagged
+    credibilidad: {
+      eyebrow: "Credibility · verifiable",
+      headline: "Every figure is real or flagged.",
+      bullet1: {
+        lead: "No made-up numbers:",
+        strong: "every figure is real or carries a flag",
+        rest: "warning that it still needs to be verified.",
+      },
+      bullet2: {
+        lead: "Every ruling we cite is",
+        strong: "verifiable at the source",
+        rest: "—the Constitutional Court—, not a decorative reference.",
+      },
+      cardTag: "Anti-hallucination",
+      cardTitle: "Our own system caught a hallucinated citation and removed it.",
+      cardBody:
+        "A verification layer checks every citation against the real corpus before it's shown. When a reference doesn't exist, it never reaches the person or the judge.",
+      cardQuote: "If it can't be verified, it isn't shown.",
+    },
+
+    // 8 · Resolve without a judge
     resolver: {
       eyebrow: "Resolve before the fight",
       headline: "The best tutela is the one that never reaches the judge.",
@@ -427,7 +471,7 @@ export const pitch = {
         "In traffic courts, the written, asynchronous process reduced the racial disparity that surfaced face to face. Design shapes fairness.",
       card2Title: "Habermas Machine · Science 2024",
       card2Text:
-        "An AI mediated divisive topics and built consensus; participants rated it as fairer and clearer, integrating minority voices.",
+        "An AI mediated between opposing views and drafted consensus statements: participants rated them as fairer and clearer than a human mediator's, and it integrated minority voices. It's the model for how Amparo mediates between the person and the EPS.",
     },
 
     // 10 · Impact / business model

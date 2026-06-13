@@ -15,6 +15,7 @@ import {
   ArrowRight,
   FileText,
   Mic,
+  Radio,
   Send,
   Sparkles,
   Square,
@@ -24,7 +25,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
 import {
   AvatarAmparo,
   type AvatarAmparoHandle,
@@ -97,26 +98,111 @@ function reducer(
   }
 }
 
+// --- Copia local del modo conversación --------------------------------------
+//
+// Estas cadenas son NUEVAS de esta vista (toggle + estado conversacional) y no
+// existen en el diccionario asistente (lib/i18n/dict — territorio de otro
+// agente). Para conservar el bilingüismo SIN tocar lib/, se resuelven aquí con
+// el idioma activo (useLang). Mantienen el mismo tono que el dict.
+const COPIA = {
+  es: {
+    toggleLabel: "Modo conversación",
+    toggleHint: "Manos libres: Amparo pregunta, tú respondes hablando.",
+    toggleOn: "Manos libres activado",
+    toggleOff: "Manos libres desactivado",
+    stHablando: "Amparo habla…",
+    stEscuchando: "Escuchando…",
+    stPensando: "Pensando…",
+    stListo: "Tu turno",
+    micDenied:
+      "No pude usar el micrófono. Seguimos por texto: escribe tu respuesta.",
+    micUnsupported:
+      "Tu navegador no permite dictado por voz. Puedes responder escribiendo.",
+    micRetry: "No te escuché bien. Cuando quieras, vuelvo a intentarlo.",
+  },
+  en: {
+    toggleLabel: "Conversation mode",
+    toggleHint: "Hands-free: Amparo asks, you answer by speaking.",
+    toggleOn: "Hands-free on",
+    toggleOff: "Hands-free off",
+    stHablando: "Amparo is speaking…",
+    stEscuchando: "Listening…",
+    stPensando: "Thinking…",
+    stListo: "Your turn",
+    micDenied:
+      "I couldn't use the microphone. Let's continue by text: type your answer.",
+    micUnsupported:
+      "Your browser doesn't support voice dictation. You can answer by typing.",
+    micRetry: "I didn't catch that. I'll try again whenever you're ready.",
+  },
+} as const;
+
+/** Fases en las que Amparo espera input del usuario (relato / confirmación). */
+function faseAdmiteInput(fase: EstadoConversacion["fase"]): boolean {
+  return fase === "relato" || fase === "confirmar" || fase === "error";
+}
+
+/** Debounce de silencio antes de auto-enviar la respuesta hablada (ms). */
+const SILENCIO_MS = 800;
+
 // --- Componente --------------------------------------------------------------
 
 export function AsistenteAmparo() {
   const t = useT("asistente");
+  const { lang } = useLang();
+  const c = COPIA[lang] ?? COPIA.es;
   const [estado, dispatch] = useReducer(reducer, ESTADO_INICIAL);
   const [borrador, setBorrador] = useState("");
   const [hablando, setHablando] = useState(false);
+  // Modo conversación (manos libres). OPT-IN: apagado por defecto para no
+  // romper el flujo manual (micrófono + Send).
+  const [modoConversacion, setModoConversacion] = useState(false);
+  const [avisoVoz, setAvisoVoz] = useState<string | null>(null);
 
   const avatarRef = useRef<AvatarAmparoHandle>(null);
   const hiloRef = useRef<HTMLDivElement>(null);
   const iniciadoRef = useRef(false);
   const dictado = useDictadoAsistente();
 
+  // Refs que exponen el valor VIVO a callbacks de larga vida (reconocimiento de
+  // voz, timers) sin recrearlos ni encadenar dependencias circulares. Se
+  // sincronizan en efectos (no durante el render) para respetar react-hooks/refs.
+  const modoConversacionRef = useRef(modoConversacion);
+  const faseRef = useRef(estado.fase);
+  const borradorRef = useRef(borrador);
+  // Apuntan a las versiones más recientes de enviar() y al auto-armado de voz.
+  const enviarRef = useRef<() => void>(() => {});
+  const autoEscucharRef = useRef<() => void>(() => {});
+  // Timer del debounce de silencio antes de auto-enviar.
+  const silencioRef = useRef<number | null>(null);
+  // Reintentos consecutivos por "no-speech" (evita reabrir el micro sin fin).
+  const reintentosRef = useRef(0);
+
+  useEffect(() => {
+    modoConversacionRef.current = modoConversacion;
+  }, [modoConversacion]);
+  useEffect(() => {
+    faseRef.current = estado.fase;
+  }, [estado.fase]);
+  useEffect(() => {
+    borradorRef.current = borrador;
+  }, [borrador]);
+
   // Hace que Amparo diga algo (voz + burbuja de texto) y espera a que termine.
+  // En modo conversación, al terminar de hablar AUTO-arma el dictado si la fase
+  // (ya actualizada por quien orquesta) admite input del usuario.
   const amparoDice = useCallback(async (texto: string) => {
     dispatch({ tipo: "decirAmparo", texto });
     try {
       await avatarRef.current?.decir(texto);
     } catch {
       /* la voz nunca debe romper el flujo */
+    }
+    // Tras hablar: si estamos en manos libres y toca que el usuario hable,
+    // arrancamos el micrófono solo. Lo hacemos vía ref para leer la versión
+    // más reciente de autoEscuchar sin encadenar dependencias.
+    if (modoConversacionRef.current && faseAdmiteInput(faseRef.current)) {
+      autoEscucharRef.current();
     }
   }, []);
 
@@ -126,8 +212,12 @@ export function AsistenteAmparo() {
     iniciadoRef.current = true;
     const timer = window.setTimeout(() => {
       void (async () => {
-        await amparoDice(t("say.greeting"));
+        // Pasamos a "relato" ANTES de hablar para que, en manos libres, el
+        // micrófono se auto-arme al terminar el saludo. El input sigue
+        // bloqueado por `ocupado` mientras Amparo habla, así que no hay riesgo
+        // de que el usuario escriba antes de tiempo.
         dispatch({ tipo: "fase", fase: "relato" });
+        await amparoDice(t("say.greeting"));
       })();
     }, 400);
     return () => window.clearTimeout(timer);
@@ -343,7 +433,16 @@ export function AsistenteAmparo() {
       estado.fase === "confirmar" ||
       estado.fase === "error");
 
+  // Cancela un auto-envío pendiente (debounce de silencio).
+  const cancelarSilencio = useCallback(() => {
+    if (silencioRef.current != null) {
+      window.clearTimeout(silencioRef.current);
+      silencioRef.current = null;
+    }
+  }, []);
+
   const enviar = useCallback(async () => {
+    cancelarSilencio();
     const texto = borrador.trim();
     if (!texto || ocupado) return;
     if (dictado.escuchando) dictado.detener();
@@ -357,6 +456,7 @@ export function AsistenteAmparo() {
     }
   }, [
     borrador,
+    cancelarSilencio,
     dictado,
     estado.fase,
     ocupado,
@@ -364,14 +464,116 @@ export function AsistenteAmparo() {
     procesarRelato,
   ]);
 
+  // Mantén enviarRef apuntando a la última versión de enviar().
+  useEffect(() => {
+    enviarRef.current = () => {
+      void enviar();
+    };
+  }, [enviar]);
+
+  // Arma el dictado en modo manos libres: acumula texto, programa el auto-envío
+  // tras un silencio, y degrada con gracia ante errores/permiso denegado.
+  const autoEscuchar = useCallback(() => {
+    if (!dictado.soportado) {
+      setAvisoVoz(c.micUnsupported);
+      return;
+    }
+    setAvisoVoz(null);
+    cancelarSilencio();
+    avatarRef.current?.detener();
+    dictado.iniciar({
+      lang: lang === "en" ? "en-US" : "es-CO",
+      onHabla: () => {
+        // El usuario retomó la palabra: cancela un auto-envío en cola para no
+        // cortarlo a mitad de frase, y resetea el contador de reintentos.
+        reintentosRef.current = 0;
+        cancelarSilencio();
+      },
+      onTexto: (txt) => {
+        reintentosRef.current = 0;
+        setBorrador((prev) => (prev ? `${prev} ${txt}` : txt));
+      },
+      onFin: () => {
+        // El reconocedor cerró por silencio: si hay texto, auto-enviamos tras
+        // un breve respiro; el usuario aún puede teclear/cancelar.
+        cancelarSilencio();
+        silencioRef.current = window.setTimeout(() => {
+          silencioRef.current = null;
+          if (
+            modoConversacionRef.current &&
+            borradorRef.current.trim() &&
+            faseAdmiteInput(faseRef.current)
+          ) {
+            enviarRef.current();
+          }
+        }, SILENCIO_MS);
+      },
+      onError: (code) => {
+        cancelarSilencio();
+        if (code === "not-allowed" || code === "service-not-allowed") {
+          // Permiso denegado: apaga manos libres y degrada a solo texto.
+          setModoConversacion(false);
+          setAvisoVoz(c.micDenied);
+          return;
+        }
+        if (code === "not-supported") {
+          setAvisoVoz(c.micUnsupported);
+          return;
+        }
+        // no-speech / audio-capture: reabre el micro hasta 2 veces si seguimos
+        // en manos libres, la fase espera input y no hay texto pendiente. Más
+        // allá de eso, dejamos un aviso suave y la palabra al usuario.
+        if (
+          (code === "no-speech" || code === "audio-capture") &&
+          modoConversacionRef.current &&
+          faseAdmiteInput(faseRef.current) &&
+          !borradorRef.current.trim() &&
+          reintentosRef.current < 2
+        ) {
+          reintentosRef.current += 1;
+          autoEscucharRef.current();
+          return;
+        }
+        if (code !== "aborted") {
+          reintentosRef.current = 0;
+          setAvisoVoz(c.micRetry);
+        }
+      },
+    });
+  }, [cancelarSilencio, dictado, c, lang]);
+
+  // Mantén autoEscucharRef apuntando a la última versión (la usa amparoDice).
+  useEffect(() => {
+    autoEscucharRef.current = autoEscuchar;
+  }, [autoEscuchar]);
+
   const onMicro = useCallback(() => {
     if (dictado.escuchando) {
       dictado.detener();
       return;
     }
+    cancelarSilencio();
     avatarRef.current?.detener();
     dictado.iniciar((t) => setBorrador((prev) => (prev ? `${prev} ${t}` : t)));
-  }, [dictado]);
+  }, [cancelarSilencio, dictado]);
+
+  // Al apagar el modo conversación, corta cualquier escucha/auto-envío vivo.
+  useEffect(() => {
+    if (!modoConversacion) {
+      cancelarSilencio();
+      if (dictado.escuchando) dictado.detener();
+    }
+  }, [modoConversacion, cancelarSilencio, dictado]);
+
+  // Limpia el timer de silencio al desmontar.
+  useEffect(() => cancelarSilencio, [cancelarSilencio]);
+
+  // Barge-in: el usuario corta a Amparo mientras habla y pasa a escuchar.
+  // Solo tiene sentido en manos libres y si la fase admite input.
+  const interrumpir = useCallback(() => {
+    avatarRef.current?.detener();
+    if (faseAdmiteInput(faseRef.current)) autoEscuchar();
+  }, [autoEscuchar]);
 
   const repetir = useCallback(() => {
     const ultima = [...estado.mensajes]
@@ -384,6 +586,19 @@ export function AsistenteAmparo() {
     estado.fase === "confirmar"
       ? t("input.placeholderConfirmar")
       : t("input.placeholderRelato");
+
+  // Estado conversacional accesible (aria-live) para el modo manos libres.
+  const statusConversacion =
+    estadoAvatar === "hablando"
+      ? c.stHablando
+      : estadoAvatar === "escuchando"
+        ? c.stEscuchando
+        : estadoAvatar === "pensando"
+          ? c.stPensando
+          : c.stListo;
+
+  // El toggle solo se ofrece si el navegador soporta dictado por voz.
+  const ofreceModo = dictado.soportado;
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-6">
@@ -420,6 +635,100 @@ export function AsistenteAmparo() {
                   : t("avatar.idle")}
           </span>
         </div>
+
+        {/* Toggle de modo conversación (manos libres) — OPT-IN. */}
+        {ofreceModo && (
+          <div className="flex flex-col items-center gap-1.5">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={modoConversacion}
+              aria-label={`${c.toggleLabel}: ${
+                modoConversacion ? c.toggleOn : c.toggleOff
+              }`}
+              title={c.toggleHint}
+              onClick={() => setModoConversacion((v) => !v)}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                modoConversacion
+                  ? "border-primary/40 bg-primary/10 text-primary"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <Radio className="size-4" aria-hidden="true" />
+              {c.toggleLabel}
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "relative inline-flex h-5 w-9 items-center rounded-full transition-colors",
+                  modoConversacion ? "bg-primary" : "bg-muted-foreground/30",
+                )}
+              >
+                <span
+                  className={cn(
+                    "absolute size-4 rounded-full bg-background shadow transition-transform motion-reduce:transition-none",
+                    modoConversacion ? "translate-x-4" : "translate-x-0.5",
+                  )}
+                />
+              </span>
+            </button>
+
+            {/* Estado conversacional accesible mientras está activo. */}
+            {modoConversacion && (
+              <div
+                className="flex items-center gap-2"
+                aria-live="assertive"
+                role="status"
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "inline-block size-2 rounded-full",
+                    estadoAvatar === "hablando" && "bg-primary",
+                    estadoAvatar === "escuchando" &&
+                      "bg-emerald-500 motion-safe:animate-pulse",
+                    estadoAvatar === "pensando" &&
+                      "bg-navy motion-safe:animate-pulse",
+                    estadoAvatar === "inactivo" && "bg-muted-foreground/40",
+                  )}
+                />
+                <span className="text-xs font-medium text-foreground">
+                  {statusConversacion}
+                </span>
+                {/* Barge-in: cortar a Amparo mientras habla y escuchar. */}
+                {estadoAvatar === "hablando" &&
+                  faseAdmiteInput(estado.fase) && (
+                    <button
+                      type="button"
+                      onClick={interrumpir}
+                      className="ml-1 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <Square className="size-3" aria-hidden="true" />
+                      {lang === "en" ? "Interrupt" : "Interrumpir"}
+                    </button>
+                  )}
+              </div>
+            )}
+
+            {/* Guía corta del modo cuando está apagado. */}
+            {!modoConversacion && (
+              <p className="max-w-xs text-center text-xs text-muted-foreground">
+                {c.toggleHint}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Aviso de degradación de voz (permiso/soporte/reintento). */}
+        {avisoVoz && (
+          <p
+            className="max-w-sm text-center text-xs text-muted-foreground"
+            role="status"
+            aria-live="polite"
+          >
+            {avisoVoz}
+          </p>
+        )}
       </div>
 
       {/* Hilo de conversación */}

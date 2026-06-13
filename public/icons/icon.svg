@@ -1,7 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Amparo">
-  <rect width="512" height="512" rx="112" fill="#1E2340"/>
-  <path d="M256 86 L398 140 V268 C398 360 332 414 256 446 C180 414 114 360 114 268 V140 Z"
-        fill="#B83227" stroke="#F4F5FC" stroke-width="14" stroke-linejoin="round"/>
-  <path d="M210 262 L244 298 L312 222" fill="none" stroke="#FFFFFF" stroke-width="26"
-        stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  
+  <rect width="96" height="96" rx="22" fill="#CE3A28"></rect>
+  <path d="M48 24c-6.5 5-13 6-16.5 6V52c0 10 8.5 15 16.5 18 8-3 16.5-8 16.5-18V30c-3.5 0-10-1-16.5-6z" fill="#FFFFFF"></path>
+  <path d="M42 47.5l4.2 4.5 8.2-9" stroke="#CE3A28" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
 </svg>

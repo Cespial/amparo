@@ -32,6 +32,7 @@ import {
   Layers,
 } from "lucide-react";
 import { useT, type TFunction } from "@/lib/i18n";
+import anim from "@/components/landing/landing-anim.module.css";
 
 /* ──────────────────────────────────────────────────────────────────────────
    Modelo de un slide. El contenido vive como datos; el render es declarativo.
@@ -145,7 +146,7 @@ function Slide({
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Definición de los 11 slides del deck. El texto se resuelve vía t() (pitch).
+   Definición de los 12 slides del deck. El texto se resuelve vía t() (pitch).
    ────────────────────────────────────────────────────────────────────────── */
 const SLIDES: SlideDef[] = [
   // 1 · Portada
@@ -404,7 +405,67 @@ const SLIDES: SlideDef[] = [
     ),
   },
 
-  // 7 · Resolver sin juez
+  // 7 · Credibilidad — cada dato es real o está marcado
+  {
+    id: "credibilidad",
+    kickerKey: "kicker.credibilidad",
+    render: (t) => (
+      <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <div>
+          <Eyebrow>
+            <BadgeCheck className="size-3.5 text-brand" />
+            {t("credibilidad.eyebrow")}
+          </Eyebrow>
+          <Headline>{t("credibilidad.headline")}</Headline>
+          <Bullets
+            items={[
+              {
+                icon: BadgeCheck,
+                text: (
+                  <Emphasis
+                    lead={t("credibilidad.bullet1.lead")}
+                    strong={t("credibilidad.bullet1.strong")}
+                    rest={t("credibilidad.bullet1.rest")}
+                  />
+                ),
+              },
+              {
+                icon: FileText,
+                text: (
+                  <Emphasis
+                    lead={t("credibilidad.bullet2.lead")}
+                    strong={t("credibilidad.bullet2.strong")}
+                    rest={t("credibilidad.bullet2.rest")}
+                  />
+                ),
+              },
+            ]}
+          />
+        </div>
+        {/* Tarjeta: el propio sistema cazó una cita alucinada y la eliminó */}
+        <div className="surface-card p-7">
+          <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand">
+            <ShieldCheck className="size-3.5" />
+            {t("credibilidad.cardTag")}
+          </span>
+          <p className="mt-4 font-serif text-2xl font-semibold leading-snug tracking-tight text-navy">
+            {t("credibilidad.cardTitle")}
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            {t("credibilidad.cardBody")}
+          </p>
+          <div className="mt-5 flex items-center gap-2 rounded-xl bg-secondary px-4 py-3">
+            <Quote className="size-4 shrink-0 text-brand" />
+            <span className="text-sm font-medium text-navy">
+              {t("credibilidad.cardQuote")}
+            </span>
+          </div>
+        </div>
+      </div>
+    ),
+  },
+
+  // 8 · Resolver sin juez
   {
     id: "resolver",
     kickerKey: "kicker.resolver",
@@ -454,7 +515,7 @@ const SLIDES: SlideDef[] = [
     ),
   },
 
-  // 8 · El juez decide
+  // 9 · El juez decide
   {
     id: "juez",
     kickerKey: "kicker.juez",
@@ -505,7 +566,7 @@ const SLIDES: SlideDef[] = [
     ),
   },
 
-  // 9 · Equidad
+  // 10 · Equidad
   {
     id: "equidad",
     kickerKey: "kicker.equidad",
@@ -545,7 +606,7 @@ const SLIDES: SlideDef[] = [
     ),
   },
 
-  // 10 · Impacto / negocio
+  // 11 · Impacto / negocio
   {
     id: "impacto",
     kickerKey: "kicker.impacto",
@@ -604,7 +665,7 @@ const SLIDES: SlideDef[] = [
     },
   },
 
-  // 11 · Cierre
+  // 12 · Cierre
   {
     id: "cierre",
     kickerKey: "kicker.cierre",
@@ -769,7 +830,11 @@ export function PitchDeck() {
         aria-atomic="true"
       >
         <Slide label={t("nav.slideOf", { index: i + 1, total })}>
-          {actual.render(t)}
+          {/* key={i} remonta el contenido en cada cambio para reanimar la entrada;
+              el className respeta prefers-reduced-motion (módulo CSS local). */}
+          <div key={i} className={anim.slideEnter}>
+            {actual.render(t)}
+          </div>
         </Slide>
       </div>
 

@@ -4,9 +4,10 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
+  BadgeCheck,
   BookOpen,
   CheckCircle2,
   CircleAlert,
@@ -16,6 +17,7 @@ import {
   PenLine,
   Scale,
   Scale3d,
+  ShieldCheck,
   Sparkles,
   Stethoscope,
   User,
@@ -57,6 +59,7 @@ import { progresoDeEstado } from "@/lib/progreso";
 import type { TriajeResultado, EstadoCriterio } from "@/lib/ai/triaje";
 import type { PrediccionResultado } from "@/lib/ai/predictor";
 import { Expediente } from "@/components/transparencia/expediente";
+import { SentenciaChip } from "@/components/sentencia-chip";
 import { EstadoBadge, UrgenciaBadge } from "./juez-badges";
 import { Cronograma } from "./juez-cronograma";
 import { Markdown } from "./juez-markdown";
@@ -88,8 +91,21 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
   const [fallo, setFallo] = useState<string | null>(null);
   const [cargandoEstudio, setCargandoEstudio] = useState(false);
   const [cargandoFallo, setCargandoFallo] = useState(false);
+  const [streamingFallo, setStreamingFallo] = useState(false);
   const [confirmarOpen, setConfirmarOpen] = useState(false);
   const [casoIdCargado, setCasoIdCargado] = useState<string | null>(null);
+  // Overlay del sello "Decisión humana validada" tras firmar.
+  const [selloOpen, setSelloOpen] = useState(false);
+  const [selloRadicado, setSelloRadicado] = useState("");
+  const cierreSelloRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Limpia el temporizador del overlay si el panel se desmonta.
+  useEffect(
+    () => () => {
+      if (cierreSelloRef.current) clearTimeout(cierreSelloRef.current);
+    },
+    [],
+  );
 
   // Estudio automático (triaje + predicción) al abrir un caso nuevo.
   if (abierto && caso && casoIdCargado !== caso.id) {
@@ -130,23 +146,59 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
   async function generarFallo() {
     if (!caso) return;
     setCargandoFallo(true);
+    setStreamingFallo(true);
+    setFallo(null);
     try {
-      const res = await fetch("/api/generar", {
+      // Streaming: el fallo se escribe token a token (con T-760/08 apareciendo
+      // en vivo). El servidor degrada al fixture héroe servido también como
+      // stream, así que el mismo lector cubre ambos caminos.
+      const res = await fetch("/api/generar?stream=1", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ casoId: caso.id, tipo: "fallo" }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        setFallo(data.documento as string);
-        toast.success(t("detail.rulingGeneratedToast"));
+
+      if (res.ok && res.body) {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let acumulado = "";
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          acumulado += decoder.decode(value, { stream: true });
+          setFallo(acumulado);
+        }
+        if (acumulado.trim()) {
+          toast.success(t("detail.rulingGeneratedToast"));
+        } else {
+          // Stream vacío: último recurso, pide la variante JSON no-stream.
+          await generarFalloSinStream(caso.id);
+        }
       } else {
-        toast.warning(t("detail.rulingUnavailable"));
+        // Sin body o respuesta no-ok: cae a la variante JSON.
+        await generarFalloSinStream(caso.id);
       }
     } catch {
       toast.error(t("detail.rulingGenError"));
     } finally {
+      setStreamingFallo(false);
       setCargandoFallo(false);
+    }
+  }
+
+  /** Fallback no-stream: respuesta JSON { tipo, documento } de siempre. */
+  async function generarFalloSinStream(casoId: string) {
+    const res = await fetch("/api/generar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ casoId, tipo: "fallo" }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      setFallo(data.documento as string);
+      toast.success(t("detail.rulingGeneratedToast"));
+    } else {
+      toast.warning(t("detail.rulingUnavailable"));
     }
   }
 
@@ -174,10 +226,28 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
     toast.success(t("detail.signedToast"), {
       description: `${caso.demandante.nombre} · ${t("estado.FALLADO")}`,
     });
+
+    // Ceremonia humano-en-el-loop: cierra el panel y muestra brevemente el
+    // sello "Decisión humana validada" antes de soltar el caso seleccionado.
+    setSelloRadicado(caso.radicado);
+    setSelloOpen(true);
     onCerrar();
+    if (cierreSelloRef.current) clearTimeout(cierreSelloRef.current);
+    cierreSelloRef.current = setTimeout(() => setSelloOpen(false), 2600);
   }
 
-  if (!caso) return null;
+  // El overlay del sello sobrevive al cierre del panel (cuando `caso` ya es
+  // null): por eso se renderiza también en la rama sin caso.
+  const sello = (
+    <SelloValidacion
+      abierto={selloOpen}
+      radicado={selloRadicado}
+      onCerrar={() => setSelloOpen(false)}
+      t={t}
+    />
+  );
+
+  if (!caso) return sello;
 
   const yaFallado = caso.estado === "FALLADO";
   const plazo = plazoFallo(caso);
@@ -185,6 +255,8 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
   const prob = prediccion?.probabilidadAmparo ?? probabilidadPct(caso);
 
   return (
+    <>
+      {sello}
     <Sheet open={abierto} onOpenChange={(o) => !o && onCerrar()}>
       <SheetContent
         side="right"
@@ -425,6 +497,14 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                 {fallo ? (
                   <div className="rounded-lg border bg-card px-4 py-3">
                     <Markdown>{fallo}</Markdown>
+                    {streamingFallo ? (
+                      // Cursor de escritura en vivo (el fallo se escribe token a
+                      // token). Parpadeo respeta reduced-motion vía motion-safe.
+                      <span
+                        aria-hidden
+                        className="ml-0.5 inline-block h-4 w-[2px] translate-y-0.5 bg-primary align-middle motion-safe:animate-pulse"
+                      />
+                    ) : null}
                   </div>
                 ) : cargandoFallo ? (
                   <div className="space-y-2">
@@ -510,21 +590,32 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
         </div>
       </SheetContent>
 
-      {/* Confirmación de firma */}
+      {/* Ceremonia de firma — legitimidad humano-en-el-loop */}
       <Dialog open={confirmarOpen} onOpenChange={setConfirmarOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <FileSignature className="size-5 text-primary" />
+              <ShieldCheck className="size-5 text-primary" />
               {t("detail.confirmSignTitle")}
             </DialogTitle>
-            <DialogDescription>
-              {t("detail.confirmSignBody", {
+            <DialogDescription className="sr-only">
+              {t("detail.confirmSignBody")}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 text-sm">
+            <p className="font-heading text-base font-semibold text-navy">
+              {t("detail.confirmSignLead")}
+            </p>
+            <p className="leading-relaxed text-muted-foreground">
+              {t("detail.confirmSignBody")}
+            </p>
+            <p className="rounded-lg border border-primary/15 bg-primary/5 px-3 py-2.5 text-[13px] leading-relaxed text-navy">
+              {t("detail.confirmSignCase", {
                 nombre: caso.demandante.nombre,
                 radicado: caso.radicado,
               })}
-            </DialogDescription>
-          </DialogHeader>
+            </p>
+          </div>
           <DialogFooter>
             <DialogClose
               render={
@@ -538,6 +629,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
         </DialogContent>
       </Dialog>
     </Sheet>
+    </>
   );
 }
 
@@ -611,18 +703,10 @@ function PrecedenteLista({
       </p>
       <div className="space-y-1.5">
         {sentencias.map((s) => (
-          <div
-            key={s.id}
-            className="rounded-lg border bg-muted/30 px-3 py-2"
-          >
-            <p className="flex items-center gap-2 text-xs font-semibold text-navy">
-              <BookOpen className="size-3.5 text-primary" />
-              <span className="font-mono">{s.id}</span>
-              <span className="font-normal text-muted-foreground">
-                · {s.tema}
-              </span>
-            </p>
-            <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+          <div key={s.id} className="rounded-lg border bg-muted/30 px-3 py-2">
+            {/* Cita clicable a la relatoría oficial (degrada a chip estático). */}
+            <SentenciaChip sentencia={s} size="md" />
+            <p className="mt-1 text-[11px] leading-snug text-muted-foreground">
               {s.subregla}
             </p>
           </div>
@@ -640,6 +724,50 @@ function EstudioSkeleton() {
         {Array.from({ length: 4 }).map((_, i) => (
           <Skeleton key={i} className="h-12 w-full" />
         ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Overlay breve de validación humana tras firmar el fallo: un sello "Decisión
+ * humana validada". La animación (scale/rotate sutil) respeta reduced-motion
+ * vía el prefijo motion-safe (con reduced-motion el sello aparece sin animar).
+ * Auto-cierra desde el padre; también se cierra al hacer clic en el fondo.
+ */
+function SelloValidacion({
+  abierto,
+  radicado,
+  onCerrar,
+  t,
+}: {
+  abierto: boolean;
+  radicado: string;
+  onCerrar: () => void;
+  t: TFunction;
+}) {
+  if (!abierto) return null;
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      onClick={onCerrar}
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-navy/30 p-6 backdrop-blur-sm motion-safe:animate-in motion-safe:fade-in-0 motion-safe:duration-200"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="surface-card flex max-w-xs flex-col items-center gap-3 rounded-2xl border px-8 py-7 text-center shadow-xl motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:fade-in-0 motion-safe:duration-300"
+      >
+        <span className="relative flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary motion-safe:animate-in motion-safe:zoom-in-50 motion-safe:spin-in-12 motion-safe:duration-500">
+          <ShieldCheck className="size-9" />
+          <BadgeCheck className="absolute -bottom-0.5 -right-0.5 size-6 rounded-full bg-card text-success" />
+        </span>
+        <p className="font-heading text-lg font-bold leading-tight text-navy">
+          {t("detail.sealValidated")}
+        </p>
+        <p className="font-mono text-[11px] text-muted-foreground">
+          {t("detail.sealSubtitle", { radicado })}
+        </p>
       </div>
     </div>
   );

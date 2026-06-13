@@ -24,6 +24,12 @@ export const landing = {
       linkMap: "Ver el mapa del problema",
       trust:
         "Respaldado en sentencias reales · La decisión final siempre es humana.",
+      // Sello de credibilidad (enlaza a /metodologia).
+      seal: {
+        data: "Datos reales",
+        source: "Corte Constitucional & Defensoría",
+        human: "Decisión final humana",
+      },
     },
 
     stats: {
@@ -140,6 +146,12 @@ export const landing = {
       ctaStart: "Start my case",
       linkMap: "See the map of the problem",
       trust: "Grounded in real rulings · The final decision is always human.",
+      // Credibility seal (links to /metodologia).
+      seal: {
+        data: "Real data",
+        source: "Constitutional Court & Ombudsman",
+        human: "Final decision is human",
+      },
     },
 
     stats: {

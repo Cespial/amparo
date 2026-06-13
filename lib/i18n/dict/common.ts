@@ -75,6 +75,11 @@ export const common = {
     "misc.disclaimer":
       "Amparo es una herramienta de apoyo asistida por IA; no constituye asesoría jurídica vinculante y la decisión final siempre es humana.",
 
+    // — Chip de sentencia (SentenciaChip, transversal) —
+    "judgmentChip.openAria":
+      "Ver Sentencia {id} en la Corte Constitucional",
+    "judgmentChip.officialSource": "Fuente oficial: Corte Constitucional",
+
     // — Voz (BotonVoz, transversal) —
     "voice.listen": "Escuchar",
     "voice.stop": "Detener",
@@ -183,6 +188,11 @@ export const common = {
     "misc.source": "Source",
     "misc.disclaimer":
       "Amparo is an AI-assisted support tool; it is not binding legal advice and the final decision is always human.",
+
+    // — Judgment chip (SentenciaChip, cross-cutting) —
+    "judgmentChip.openAria":
+      "View Judgment {id} on the Constitutional Court website",
+    "judgmentChip.officialSource": "Official source: Constitutional Court",
 
     // — Voice (BotonVoz, cross-cutting) —
     "voice.listen": "Listen",

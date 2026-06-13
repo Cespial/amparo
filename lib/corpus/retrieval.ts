@@ -12,6 +12,8 @@ interface SentenciaRaw {
   subregla: string;
   extracto: string;
   derechos: string[];
+  /** URL de la fuente oficial (corteconstitucional.gov.co) en el corpus. */
+  fuente_url?: string;
 }
 
 const SENTENCIAS: SentenciaRaw[] = (corpus.sentencias ?? []) as SentenciaRaw[];
@@ -137,13 +139,23 @@ export function buscarSentencias(query: string, k = 4): SentenciaRef[] {
     subregla: sentencia.subregla,
     extracto: sentencia.extracto,
     derechos: sentencia.derechos,
+    fuenteUrl: sentencia.fuente_url,
     score: Number(score.toFixed(4)),
   }));
 }
 
 /** Devuelve todas las sentencias del corpus como SentenciaRef. */
 export function todasLasSentencias(): SentenciaRef[] {
-  return SENTENCIAS.map((s) => ({ ...s }));
+  return SENTENCIAS.map((s) => ({
+    id: s.id,
+    titulo: s.titulo,
+    anio: s.anio,
+    tema: s.tema,
+    subregla: s.subregla,
+    extracto: s.extracto,
+    derechos: s.derechos,
+    fuenteUrl: s.fuente_url,
+  }));
 }
 
 /** Disclaimer del corpus. */

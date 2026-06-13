@@ -1,0 +1,87 @@
+/* app/impacto/impacto.css — Estilos locales de la vista /impacto.
+   Scoped a esta ruta (importado sólo por app/impacto/page.tsx). No tocamos
+   globals.css (otro frente lo gestiona). Aquí vive el estilo del control
+   deslizante (range), accesible, con foco visible y respeto a reduced-motion.
+   No introduce dependencias. */
+
+.impacto-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--secondary);
+  outline-offset: 4px;
+  cursor: pointer;
+}
+
+.impacto-range:focus-visible {
+  outline: 2px solid var(--ring);
+}
+
+/* Pista — WebKit */
+.impacto-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 9999px;
+}
+
+/* Pulgar — WebKit */
+.impacto-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  width: 22px;
+  margin-top: -7px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 3px solid #ffffff;
+  box-shadow:
+    0 1px 2px rgba(27, 31, 56, 0.25),
+    0 2px 8px -2px rgba(206, 58, 40, 0.5);
+  transition: transform 120ms ease-out;
+}
+
+.impacto-range:active::-webkit-slider-thumb {
+  transform: scale(1.08);
+}
+
+/* Pista + pulgar — Firefox */
+.impacto-range::-moz-range-track {
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--secondary);
+}
+
+.impacto-range::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 3px solid #ffffff;
+  box-shadow:
+    0 1px 2px rgba(27, 31, 56, 0.25),
+    0 2px 8px -2px rgba(206, 58, 40, 0.5);
+}
+
+/* Variante pequeña (controles de supuestos) */
+.impacto-range--sm {
+  height: 6px;
+}
+
+.impacto-range--sm::-webkit-slider-thumb {
+  height: 18px;
+  width: 18px;
+  margin-top: -6px;
+  border-width: 2px;
+}
+
+.impacto-range--sm::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-width: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impacto-range::-webkit-slider-thumb {
+    transition: none;
+  }
+}

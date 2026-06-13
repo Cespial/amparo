@@ -399,14 +399,18 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
       };
     }, [cancelarRAF]);
 
-    // --- Render: orbe SVG. El nivel impulsa escala, glow y "ondas". ---
+    // --- Render: orbe 3D glossy (estética Design System). El nivel sigue
+    // impulsando escala, glow, sonrisa y "ondas" concéntricas. Solo cambió la
+    // estética visual; toda la lógica de Web Audio de arriba queda intacta. ---
     const hablando = estado === "hablando";
     const pensando = estado === "pensando";
     const escuchando = estado === "escuchando";
 
     // Escala del núcleo según amplitud (suave incluso en idle).
-    const escalaNucleo = 1 + nivel * 0.16;
-    const glow = 0.25 + nivel * 0.55;
+    const escalaNucleo = 1 + nivel * 0.14;
+    const glow = 0.32 + nivel * 0.55;
+    // La sonrisa se curva un poco más al hablar (control point del arco).
+    const sonrisaY = 128 + nivel * 12;
 
     return (
       <div
@@ -430,54 +434,65 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
           className="overflow-visible"
         >
           <defs>
-            <radialGradient id="amparo-core" cx="50%" cy="42%" r="62%">
-              <stop offset="0%" stopColor="#ce3a28" />
-              <stop offset="55%" stopColor="#b5311f" />
-              <stop offset="100%" stopColor="#20243f" />
+            {/* Esfera glossy: highlight descentrado (32% 26%) → brillo/volumen */}
+            <radialGradient id="amparo-core" cx="32%" cy="26%" r="92%">
+              <stop offset="0%" stopColor="#f0705c" />
+              <stop offset="45%" stopColor="#ce3a28" />
+              <stop offset="100%" stopColor="#8c1f12" />
             </radialGradient>
+            {/* Sombra interior inferior: da profundidad de esfera (inset look) */}
+            <radialGradient id="amparo-inner-shade" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+              <stop offset="72%" stopColor="#000000" stopOpacity="0" />
+              <stop offset="100%" stopColor="#000000" stopOpacity="0.34" />
+            </radialGradient>
+            {/* Halo de glow concéntrico exterior */}
             <radialGradient id="amparo-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#ce3a28" stopOpacity="0.55" />
+              <stop offset="55%" stopColor="#ce3a28" stopOpacity="0" />
+              <stop offset="78%" stopColor="#ce3a28" stopOpacity="0.4" />
               <stop offset="100%" stopColor="#ce3a28" stopOpacity="0" />
             </radialGradient>
-            <linearGradient id="amparo-sheen" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.5" />
+            {/* Sheen especular superior (el "brillo" de plástico/cristal) */}
+            <radialGradient id="amparo-sheen" cx="38%" cy="30%" r="42%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.78" />
+              <stop offset="60%" stopColor="#ffffff" stopOpacity="0.12" />
               <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
-            </linearGradient>
+            </radialGradient>
           </defs>
 
-          {/* Halo difuso, intensidad ligada a la amplitud */}
+          {/* Halo difuso de glow, intensidad ligada a la amplitud */}
           <circle
             cx="100"
             cy="100"
-            r="92"
+            r="96"
             fill="url(#amparo-glow)"
             style={{ opacity: glow, transition: "opacity 90ms linear" }}
           />
 
-          {/* Ondas concéntricas que laten con la voz (no en reduced-motion) */}
+          {/* Anillo de glow concéntrico que late con la voz (DS) */}
           {(hablando || nivel > 0.02) && (
             <>
               <circle
                 cx="100"
                 cy="100"
-                r={70 + nivel * 26}
+                r={68 + nivel * 24}
                 fill="none"
-                stroke="#ce3a28"
+                stroke="#f0705c"
                 strokeWidth="1.5"
                 style={{
-                  opacity: 0.18 + nivel * 0.4,
+                  opacity: 0.2 + nivel * 0.4,
                   transition: "r 90ms linear, opacity 90ms linear",
                 }}
               />
               <circle
                 cx="100"
                 cy="100"
-                r={82 + nivel * 34}
+                r={80 + nivel * 32}
                 fill="none"
-                stroke="#20243f"
+                stroke="#ce3a28"
                 strokeWidth="1"
                 style={{
-                  opacity: 0.1 + nivel * 0.28,
+                  opacity: 0.12 + nivel * 0.26,
                   transition: "r 110ms linear, opacity 110ms linear",
                 }}
               />
@@ -489,9 +504,9 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
             <circle
               cx="100"
               cy="100"
-              r="74"
+              r="72"
               fill="none"
-              stroke="#20243f"
+              stroke="#f0705c"
               strokeWidth="3"
               strokeLinecap="round"
               strokeDasharray="40 420"
@@ -500,7 +515,7 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
             />
           )}
 
-          {/* Núcleo: late con la amplitud de la voz */}
+          {/* Esfera 3D: late con la amplitud de la voz */}
           <g
             style={{
               transform: `scale(${escalaNucleo})`,
@@ -508,43 +523,57 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
               transition: "transform 70ms ease-out",
             }}
           >
-            <circle cx="100" cy="100" r="58" fill="url(#amparo-core)" />
-            {/* Brillo superior (da volumen, lo hace elegante no plano) */}
+            {/* Sombra de contacto exterior (el orbe "flota") */}
             <ellipse
               cx="100"
+              cy="158"
+              rx="42"
+              ry="9"
+              fill="#8c1f12"
+              opacity={0.18}
+            />
+            {/* Cuerpo de la esfera: gradiente glossy descentrado */}
+            <circle cx="100" cy="100" r="56" fill="url(#amparo-core)" />
+            {/* Sombra interior inferior: profundidad de esfera */}
+            <circle cx="100" cy="100" r="56" fill="url(#amparo-inner-shade)" />
+            {/* Sheen especular: el brillo que la vuelve cristalina, no plana */}
+            <circle cx="100" cy="100" r="56" fill="url(#amparo-sheen)" />
+            {/* Pequeño destello puntual arriba-izquierda */}
+            <ellipse
+              cx="80"
               cy="74"
-              rx="38"
-              ry="22"
-              fill="url(#amparo-sheen)"
+              rx="13"
+              ry="8"
+              fill="#ffffff"
+              opacity={0.5}
+              transform="rotate(-24 80 74)"
             />
 
-            {/* "Boca": una línea que se abre con la amplitud cuando habla */}
-            <rect
-              x={100 - (10 + nivel * 16)}
-              y={118 - (nivel * 9)}
-              width={2 * (10 + nivel * 16)}
-              height={3 + nivel * 18}
-              rx={2 + nivel * 8}
-              fill="#20243f"
-              style={{
-                opacity: 0.85,
-                transition: "all 70ms ease-out",
-              }}
-            />
-            {/* "Ojos": dos puntos cálidos, parpadeo sutil al pensar */}
+            {/* Carita sutil minimalista (blancos, estética DS) */}
+            {/* Ojos */}
             <circle
               cx="84"
-              cy="98"
-              r="4.5"
+              cy="100"
+              r="5.5"
               fill="#ffffff"
-              opacity={pensando ? 0.55 : 0.92}
+              opacity={pensando ? 0.6 : 0.95}
             />
             <circle
               cx="116"
-              cy="98"
-              r="4.5"
+              cy="100"
+              r="5.5"
               fill="#ffffff"
-              opacity={pensando ? 0.55 : 0.92}
+              opacity={pensando ? 0.6 : 0.95}
+            />
+            {/* Sonrisa: arco blanco que se abre un poco al hablar */}
+            <path
+              d={`M82 120 Q100 ${sonrisaY} 118 120`}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="4"
+              strokeLinecap="round"
+              opacity={0.9}
+              style={{ transition: "d 70ms ease-out" }}
             />
           </g>
         </svg>
