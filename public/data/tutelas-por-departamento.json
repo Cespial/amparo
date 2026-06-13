@@ -1,0 +1,209 @@
+{
+  "fuente": "Corte Constitucional de Colombia — 'Derechos demandados en las tutelas radicadas en la Corte Constitucional' (datos.gov.co, resource xkyt-k6pk), filtrado derecho=SALUD, año 2023. Validado contra el informe oficial de la Defensoría del Pueblo 'La Tutela y los Derechos a la Salud y a la Seguridad Social 2023'.",
+  "anio": 2023,
+  "total_nacional_tutelas_salud": 197737,
+  "total_nacional_tutelas_todas_materias": 633475,
+  "poblacion_total_nacional": 51592109,
+  "nota": "DATOS REALES. El conteo por departamento proviene del dataset oficial de la Corte Constitucional (cada tutela del país se reporta a la Corte). El total nacional aquí calculado (197,737) coincide al 99,99% con la cifra oficial de la Defensoría (197.765 tutelas de salud en 2023). La población es la proyección DANE 2023 (base CNPV 2018), cifra oficial. tasa_por_10k = tutelas_salud / poblacion * 10.000.",
+  "fuente_poblacion": "DANE — Proyecciones de población departamental 2018-2070, año 2023 (base CNPV 2018).",
+  "datos": {
+    "05": {
+      "departamento": "Antioquia",
+      "tutelas_salud": 37279,
+      "poblacion": 6677930,
+      "tasa_por_10k": 55.82
+    },
+    "08": {
+      "departamento": "Atlántico",
+      "tutelas_salud": 4505,
+      "poblacion": 2782357,
+      "tasa_por_10k": 16.19
+    },
+    "11": {
+      "departamento": "Bogotá D.C.",
+      "tutelas_salud": 18881,
+      "poblacion": 7968095,
+      "tasa_por_10k": 23.7
+    },
+    "13": {
+      "departamento": "Bolívar",
+      "tutelas_salud": 5925,
+      "poblacion": 2207100,
+      "tasa_por_10k": 26.85
+    },
+    "15": {
+      "departamento": "Boyacá",
+      "tutelas_salud": 4749,
+      "poblacion": 1255311,
+      "tasa_por_10k": 37.83
+    },
+    "17": {
+      "departamento": "Caldas",
+      "tutelas_salud": 10353,
+      "poblacion": 1043520,
+      "tasa_por_10k": 99.21
+    },
+    "18": {
+      "departamento": "Caquetá",
+      "tutelas_salud": 2816,
+      "poblacion": 421764,
+      "tasa_por_10k": 66.77
+    },
+    "19": {
+      "departamento": "Cauca",
+      "tutelas_salud": 4289,
+      "poblacion": 1530953,
+      "tasa_por_10k": 28.02
+    },
+    "20": {
+      "departamento": "Cesar",
+      "tutelas_salud": 5718,
+      "poblacion": 1295387,
+      "tasa_por_10k": 44.14
+    },
+    "23": {
+      "departamento": "Córdoba",
+      "tutelas_salud": 4402,
+      "poblacion": 1862635,
+      "tasa_por_10k": 23.63
+    },
+    "25": {
+      "departamento": "Cundinamarca",
+      "tutelas_salud": 5132,
+      "poblacion": 3460415,
+      "tasa_por_10k": 14.83
+    },
+    "27": {
+      "departamento": "Chocó",
+      "tutelas_salud": 778,
+      "poblacion": 568111,
+      "tasa_por_10k": 13.69
+    },
+    "41": {
+      "departamento": "Huila",
+      "tutelas_salud": 4476,
+      "poblacion": 1213907,
+      "tasa_por_10k": 36.87
+    },
+    "44": {
+      "departamento": "La Guajira",
+      "tutelas_salud": 895,
+      "poblacion": 957797,
+      "tasa_por_10k": 9.34
+    },
+    "47": {
+      "departamento": "Magdalena",
+      "tutelas_salud": 3075,
+      "poblacion": 1481865,
+      "tasa_por_10k": 20.75
+    },
+    "50": {
+      "departamento": "Meta",
+      "tutelas_salud": 3632,
+      "poblacion": 1100654,
+      "tasa_por_10k": 33.0
+    },
+    "52": {
+      "departamento": "Nariño",
+      "tutelas_salud": 5837,
+      "poblacion": 1660087,
+      "tasa_por_10k": 35.16
+    },
+    "54": {
+      "departamento": "Norte de Santander",
+      "tutelas_salud": 14560,
+      "poblacion": 1627169,
+      "tasa_por_10k": 89.48
+    },
+    "63": {
+      "departamento": "Quindío",
+      "tutelas_salud": 3231,
+      "poblacion": 555401,
+      "tasa_por_10k": 58.17
+    },
+    "66": {
+      "departamento": "Risaralda",
+      "tutelas_salud": 8271,
+      "poblacion": 976618,
+      "tasa_por_10k": 84.69
+    },
+    "68": {
+      "departamento": "Santander",
+      "tutelas_salud": 11199,
+      "poblacion": 2349058,
+      "tasa_por_10k": 47.67
+    },
+    "70": {
+      "departamento": "Sucre",
+      "tutelas_salud": 1687,
+      "poblacion": 962390,
+      "tasa_por_10k": 17.53
+    },
+    "73": {
+      "departamento": "Tolima",
+      "tutelas_salud": 7013,
+      "poblacion": 1364124,
+      "tasa_por_10k": 51.41
+    },
+    "76": {
+      "departamento": "Valle del Cauca",
+      "tutelas_salud": 21322,
+      "poblacion": 4664229,
+      "tasa_por_10k": 45.71
+    },
+    "81": {
+      "departamento": "Arauca",
+      "tutelas_salud": 3419,
+      "poblacion": 308566,
+      "tasa_por_10k": 110.8
+    },
+    "85": {
+      "departamento": "Casanare",
+      "tutelas_salud": 1440,
+      "poblacion": 469046,
+      "tasa_por_10k": 30.7
+    },
+    "86": {
+      "departamento": "Putumayo",
+      "tutelas_salud": 1066,
+      "poblacion": 374649,
+      "tasa_por_10k": 28.45
+    },
+    "88": {
+      "departamento": "Archipiélago de San Andrés, Providencia y Santa Catalina",
+      "tutelas_salud": 666,
+      "poblacion": 64362,
+      "tasa_por_10k": 103.48
+    },
+    "91": {
+      "departamento": "Amazonas",
+      "tutelas_salud": 489,
+      "poblacion": 80376,
+      "tasa_por_10k": 60.84
+    },
+    "94": {
+      "departamento": "Guainía",
+      "tutelas_salud": 161,
+      "poblacion": 53319,
+      "tasa_por_10k": 30.2
+    },
+    "95": {
+      "departamento": "Guaviare",
+      "tutelas_salud": 112,
+      "poblacion": 91814,
+      "tasa_por_10k": 12.2
+    },
+    "97": {
+      "departamento": "Vaupés",
+      "tutelas_salud": 215,
+      "poblacion": 47012,
+      "tasa_por_10k": 45.73
+    },
+    "99": {
+      "departamento": "Vichada",
+      "tutelas_salud": 144,
+      "poblacion": 116088,
+      "tasa_por_10k": 12.4
+    }
+  }
+}

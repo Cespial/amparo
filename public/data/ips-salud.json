@@ -1,0 +1,272 @@
+{
+  "fuente": "Registro Especial de Prestadores de Servicios de Salud (REPS) — Ministerio de Salud y Protección Social, vía datos.gov.co resource c36g-9fc2 ('Registro Especial de Prestadores y Sedes de Servicios de Salud').",
+  "url_dataset": "https://www.datos.gov.co/resource/c36g-9fc2.json",
+  "fecha_corte": "REPS marzo 2026",
+  "nota": "DATOS REALES (conteo, sin coordenadas). 'ips_total' cuenta prestadores de clase 'Instituciones Prestadoras de Servicios de Salud - IPS' por departamento, derivando el código DANE de los 2 primeros dígitos de codigoprestador. 'prestadores_total' incluye TODAS las clases (IPS + profesionales independientes + transporte + objeto social diferente). El dataset nacional REPS NO trae latitud/longitud, por eso se entrega como conteo por departamento y no como puntos. Total nacional de IPS contadas: 19551.",
+  "datos": {
+    "05": {
+      "departamento": "Antioquia",
+      "ips_total": 2199,
+      "ips_publicas": 275,
+      "ips_privadas": 1916,
+      "ips_mixtas": 8,
+      "prestadores_total": 16822
+    },
+    "08": {
+      "departamento": "Atlántico",
+      "ips_total": 1171,
+      "ips_publicas": 85,
+      "ips_privadas": 1046,
+      "ips_mixtas": 40,
+      "prestadores_total": 2938
+    },
+    "11": {
+      "departamento": "Bogotá D.C.",
+      "ips_total": 2761,
+      "ips_publicas": 109,
+      "ips_privadas": 2651,
+      "ips_mixtas": 1,
+      "prestadores_total": 16181
+    },
+    "13": {
+      "departamento": "Bolívar",
+      "ips_total": 906,
+      "ips_publicas": 214,
+      "ips_privadas": 692,
+      "ips_mixtas": 0,
+      "prestadores_total": 2120
+    },
+    "15": {
+      "departamento": "Boyacá",
+      "ips_total": 543,
+      "ips_publicas": 159,
+      "ips_privadas": 384,
+      "ips_mixtas": 0,
+      "prestadores_total": 1954
+    },
+    "17": {
+      "departamento": "Caldas",
+      "ips_total": 340,
+      "ips_publicas": 67,
+      "ips_privadas": 272,
+      "ips_mixtas": 1,
+      "prestadores_total": 1773
+    },
+    "18": {
+      "departamento": "Caquetá",
+      "ips_total": 113,
+      "ips_publicas": 26,
+      "ips_privadas": 87,
+      "ips_mixtas": 0,
+      "prestadores_total": 311
+    },
+    "19": {
+      "departamento": "Cauca",
+      "ips_total": 463,
+      "ips_publicas": 148,
+      "ips_privadas": 315,
+      "ips_mixtas": 0,
+      "prestadores_total": 1099
+    },
+    "20": {
+      "departamento": "Cesar",
+      "ips_total": 588,
+      "ips_publicas": 145,
+      "ips_privadas": 443,
+      "ips_mixtas": 0,
+      "prestadores_total": 1258
+    },
+    "23": {
+      "departamento": "Córdoba",
+      "ips_total": 809,
+      "ips_publicas": 224,
+      "ips_privadas": 585,
+      "ips_mixtas": 0,
+      "prestadores_total": 1440
+    },
+    "25": {
+      "departamento": "Cundinamarca",
+      "ips_total": 837,
+      "ips_publicas": 189,
+      "ips_privadas": 648,
+      "ips_mixtas": 0,
+      "prestadores_total": 3568
+    },
+    "27": {
+      "departamento": "Chocó",
+      "ips_total": 280,
+      "ips_publicas": 42,
+      "ips_privadas": 237,
+      "ips_mixtas": 1,
+      "prestadores_total": 410
+    },
+    "41": {
+      "departamento": "Huila",
+      "ips_total": 347,
+      "ips_publicas": 77,
+      "ips_privadas": 270,
+      "ips_mixtas": 0,
+      "prestadores_total": 1462
+    },
+    "44": {
+      "departamento": "La Guajira",
+      "ips_total": 413,
+      "ips_publicas": 163,
+      "ips_privadas": 250,
+      "ips_mixtas": 0,
+      "prestadores_total": 610
+    },
+    "47": {
+      "departamento": "Magdalena",
+      "ips_total": 727,
+      "ips_publicas": 191,
+      "ips_privadas": 536,
+      "ips_mixtas": 0,
+      "prestadores_total": 1207
+    },
+    "50": {
+      "departamento": "Meta",
+      "ips_total": 475,
+      "ips_publicas": 67,
+      "ips_privadas": 407,
+      "ips_mixtas": 1,
+      "prestadores_total": 1139
+    },
+    "52": {
+      "departamento": "Nariño",
+      "ips_total": 838,
+      "ips_publicas": 355,
+      "ips_privadas": 481,
+      "ips_mixtas": 2,
+      "prestadores_total": 2392
+    },
+    "54": {
+      "departamento": "Norte de Santander",
+      "ips_total": 519,
+      "ips_publicas": 132,
+      "ips_privadas": 387,
+      "ips_mixtas": 0,
+      "prestadores_total": 2037
+    },
+    "63": {
+      "departamento": "Quindío",
+      "ips_total": 233,
+      "ips_publicas": 31,
+      "ips_privadas": 202,
+      "ips_mixtas": 0,
+      "prestadores_total": 1241
+    },
+    "66": {
+      "departamento": "Risaralda",
+      "ips_total": 374,
+      "ips_publicas": 50,
+      "ips_privadas": 324,
+      "ips_mixtas": 0,
+      "prestadores_total": 1802
+    },
+    "68": {
+      "departamento": "Santander",
+      "ips_total": 1087,
+      "ips_publicas": 165,
+      "ips_privadas": 922,
+      "ips_mixtas": 0,
+      "prestadores_total": 3455
+    },
+    "70": {
+      "departamento": "Sucre",
+      "ips_total": 484,
+      "ips_publicas": 73,
+      "ips_privadas": 409,
+      "ips_mixtas": 2,
+      "prestadores_total": 863
+    },
+    "73": {
+      "departamento": "Tolima",
+      "ips_total": 543,
+      "ips_publicas": 136,
+      "ips_privadas": 406,
+      "ips_mixtas": 1,
+      "prestadores_total": 1655
+    },
+    "76": {
+      "departamento": "Valle del Cauca",
+      "ips_total": 1824,
+      "ips_publicas": 319,
+      "ips_privadas": 1504,
+      "ips_mixtas": 1,
+      "prestadores_total": 7500
+    },
+    "81": {
+      "departamento": "Arauca",
+      "ips_total": 149,
+      "ips_publicas": 49,
+      "ips_privadas": 99,
+      "ips_mixtas": 1,
+      "prestadores_total": 342
+    },
+    "85": {
+      "departamento": "Casanare",
+      "ips_total": 212,
+      "ips_publicas": 31,
+      "ips_privadas": 180,
+      "ips_mixtas": 1,
+      "prestadores_total": 545
+    },
+    "86": {
+      "departamento": "Putumayo",
+      "ips_total": 128,
+      "ips_publicas": 31,
+      "ips_privadas": 97,
+      "ips_mixtas": 0,
+      "prestadores_total": 295
+    },
+    "88": {
+      "departamento": "Archipiélago de San Andrés, Providencia y Santa Catalina",
+      "ips_total": 26,
+      "ips_publicas": 4,
+      "ips_privadas": 22,
+      "ips_mixtas": 0,
+      "prestadores_total": 93
+    },
+    "91": {
+      "departamento": "Amazonas",
+      "ips_total": 23,
+      "ips_publicas": 12,
+      "ips_privadas": 11,
+      "ips_mixtas": 0,
+      "prestadores_total": 67
+    },
+    "94": {
+      "departamento": "Guainía",
+      "ips_total": 36,
+      "ips_publicas": 24,
+      "ips_privadas": 11,
+      "ips_mixtas": 1,
+      "prestadores_total": 49
+    },
+    "95": {
+      "departamento": "Guaviare",
+      "ips_total": 36,
+      "ips_publicas": 12,
+      "ips_privadas": 24,
+      "ips_mixtas": 0,
+      "prestadores_total": 96
+    },
+    "97": {
+      "departamento": "Vaupés",
+      "ips_total": 58,
+      "ips_publicas": 55,
+      "ips_privadas": 3,
+      "ips_mixtas": 0,
+      "prestadores_total": 62
+    },
+    "99": {
+      "departamento": "Vichada",
+      "ips_total": 9,
+      "ips_publicas": 4,
+      "ips_privadas": 5,
+      "ips_mixtas": 0,
+      "prestadores_total": 35
+    }
+  }
+}

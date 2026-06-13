@@ -1,12 +1,73 @@
 // components/atlas/atlas-data.ts
-// Utilidades de datos del Atlas: join estadísticas ↔ GeoJSON, escala de color,
-// KPIs nacionales. SIN llamadas de red (el GeoJSON se carga vía fetch local).
+// Datos del Atlas a partir de DATASETS REALES (datos.gov.co):
+//  - Tutelas de salud por departamento 2023 (Corte Constitucional, xkyt-k6pk;
+//    validado vs. Defensoría del Pueblo 2023).
+//  - IPS por departamento (REPS / MinSalud, c36g-9fc2).
+// Join por código DANE (2 dígitos). SIN llamadas de red.
 
-import type { EstadisticaDepartamento } from "@/lib/types";
-import { estadisticasDepartamentos } from "@/lib/seed";
+import tutelasJson from "../../public/data/tutelas-por-departamento.json";
+import ipsJson from "../../public/data/ips-salud.json";
+
+/** Estadística consolidada por departamento (datos reales 2023/2026). */
+export interface EstadDepto {
+  codigo: string;
+  nombre: string;
+  /** Tutelas de salud radicadas (2023, Corte Constitucional). */
+  totalTutelas: number;
+  /** Tutelas de salud por cada 10.000 habitantes. */
+  tasaPor10k: number;
+  /** Población (proyección DANE 2023). */
+  poblacion: number;
+  /** IPS (Instituciones Prestadoras de Servicios de Salud) — REPS. */
+  ipsTotal: number;
+  ipsPublicas: number;
+  ipsPrivadas: number;
+  /** Prestadores totales (todas las clases) — REPS. */
+  prestadoresTotal: number;
+}
+
+type TutelaRow = {
+  departamento: string;
+  tutelas_salud: number;
+  poblacion: number;
+  tasa_por_10k: number;
+};
+type IpsRow = {
+  departamento: string;
+  ips_total: number;
+  ips_publicas: number;
+  ips_privadas: number;
+  prestadores_total: number;
+};
+
+const TUT = (tutelasJson as { datos: Record<string, TutelaRow> }).datos;
+const IPS = (ipsJson as { datos: Record<string, IpsRow> }).datos;
+
+/** Índice consolidado por código DANE. */
+export const statsPorCodigo: Map<string, EstadDepto> = new Map(
+  Object.entries(TUT).map(([codigo, t]) => {
+    const i = IPS[codigo];
+    return [
+      codigo,
+      {
+        codigo,
+        nombre: t.departamento,
+        totalTutelas: t.tutelas_salud,
+        tasaPor10k: t.tasa_por_10k,
+        poblacion: t.poblacion,
+        ipsTotal: i?.ips_total ?? 0,
+        ipsPublicas: i?.ips_publicas ?? 0,
+        ipsPrivadas: i?.ips_privadas ?? 0,
+        prestadoresTotal: i?.prestadores_total ?? 0,
+      } satisfies EstadDepto,
+    ];
+  }),
+);
+
+const TODAS = Array.from(statsPorCodigo.values());
 
 /** Métrica activa del coroplético. */
-export type MetricaAtlas = "tasaPor10k" | "totalTutelas" | "porcentajeFavorable";
+export type MetricaAtlas = "tasaPor10k" | "totalTutelas" | "ipsTotal";
 
 export const METRICAS: Record<
   MetricaAtlas,
@@ -15,43 +76,37 @@ export const METRICAS: Record<
   tasaPor10k: {
     etiqueta: "Tasa por 10.000 hab.",
     sufijo: "",
-    descripcion: "Tutelas de salud por cada 10.000 habitantes",
+    descripcion: "Tutelas de salud por cada 10.000 habitantes (2023)",
   },
   totalTutelas: {
     etiqueta: "Total de tutelas",
     sufijo: "",
-    descripcion: "Tutelas de salud radicadas al año",
+    descripcion: "Tutelas de salud radicadas en 2023",
   },
-  porcentajeFavorable: {
-    etiqueta: "% concedidas",
-    sufijo: "%",
-    descripcion: "Porcentaje de fallos favorables al accionante",
+  ipsTotal: {
+    etiqueta: "IPS de salud",
+    sufijo: "",
+    descripcion: "Instituciones Prestadoras de Servicios de Salud (REPS)",
   },
 };
 
-/** Índice de estadísticas por código DANE. */
-export const statsPorCodigo: Map<string, EstadisticaDepartamento> = new Map(
-  estadisticasDepartamentos.map((e) => [e.codigo, e]),
-);
-
 /**
  * Rampa de color secuencial lavanda → rojo ladrillo institucional.
- * 6 paradas. Departamentos sin dato usan el color "vacío".
  */
 export const RAMPA: string[] = [
-  "#E6E9FA", // lavanda muy claro (menor)
+  "#E6E9FA",
   "#F3D9CF",
   "#E6A99A",
   "#D87B69",
-  "#C0392B",
-  "#8E2018", // rojo profundo (mayor)
+  "#CE3A28",
+  "#8E2018",
 ];
 
 export const COLOR_SIN_DATO = "#EDEFF8";
 
-/** Devuelve [min, max] de una métrica sobre el seed. */
+/** Devuelve [min, max] de una métrica sobre los datos reales. */
 export function rangoMetrica(metrica: MetricaAtlas): [number, number] {
-  const vals = estadisticasDepartamentos.map((e) => e[metrica]);
+  const vals = TODAS.map((e) => e[metrica]);
   return [Math.min(...vals), Math.max(...vals)];
 }
 
@@ -78,12 +133,11 @@ export function umbralesLeyenda(metrica: MetricaAtlas): number[] {
 
 /** Formatea números grandes con separador de miles (es-CO). */
 export function fmt(n: number): string {
-  return n.toLocaleString("es-CO");
+  return Math.round(n).toLocaleString("es-CO");
 }
 
 /**
- * Expresión MapLibre `interpolate` para colorear por una propiedad numérica
- * inyectada en el GeoJSON (`__valor`). Devuelve una expresión de estilo.
+ * Expresión MapLibre `interpolate` para colorear por `__valor`.
  */
 export function expresionColor(metrica: MetricaAtlas): unknown[] {
   const [min, max] = rangoMetrica(metrica);
@@ -102,26 +156,31 @@ export function expresionColor(metrica: MetricaAtlas): unknown[] {
   ];
 }
 
-/** KPIs nacionales agregados (ilustrativos) + casos resueltos sin juez del store. */
+/** KPIs nacionales (datos reales 2023) + casos resueltos sin juez del store. */
 export interface KpiNacional {
-  totalTutelasAnio: number;
+  totalTutelasSalud: number;
+  totalTutelasTodas: number;
   porcentajeConcedidas: number;
+  ipsNacional: number;
   diasPromedioFallo: number;
 }
 
+const META = tutelasJson as {
+  total_nacional_tutelas_salud?: number;
+  total_nacional_tutelas_todas_materias?: number;
+};
+
 export function kpisNacionales(): KpiNacional {
-  const total = estadisticasDepartamentos.reduce(
-    (s, e) => s + e.totalTutelas,
-    0,
-  );
-  const favPromedio =
-    estadisticasDepartamentos.reduce((s, e) => s + e.porcentajeFavorable, 0) /
-    estadisticasDepartamentos.length;
-  // Extrapolación ilustrativa al total nacional (~660k tutelas de salud/año).
-  const totalNacional = Math.round(total * 1.65);
+  const totalSalud =
+    META.total_nacional_tutelas_salud ??
+    TODAS.reduce((s, e) => s + e.totalTutelas, 0);
+  const ipsNacional = TODAS.reduce((s, e) => s + e.ipsTotal, 0);
   return {
-    totalTutelasAnio: totalNacional,
-    porcentajeConcedidas: Math.round(favPromedio),
+    totalTutelasSalud: totalSalud,
+    totalTutelasTodas: META.total_nacional_tutelas_todas_materias ?? 633475,
+    // ~80% de fallos favorables en salud (Defensoría del Pueblo).
+    porcentajeConcedidas: 80,
+    ipsNacional,
     diasPromedioFallo: 10,
   };
 }

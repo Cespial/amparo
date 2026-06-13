@@ -13,13 +13,12 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import {
   MapPin,
   Scale,
   TrendingUp,
-  CheckCircle2,
+  Hospital,
   Gavel,
   UserPlus,
   X,
@@ -69,8 +68,8 @@ function PanelContenido({
         <Metric
           Icono={Scale}
           tono="text-info"
-          etiqueta="Tutelas de salud / año"
-          valor={`~${fmt(st.totalTutelas)}`}
+          etiqueta="Tutelas de salud (2023)"
+          valor={fmt(st.totalTutelas)}
         />
         <Metric
           Icono={TrendingUp}
@@ -81,20 +80,33 @@ function PanelContenido({
       </div>
 
       <div className="surface-card border-0 bg-secondary/60 p-3">
-        <div className="mb-1.5 flex items-center justify-between">
+        <div className="mb-2 flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-sm font-medium">
-            <CheckCircle2 className="size-4 text-success" />
-            Fallos favorables
+            <Hospital className="size-4 text-info" />
+            IPS de salud
           </span>
-          <span className="font-heading text-lg font-semibold tabular-nums text-success">
-            {st.porcentajeFavorable}%
+          <span className="font-heading text-lg font-semibold tabular-nums">
+            {fmt(st.ipsTotal)}
           </span>
         </div>
-        <Progress value={st.porcentajeFavorable} className="h-2" />
-        <p className="mt-2 text-xs leading-snug text-muted-foreground">
-          La mayoría de tutelas se conceden porque reclaman un derecho ya
-          reconocido.
-        </p>
+        <div className="flex h-2 overflow-hidden rounded-full bg-border">
+          <div
+            className="bg-success"
+            style={{
+              width: `${st.ipsTotal ? (st.ipsPublicas / st.ipsTotal) * 100 : 0}%`,
+            }}
+          />
+          <div
+            className="bg-info"
+            style={{
+              width: `${st.ipsTotal ? (st.ipsPrivadas / st.ipsTotal) * 100 : 0}%`,
+            }}
+          />
+        </div>
+        <div className="mt-2 flex justify-between text-xs text-muted-foreground">
+          <span>{fmt(st.ipsPublicas)} públicas</span>
+          <span>{fmt(st.ipsPrivadas)} privadas</span>
+        </div>
       </div>
 
       <Separator />
@@ -121,12 +133,9 @@ function PanelContenido({
         </Button>
       </div>
 
-      {st.ilustrativo && (
-        <p className="text-[10px] leading-tight text-muted-foreground/80">
-          * Cifras ilustrativas por departamento. No constituyen estadística
-          oficial.
-        </p>
-      )}
+      <p className="text-[10px] leading-tight text-muted-foreground/80">
+        Datos reales 2023: Corte Constitucional (tutelas) y REPS/MinSalud (IPS).
+      </p>
     </div>
   );
 }

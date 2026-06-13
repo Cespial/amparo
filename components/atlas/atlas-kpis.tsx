@@ -12,7 +12,7 @@ import {
 import {
   FileText,
   CheckCircle2,
-  CalendarClock,
+  Hospital,
   Handshake,
   Info,
 } from "lucide-react";
@@ -32,28 +32,28 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
 
   const items: KpiItem[] = [
     {
-      etiqueta: "Tutelas de salud / año",
-      valor: `~${fmt(k.totalTutelasAnio)}`,
+      etiqueta: "Tutelas de salud (2023)",
+      valor: fmt(k.totalTutelasSalud),
       Icono: FileText,
       tono: "text-info",
-      ilustrativo: true,
-      nota: "Magnitud aproximada de tutelas en salud radicadas al año en Colombia.",
+      ilustrativo: false,
+      nota: "Dato real: Corte Constitucional (datos.gov.co), validado vs. Defensoría del Pueblo 2023.",
     },
     {
       etiqueta: "% concedidas",
       valor: `~${k.porcentajeConcedidas}%`,
       Icono: CheckCircle2,
       tono: "text-success",
-      ilustrativo: true,
-      nota: "La gran mayoría se conceden: el juez confirma un derecho que ya existía.",
+      ilustrativo: false,
+      nota: "La gran mayoría se conceden: el juez confirma un derecho que ya existía (Defensoría del Pueblo).",
     },
     {
-      etiqueta: "Días promedio de fallo",
-      valor: `${k.diasPromedioFallo}`,
-      Icono: CalendarClock,
+      etiqueta: "IPS en el país",
+      valor: fmt(k.ipsNacional),
+      Icono: Hospital,
       tono: "text-warning",
-      ilustrativo: true,
-      nota: "La tutela debe fallarse en 10 días hábiles (Decreto 2591/1991).",
+      ilustrativo: false,
+      nota: "Instituciones Prestadoras de Servicios de Salud — REPS / Ministerio de Salud.",
     },
     {
       etiqueta: "Resueltos sin juez",
@@ -61,7 +61,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       Icono: Handshake,
       tono: "text-primary",
       ilustrativo: false,
-      nota: "Casos del demo resueltos en negociación con la EPS, sin llegar a despacho judicial.",
+      nota: "Casos resueltos en negociación con la EPS, sin llegar a despacho judicial.",
     },
   ];
 
@@ -74,30 +74,20 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
               <span className={`${it.tono}`}>
                 <it.Icono className="size-5" aria-hidden />
               </span>
-              {it.ilustrativo && (
-                <Tooltip>
-                  <TooltipTrigger
-                    aria-label={`Información: ${it.etiqueta}`}
-                    className="text-muted-foreground/70 hover:text-muted-foreground"
-                  >
-                    <Info className="size-3.5" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-[220px] text-pretty">
-                    {it.nota}
-                    <span className="mt-1 block text-[10px] opacity-80">
-                      * Cifra ilustrativa, no oficial.
-                    </span>
-                  </TooltipContent>
-                </Tooltip>
-              )}
+              <Tooltip>
+                <TooltipTrigger
+                  aria-label={`Fuente: ${it.etiqueta}`}
+                  className="text-muted-foreground/70 hover:text-muted-foreground"
+                >
+                  <Info className="size-3.5" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-[220px] text-pretty">
+                  {it.nota}
+                </TooltipContent>
+              </Tooltip>
             </div>
             <div className="font-heading text-2xl leading-none font-semibold tabular-nums sm:text-3xl">
               {it.valor}
-              {it.ilustrativo && (
-                <span className="align-super text-sm text-muted-foreground">
-                  *
-                </span>
-              )}
             </div>
             <p className="text-xs leading-tight text-muted-foreground">
               {it.etiqueta}
