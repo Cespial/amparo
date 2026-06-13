@@ -139,7 +139,7 @@ function contextoCaso(caso: Caso): string {
       (dte?.sujetoEspecialProteccion
         ? " — SUJETO DE ESPECIAL PROTECCIÓN"
         : ""),
-    `Accionada: ${ddo?.nombre ?? caso.eps ?? "la EPS"}${ddo?.tipo ? ` (${ddo.tipo})` : ""}`,
+    `Accionada: ${ddo?.nombre ?? "la EPS"}${ddo?.tipo ? ` (${ddo.tipo})` : ""}`,
     `Urgencia: ${caso.urgencia}. ¿Incluido en PBS?: ${caso.esPBS ? "sí" : "no"}`,
     `Derechos invocados: ${caso.derechosInvocados.join(", ")}`,
     `Hechos: ${caso.hechos}`,
