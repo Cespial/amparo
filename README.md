@@ -66,17 +66,70 @@ The legal corpus is **38 verified Sentencias T** of the Constitutional Court. Th
 
 ---
 
-## Architecture
+## How we built it · tech stack
 
+| Layer | Technology | Why |
+|---|---|---|
+| **Framework** | **Next.js 16** (App Router, React Server Components), **TypeScript**, **React 19** | Modern, fast, server + client in one |
+| **UI / design** | **Tailwind CSS v4**, **shadcn/ui**, **lucide** icons, Source Serif 4 + Hanken Grotesk + Geist Mono | AAA-grade institutional design system |
+| **AI — reasoning** | **Claude via AI SDK v6** (`@ai-sdk/anthropic`) — **Opus** for prediction/ruling/mediation, **Haiku** for fast triage | Legal reasoning grounded in case law |
+| **AI — voice (TTS)** | **ElevenLabs** multilingual (Amparo speaks ES/EN); Web Speech fallback | Voice = procedural-justice access |
+| **AI — speech (STT)** | **ElevenLabs Scribe** (primary) + **OpenAI Whisper** (fallback); browser Web Speech fallback | Understands EN/ES speakers + accents |
+| **AI — multimodal** | Claude vision reads uploaded **images & PDFs** (OCR + comprehension) | Annexes enrich the case automatically |
+| **Map** | **react-map-gl / MapLibre GL** (OpenFreeMap dark basemap, no token; 2D/3D, layers) | Real choropleth + IPS points |
+| **RAG / grounding** | In-memory lexical retrieval over a **curated, verified corpus** (no DB → demo-safe) | Anti-hallucination: cite only the corpus |
+| **State** | **Zustand** — a single `Caso` flows through all four roles | Total demo coherence |
+| **i18n** | Context provider + namespaced dictionaries (**ES/EN**, full parity); AI also answers in the active language | Bilingual for an English-speaking jury |
+| **Data** | `datos.gov.co` (Constitutional Court + REPS/MinSalud), DANE; 38 verified Sentencias T | Every figure real or marked |
+| **Deploy** | **Vercel** · **amparo.help** | One-command production deploy |
+
+> **Built with multi-agent AI orchestration.** Amparo itself was developed using **Claude Code** running **parallel agent workflows** — fan-out waves of subagents (build → adversarial QA → fix) for the views, the AI layer, the data pipeline, the brand system and the bilingual layer. The same "fourth party" idea, applied to its own construction.
+
+### Architecture
+
+```mermaid
+flowchart TB
+  subgraph C["🖥️  Client — Next.js 16 (App Router · RSC) · Tailwind v4 · shadcn/ui"]
+    direction LR
+    V["/ landing · /atlas · /asistente · /demandante · /demandado · /juez · /impacto · /pitch"]
+    S["Zustand store — ONE Caso · i18n provider (ES/EN)"]
+  end
+  subgraph A["⚙️  API routes — Node runtime"]
+    direction LR
+    R["/api: estructurar · triaje · predecir · generar · mediar · anexos · voz · transcribir"]
+  end
+  subgraph AI["🧠  AI layer"]
+    direction LR
+    CL["Claude — Opus (reason) + Haiku (triage) + vision (OCR)"]
+    EL["ElevenLabs — TTS + Scribe STT"]
+    WH["OpenAI Whisper — STT fallback"]
+  end
+  subgraph D["📚  Data — versioned, no database"]
+    direction LR
+    CO["Corpus: 38 verified Sentencias T"]
+    DG["datos.gov.co — tutelas (Corte) · IPS (REPS) · GeoJSON (DANE)"]
+  end
+  C -->|"lang + caso"| A
+  A --> AI
+  AI -->|"retrieve · cite only corpus"| CO
+  V -->|"choropleth + IPS layers"| DG
+  C -.->|"deploy"| VER["▲ Vercel · amparo.help"]
 ```
-Next.js 16 (App Router, RSC) · TypeScript · Tailwind v4 · shadcn/ui
-AI:        AI SDK v6 + Claude  (Opus 4.x = reasoning · Haiku = fast triage)
-Voice:     ElevenLabs multilingual TTS  (Web Speech fallback)
-Map:       react-map-gl / MapLibre GL  (OpenFreeMap dark basemap, no token)
-RAG:       in-memory lexical retrieval over a curated, verified corpus (no DB -> demo-safe)
-State:     Zustand (a single Caso flows through all four roles)
-i18n:      context provider + namespaced dictionaries (ES/EN, 87/87 parity)
-Deploy:    Vercel · amparo.help
+
+**The `Caso` lifecycle (one object, four roles):**
+
+```mermaid
+stateDiagram-v2
+  [*] --> INTAKE
+  INTAKE --> TRIADO: admissibility triage
+  TRIADO --> EN_NEGOCIACION_EPS: right of petition (SLA)
+  EN_NEGOCIACION_EPS --> RESUELTO_EPS: EPS concedes / mediation
+  EN_NEGOCIACION_EPS --> ESCALADO_TUTELA: no agreement
+  TRIADO --> ESCALADO_TUTELA: file tutela
+  ESCALADO_TUTELA --> EN_DESPACHO: judge's queue
+  EN_DESPACHO --> FALLADO: judge signs
+  RESUELTO_EPS --> [*]
+  FALLADO --> [*]
 ```
 
 **Key design choices**
