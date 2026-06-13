@@ -68,6 +68,11 @@ export type TFunction = (key: string, vars?: TVars) => string;
  * Devuelve la cadena hallada o undefined si no existe / no es string.
  */
 function resolvePath(tree: unknown, path: string): string | undefined {
+  if (tree == null || typeof tree !== "object") return undefined;
+  // 1) Clave PLANA con puntos (p.ej. { "brand.name": "Amparo" }): match directo.
+  const flat = (tree as Record<string, unknown>)[path];
+  if (typeof flat === "string") return flat;
+  // 2) Dot-path anidado (p.ej. { hero: { title: "..." } }).
   let node: unknown = tree;
   for (const part of path.split(".")) {
     if (node == null || typeof node !== "object") return undefined;
