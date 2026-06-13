@@ -22,6 +22,7 @@ interface KpiItem {
   etiqueta: string;
   valor: string;
   Icono: typeof FileText;
+  /** Color del acento del ícono (estética Tensor dark). */
   tono: string;
   ilustrativo: boolean;
   nota: string;
@@ -35,7 +36,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       etiqueta: "Tutelas de salud (2023)",
       valor: fmt(k.totalTutelasSalud),
       Icono: FileText,
-      tono: "text-info",
+      tono: "text-[#58a6ff]",
       ilustrativo: false,
       nota: "Dato real: Corte Constitucional (datos.gov.co), validado vs. Defensoría del Pueblo 2023.",
     },
@@ -43,7 +44,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       etiqueta: "% concedidas",
       valor: `~${k.porcentajeConcedidas}%`,
       Icono: CheckCircle2,
-      tono: "text-success",
+      tono: "text-[#3fb950]",
       ilustrativo: false,
       nota: "La gran mayoría se conceden: el juez confirma un derecho que ya existía (Defensoría del Pueblo).",
     },
@@ -51,7 +52,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       etiqueta: "IPS en el país",
       valor: fmt(k.ipsNacional),
       Icono: Hospital,
-      tono: "text-warning",
+      tono: "text-[#d29922]",
       ilustrativo: false,
       nota: "Instituciones Prestadoras de Servicios de Salud — REPS / Ministerio de Salud.",
     },
@@ -59,7 +60,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
       etiqueta: "Resueltos sin juez",
       valor: fmt(resueltosSinJuez),
       Icono: Handshake,
-      tono: "text-primary",
+      tono: "text-[#1B6B6D]",
       ilustrativo: false,
       nota: "Casos resueltos en negociación con la EPS, sin llegar a despacho judicial.",
     },
@@ -68,16 +69,19 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {items.map((it) => (
-        <Card key={it.etiqueta} className="surface-card border-0 py-0">
+        <Card
+          key={it.etiqueta}
+          className="glow-card glow-card--teal gap-0 border-0 bg-transparent py-0"
+        >
           <CardContent className="flex flex-col gap-2 p-4">
             <div className="flex items-center justify-between">
-              <span className={`${it.tono}`}>
+              <span className={it.tono}>
                 <it.Icono className="size-5" aria-hidden />
               </span>
               <Tooltip>
                 <TooltipTrigger
                   aria-label={`Fuente: ${it.etiqueta}`}
-                  className="text-muted-foreground/70 hover:text-muted-foreground"
+                  className="text-[#8B949E]/70 transition-colors hover:text-[#E6EDF3]"
                 >
                   <Info className="size-3.5" />
                 </TooltipTrigger>
@@ -86,12 +90,10 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="font-heading text-2xl leading-none font-semibold tabular-nums sm:text-3xl">
+            <div className="glow-num text-2xl leading-none font-semibold text-[#E6EDF3] sm:text-3xl">
               {it.valor}
             </div>
-            <p className="text-xs leading-tight text-muted-foreground">
-              {it.etiqueta}
-            </p>
+            <p className="text-xs leading-tight text-[#8B949E]">{it.etiqueta}</p>
           </CardContent>
         </Card>
       ))}

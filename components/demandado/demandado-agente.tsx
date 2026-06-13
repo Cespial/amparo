@@ -27,6 +27,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { PeticionReloj } from "@/components/demandante/peticion-reloj";
+import { Expediente } from "@/components/transparencia/expediente";
 import {
   costoDeNegar,
   estimarProbabilidadAmparo,
@@ -162,6 +164,12 @@ export function DemandadoAgente({
               </h3>
               <p className="mt-1 text-sm leading-relaxed">{caso.hechos}</p>
             </section>
+
+            {/* Derecho de petición: a quién le corresponde y el reloj corriendo. */}
+            {caso.peticion && <PeticionReloj peticion={caso.peticion} />}
+
+            {/* Expediente compartido: la EPS ve también lo que valora el juez. */}
+            <Expediente caso={caso} vista="demandado" />
 
             <Separator />
 

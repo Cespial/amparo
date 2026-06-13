@@ -25,6 +25,13 @@ export const CODIGOS_CIUDAD: Record<string, string> = {
   bucaramanga: "001",
   pereira: "001",
   monteria: "001",
+  quibdo: "001",
+  popayan: "001",
+  manizales: "001",
+  villavicencio: "001",
+  cucuta: "001",
+  ibague: "001",
+  pasto: "001",
 };
 
 /**

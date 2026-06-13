@@ -6,6 +6,7 @@
 import { AlertTriangle, ChevronRight, Inbox } from "lucide-react";
 import type { Caso } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
+import { PeticionReloj } from "@/components/demandante/peticion-reloj";
 import {
   Table,
   TableBody,
@@ -110,6 +111,9 @@ export function DemandadoBandeja({
                 <p className="line-clamp-2 text-sm text-muted-foreground">
                   {caso.servicioNegado}
                 </p>
+                {caso.peticion && (
+                  <PeticionReloj peticion={caso.peticion} compacto />
+                )}
                 <div className="flex items-center justify-between">
                   <BarraProbabilidad prob={prob} />
                   {r.recomendacion === "ceder" && (
@@ -158,12 +162,19 @@ export function DemandadoBandeja({
                       {caso.demandado.nombre} · {caso.demandante.ciudad}
                     </p>
                   </TableCell>
-                  <TableCell className="max-w-[16rem]">
+                  <TableCell className="max-w-[18rem]">
                     <p className="truncate text-sm">{caso.servicioNegado}</p>
                     <p className="text-xs text-muted-foreground">
                       {caso.esPBS ? "PBS" : "NO-PBS"} ·{" "}
                       {caso.diagnostico.split("(")[0].trim()}
                     </p>
+                    {caso.peticion && (
+                      <PeticionReloj
+                        peticion={caso.peticion}
+                        compacto
+                        className="mt-1.5"
+                      />
+                    )}
                   </TableCell>
                   <TableCell>
                     <span

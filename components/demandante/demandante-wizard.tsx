@@ -52,10 +52,12 @@ import { heroeId } from "@/lib/seed";
 import { generarRadicado, formatearRadicado } from "@/lib/radicado";
 import { cronogramaTutela } from "@/lib/plazos";
 import { progresoDeEstado } from "@/lib/progreso";
+import { construirPeticion } from "@/lib/peticion";
 import type {
   Caso,
   EstadoCaso,
   EventoCaso,
+  PeticionFormal,
   PlazoLegal,
   TipoServicio,
   Urgencia,
@@ -64,6 +66,8 @@ import type {
 import { DemandanteStepper, type PasoDef } from "./demandante-stepper";
 import { DemandanteGauge } from "./demandante-gauge";
 import { DemandanteMarkdown } from "./demandante-markdown";
+import { PeticionReloj } from "./peticion-reloj";
+import { Expediente } from "@/components/transparencia/expediente";
 import { useDictado } from "./use-dictado";
 import { hablar, detenerVoz } from "@/lib/voz";
 import { BotonVoz } from "@/components/boton-voz";
@@ -206,6 +210,7 @@ export function DemandanteWizard({
   const [radicado, setRadicado] = useState<string | null>(null);
   const [cronograma, setCronograma] = useState<PlazoLegal[]>([]);
   const [estadoFinal, setEstadoFinal] = useState<EstadoCaso | null>(null);
+  const [peticion, setPeticion] = useState<PeticionFormal | null>(null);
 
   // Cargas
   const [cargando, setCargando] = useState<null | string>(null);
@@ -444,14 +449,26 @@ export function DemandanteWizard({
       setDocumento(data.documento);
 
       if (via === "reclamacion") {
-        updateCaso(caso.id, { estado: "EN_NEGOCIACION_EPS" });
+        // Formaliza la ruta EPS como derecho de petición: responsable + reloj SLA.
+        const nuevaPeticion = construirPeticion(caso, new Date());
+        updateCaso(caso.id, {
+          estado: "EN_NEGOCIACION_EPS",
+          peticion: nuevaPeticion,
+        });
         addEvento(
           caso.id,
-          evento(caso.id, "documento", "Reclamación enviada a la EPS", "EN_NEGOCIACION_EPS", {
-            actor: "demandante",
-            detalle: "Se generó la reclamación directa. El caso pasa a negociación con la EPS.",
-          }),
+          evento(
+            caso.id,
+            "documento",
+            "Derecho de petición radicado ante la EPS",
+            "EN_NEGOCIACION_EPS",
+            {
+              actor: "demandante",
+              detalle: `Responsable: ${nuevaPeticion.dependencia}. Término de respuesta: ${nuevaPeticion.slaDias} días ${nuevaPeticion.slaHabiles ? "hábiles" : "calendario"} (radicado ${nuevaPeticion.radicadoPeticion}).`,
+            },
+          ),
         );
+        setPeticion(nuevaPeticion);
         setEstadoFinal("EN_NEGOCIACION_EPS");
         setRadicado(null);
         setCronograma([]);
@@ -470,6 +487,7 @@ export function DemandanteWizard({
             detalle: `Radicado ${formatearRadicado(caso.radicado)}.`,
           }),
         );
+        setPeticion(null);
         setEstadoFinal("ESCALADO_TUTELA");
         setRadicado(caso.radicado);
         setCronograma(crono);
@@ -510,6 +528,7 @@ export function DemandanteWizard({
     setRadicado(null);
     setCronograma([]);
     setEstadoFinal(null);
+    setPeticion(null);
     setEps("");
     setPaciente("");
     setEsHeroe(true);
@@ -917,8 +936,8 @@ export function DemandanteWizard({
                 <CaminoCard
                   icon={Handshake}
                   titulo="Intentar con mi EPS"
-                  descripcion="Generamos una reclamación formal para que la EPS resuelva sin ir a tutela. Suele ser más rápido si la entidad responde."
-                  cta="Generar reclamación"
+                  descripcion="Radicamos un derecho de petición formal: identificamos quién en tu EPS debe responder y desde cuándo corre el plazo legal. Suele ser más rápido si la entidad responde a tiempo."
+                  cta="Radicar derecho de petición"
                   variant="outline"
                   cargando={cargando === "reclamacion"}
                   onClick={() => decidir("reclamacion")}
@@ -967,6 +986,20 @@ export function DemandanteWizard({
                     : "Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela."}
                 </p>
               </div>
+
+              {/* Derecho de petición: responsable + reloj de SLA */}
+              {peticion && tipoDoc === "reclamacion" && (
+                <PeticionReloj peticion={peticion} />
+              )}
+
+              {/* Expediente compartido (solo lectura): ver la respuesta de la EPS. */}
+              {tipoDoc === "reclamacion" &&
+                (() => {
+                  const casoActual = getCaso(casoId);
+                  return casoActual ? (
+                    <Expediente caso={casoActual} vista="demandante" />
+                  ) : null;
+                })()}
 
               {radicado && (
                 <div className="grid gap-4 sm:grid-cols-2">

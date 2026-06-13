@@ -118,24 +118,32 @@ export default function Home() {
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
-              href="/demandante"
+              href="/asistente"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            >
+              <Mic className="size-4" />
+              Habla con Amparo
+            </Link>
+            <Link
+              href="/demandante"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
             >
               Empezar mi caso
               <ArrowRight className="size-4" />
             </Link>
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
             <Link
               href="/atlas"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
+              className="inline-flex items-center gap-1.5 font-medium text-foreground transition-colors hover:text-brand"
             >
               <MapIcon className="size-4 text-brand" />
               Ver el mapa del problema
             </Link>
+            <span className="hidden sm:inline text-muted-foreground/50">·</span>
+            <span>Respaldado en sentencias reales · La decisión final siempre es humana.</span>
           </div>
-
-          <p className="mt-5 text-sm text-muted-foreground">
-            Respaldado en sentencias reales · La decisión final siempre es humana.
-          </p>
         </div>
 
         {/* Tarjeta de cifras — el problema en números */}

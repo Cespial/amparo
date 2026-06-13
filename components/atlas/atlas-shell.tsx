@@ -52,7 +52,7 @@ export function AtlasShell() {
       {/* Mapa + lateral. En móvil una sola columna; en desktop 2fr/1fr. */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex flex-col gap-3">
-          <div className="surface-card relative h-[58vh] min-h-[360px] overflow-hidden border-0 bg-[#0D1117] p-0 ring-1 ring-white/10 lg:h-[640px]">
+          <div className="glow-card glow-card--teal relative h-[58vh] min-h-[360px] overflow-hidden p-0 lg:h-[640px]">
             <AtlasMapa
               metrica={metrica}
               seleccionado={seleccionado}
@@ -71,16 +71,16 @@ export function AtlasShell() {
               onCerrar={() => setSeleccionado(null)}
             />
           ) : (
-            <div className="surface-card flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
-              <div className="grid size-12 place-items-center rounded-full bg-secondary">
+            <div className="glow-card flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+              <div className="grid size-12 place-items-center rounded-full border border-[#30363D] bg-[#0D1117] shadow-[0_0_18px_-6px_rgba(27,107,109,0.8)]">
                 <span className="text-2xl" aria-hidden>
                   🗺️
                 </span>
               </div>
-              <p className="font-heading text-base font-medium">
+              <p className="font-heading text-base font-medium text-[#E6EDF3]">
                 Explora el mapa
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-[#8B949E]">
                 Haz clic en un departamento para ver sus estadísticas de tutelas
                 en salud y abrir un caso.
               </p>

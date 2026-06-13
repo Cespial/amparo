@@ -24,6 +24,10 @@ export default function DemandantePage() {
             procede, te da un pronóstico con sentencias reales y redacta tu
             documento. Tú decides el camino.
           </p>
+          <p className="mt-1.5 max-w-2xl text-sm font-medium text-primary">
+            Amparo es la cuarta parte que te acompaña: resultados consistentes,
+            no arbitrarios. La decisión final siempre es de un humano.
+          </p>
         </div>
       </header>
 

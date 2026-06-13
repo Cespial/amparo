@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Map, User, Building2, Scale, Menu, Shield } from "lucide-react";
+import { Map, User, Building2, Scale, Menu, Shield, Mic } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -120,6 +120,13 @@ export function SiteNav() {
 
         {/* Desktop nav */}
         <nav className="mx-2 hidden items-center gap-1 md:flex">
+          <Link
+            href="/asistente"
+            className="mr-1 flex items-center gap-2 rounded-lg bg-primary/90 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors min-h-11 hover:bg-primary"
+          >
+            <Mic className="size-4" />
+            Habla con Amparo
+          </Link>
           <NavItems />
         </nav>
 
@@ -149,6 +156,14 @@ export function SiteNav() {
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
+                <Link
+                  href="/asistente"
+                  onClick={() => setOpen(false)}
+                  className="mb-1 flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white min-h-11"
+                >
+                  <Mic className="size-4" />
+                  Habla con Amparo
+                </Link>
                 <NavItems onNavigate={() => setOpen(false)} />
               </nav>
               <div className="mt-4 px-4">

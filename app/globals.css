@@ -247,3 +247,110 @@
 .btn-primary:hover {
   background-color: var(--primary-hover);
 }
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Estética "Tensor / control room" — superficies oscuras glassy con glow sutil.
+   Uso DELIBERADO sólo en /atlas para contrastar con el resto de la app (AAA claro).
+   Paleta: dark-bg #0D1117 · panel #161B22 · border #30363D · texto #E6EDF3 ·
+   muted #8B949E · acento teal #1B6B6D. Cifras en mono tabular.
+   ────────────────────────────────────────────────────────────────────────── */
+.glow-card {
+  position: relative;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.025) 0%,
+      rgba(255, 255, 255, 0) 38%
+    ),
+    #161b22;
+  border: 1px solid #30363d;
+  border-radius: var(--radius-2xl);
+  color: #e6edf3;
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 18px 44px -28px rgba(0, 0, 0, 0.85);
+}
+
+/* Acento teal: glow coloreado sutil en el halo de la tarjeta. */
+.glow-card--teal {
+  border-color: rgba(27, 107, 109, 0.45);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(27, 107, 109, 0.12),
+    0 14px 40px -22px rgba(27, 107, 109, 0.55),
+    0 18px 44px -28px rgba(0, 0, 0, 0.85);
+}
+
+/* Acento rojo crítico (extremo caliente de la rampa). */
+.glow-card--rojo {
+  border-color: rgba(215, 48, 39, 0.4);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(215, 48, 39, 0.1),
+    0 14px 40px -22px rgba(215, 48, 39, 0.5),
+    0 18px 44px -28px rgba(0, 0, 0, 0.85);
+}
+
+/* Texto atenuado dentro del control room. */
+.glow-muted {
+  color: #8b949e;
+}
+
+/* Cifras: monoespaciado tabular para alineación de columnas numéricas. */
+.glow-num {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Modo presentación — control flotante discreto + guía paso a paso.
+   ────────────────────────────────────────────────────────────────────────── */
+.presentacion-launcher {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  z-index: 60;
+}
+
+.presentacion-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: max(1rem, env(safe-area-inset-bottom));
+  background: radial-gradient(
+    120% 90% at 50% 100%,
+    rgba(13, 17, 23, 0.72) 0%,
+    rgba(13, 17, 23, 0.42) 100%
+  );
+  backdrop-filter: blur(2px);
+}
+
+@media (min-width: 640px) {
+  .presentacion-overlay {
+    align-items: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .presentacion-card {
+    animation: presentacion-rise 0.22s ease-out;
+  }
+}
+
+@keyframes presentacion-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

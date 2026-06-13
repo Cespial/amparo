@@ -4,6 +4,7 @@ import "./globals.css";
 import { SiteNav } from "@/components/site-nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
+import { ModoPresentacion } from "@/components/presentacion/modo-presentacion";
 
 const sans = Hanken_Grotesk({
   variable: "--font-sans",
@@ -68,6 +69,7 @@ export default function RootLayout({
         <TooltipProvider delay={200}>
           <SiteNav />
           <main className="flex-1">{children}</main>
+          <ModoPresentacion />
           <Toaster richColors position="top-right" />
         </TooltipProvider>
       </body>

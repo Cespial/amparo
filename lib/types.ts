@@ -183,6 +183,40 @@ export interface Demandado {
   nit?: string;
 }
 
+/**
+ * Estado del trámite del derecho de petición ante la EPS.
+ */
+export type EstadoPeticion =
+  | "radicada"
+  | "en_termino"
+  | "vencida"
+  | "respondida";
+
+/**
+ * Derecho de petición formal dirigido a la EPS (Ley 1755 de 2015).
+ * Identifica al responsable concreto que debe responder y el reloj del SLA.
+ */
+export interface PeticionFormal {
+  /** Responsable concreto (entidad), p.ej. "EPS Sura". */
+  responsable: string;
+  /** Dependencia interna que debe resolver, p.ej. "Dirección de Aseguramiento / Auditoría Médica". */
+  dependencia: string;
+  /** Radicado interno de la petición (no judicial). */
+  radicadoPeticion: string;
+  /** Término de respuesta en días hábiles según la naturaleza de la petición. */
+  slaDias: number;
+  /** ¿Los días del SLA son hábiles (true) o calendario (false)? */
+  slaHabiles?: boolean;
+  /** Fecha de vencimiento del término de respuesta (ISO 8601). */
+  slaVence: string;
+  /** Fecha de radicación de la petición (ISO 8601). */
+  fechaRadicacion?: string;
+  /** Fundamento normativo del término aplicado. */
+  fundamento?: string;
+  /** Estado del trámite de la petición. */
+  estado: EstadoPeticion;
+}
+
 /** Caso ODR completo. Entidad central del dominio. */
 export interface Caso {
   /** Id interno único (no judicial). */
@@ -227,6 +261,8 @@ export interface Caso {
   timeline: EventoCaso[];
   /** Sentencias citadas/aplicables al caso. */
   sentenciasAplicables?: SentenciaRef[];
+  /** Derecho de petición formal radicado ante la EPS (ruta de resolución directa). */
+  peticion?: PeticionFormal;
 }
 
 /** Estadística ilustrativa de tutelas por departamento (para el Atlas). */

@@ -55,6 +55,7 @@ import { useCasoStore } from "@/lib/store";
 import { progresoDeEstado, ETIQUETA_ESTADO } from "@/lib/progreso";
 import type { TriajeResultado, EstadoCriterio } from "@/lib/ai/triaje";
 import type { PrediccionResultado } from "@/lib/ai/predictor";
+import { Expediente } from "@/components/transparencia/expediente";
 import { EstadoBadge, UrgenciaBadge } from "./juez-badges";
 import { Cronograma } from "./juez-cronograma";
 import { Markdown } from "./juez-markdown";
@@ -259,6 +260,9 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Expediente compartido (transparencia bilateral). */}
+            <Expediente caso={caso} vista="juez" />
 
             {/* Triaje de admisibilidad */}
             <Card>

@@ -54,6 +54,10 @@ export function JuezDashboard() {
             Cola priorizada de tutelas, estudio asistido de admisibilidad y
             predicción, y proyección de fallo con fundamentos del precedente.
           </p>
+          <p className="mt-1.5 text-xs font-medium text-primary">
+            Amparo propone, con criterios consistentes por jurisprudencia; la
+            última palabra es suya. Usted firma el fallo.
+          </p>
         </div>
         <Badge className="border-0 bg-primary/10 font-medium text-primary">
           <Gavel className="size-3.5" /> {enCola.length} en despacho

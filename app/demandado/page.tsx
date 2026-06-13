@@ -168,6 +168,10 @@ export default function DemandadoPage() {
             Resuelva disputas de salud antes del juez. El agente-EPS calcula el
             costo/riesgo de negar y recomienda ceder cuando la tutela se perdería.
           </p>
+          <p className="mt-1.5 max-w-2xl text-xs font-medium text-primary">
+            Amparo es la cuarta parte: asiste con análisis consistentes por
+            jurisprudencia. La decisión de autorizar o sostener es suya.
+          </p>
         </div>
 
         <Button
