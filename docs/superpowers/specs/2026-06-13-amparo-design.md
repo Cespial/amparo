@@ -212,6 +212,26 @@ El **camino héroe** (Amparo → triaje → predicción → tutela → juez) se 
 
 ---
 
+## 15. Recursos y presupuesto
+
+**Presupuesto:** hasta **$200 USD** (gasto en APIs/servicios). Holgado para un demo.
+
+| Concepto | Estimado | Nota |
+|---|---|---|
+| Claude API (Opus generación + Haiku triaje) | $20–60 | Grueso del gasto; usar prompt caching. |
+| Embeddings mini-corpus (1 vez) | <$1 | Precomputados a JSON. |
+| Mapa (MapLibre + GeoJSON libre) | $0 | Sin token Mapbox. |
+| Hosting (Vercel Hobby) | $0 | |
+| Voz (Web Speech API nativa) | $0 | Opcional ElevenLabs TTS ~$5–22. |
+| Dominio `amparo.*` | ~$12 | Caché institucional para el pitch. |
+| Colchón pruebas/reintentos | resto | |
+
+**Repos de apoyo:**
+- **Reutilizar (producto):** `Kelsen` (sistema de diseño shadcn + RAG legal + AI SDK), `atlas-caba-web` (MapLibre coroplético Colombia), `AAI Frontend`/adr.org (lenguaje visual).
+- **No adoptar en ruta crítica:** `affaan-m/ECC` — es un *agent-harness OS* (tooling de desarrollo, 64 agentes/262 skills), **no** código de producto ODR. Superpowers + Claude Code ya cubren esa necesidad para un sprint solo. Opcional fuera de la ruta crítica.
+
+---
+
 ## 14. Criterios de éxito (jurado)
 
 - **WOW técnico:** predicción citada real + voz + agentes negociando.
