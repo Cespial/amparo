@@ -8,6 +8,7 @@ import { Building2, Clock, FileText, ShieldQuestion } from "lucide-react";
 import type { PeticionFormal } from "@/lib/types";
 import { relojPeticion } from "@/lib/peticion";
 import { cn } from "@/lib/utils";
+import { useT, useLang } from "@/lib/i18n";
 
 const SEMAFORO_META: Record<
   ReturnType<typeof relojPeticion>["semaforo"],
@@ -39,12 +40,6 @@ const SEMAFORO_META: Record<
   },
 };
 
-const FMT = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-});
-
 export interface PeticionRelojProps {
   peticion: PeticionFormal;
   /** Compacto: una fila resumida (para la bandeja del demandado). */
@@ -57,8 +52,18 @@ export function PeticionReloj({
   compacto = false,
   className,
 }: PeticionRelojProps) {
+  const t = useT("demandante");
+  const { lang } = useLang();
   const reloj = relojPeticion(peticion);
   const meta = SEMAFORO_META[reloj.semaforo];
+  const fmt = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-CO", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+  const tipoDias = peticion.slaHabiles
+    ? t("peticion.diasHabiles")
+    : t("peticion.diasCalendario");
 
   if (compacto) {
     return (
@@ -87,10 +92,10 @@ export function PeticionReloj({
         </span>
         <div>
           <p className="font-serif text-base font-semibold text-navy">
-            Derecho de petición radicado
+            {t("peticion.titulo")}
           </p>
           <p className="text-xs text-muted-foreground">
-            Tu EPS está obligada a responder de fondo dentro del término legal.
+            {t("peticion.subtitulo")}
           </p>
         </div>
       </div>
@@ -99,7 +104,7 @@ export function PeticionReloj({
         {/* Responsable */}
         <div className="rounded-xl border bg-background/60 p-3">
           <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-            <Building2 className="size-3.5" /> ¿Quién debe responder?
+            <Building2 className="size-3.5" /> {t("peticion.quienResponde")}
           </p>
           <p className="mt-1 text-sm font-medium text-navy">
             {peticion.responsable}
@@ -112,15 +117,17 @@ export function PeticionReloj({
         {/* Reloj SLA */}
         <div className={cn("rounded-xl border p-3", meta.anillo)}>
           <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-            <Clock className="size-3.5" /> ¿Cuándo debe responder?
+            <Clock className="size-3.5" /> {t("peticion.cuandoResponde")}
           </p>
           <p className={cn("mt-1 font-heading text-lg font-bold", meta.texto)}>
             {reloj.etiqueta}
           </p>
           <p className="mt-0.5 text-xs text-muted-foreground">
-            Vence el{" "}
-            {FMT.format(new Date(peticion.slaVence))} ·{" "}
-            {peticion.slaDias} días {peticion.slaHabiles ? "hábiles" : "calendario"}
+            {t("peticion.vence", {
+              fecha: fmt.format(new Date(peticion.slaVence)),
+              dias: peticion.slaDias,
+              tipo: tipoDias,
+            })}
           </p>
         </div>
       </div>

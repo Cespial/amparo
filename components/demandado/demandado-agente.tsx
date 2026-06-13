@@ -16,6 +16,7 @@ import {
   ShieldX,
 } from "lucide-react";
 import type { Caso, SentenciaRef } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 import {
   Dialog,
   DialogContent,
@@ -58,6 +59,7 @@ export function DemandadoAgente({
   onAutorizar,
   onMantener,
 }: DemandadoAgenteProps) {
+  const t = useT("demandado");
   const [analizando, setAnalizando] = useState(false);
   const [analisis, setAnalisis] = useState<AnalisisEPS | null>(null);
 
@@ -98,11 +100,8 @@ export function DemandadoAgente({
         // Degradación: análisis local determinista.
         setAnalisis({
           prob: probBase,
-          reglaAplicable:
-            "El derecho a la salud es fundamental y autónomo; lo prescrito por el médico tratante debe garantizarse (T-760/2008).",
-          razonamiento:
-            "Análisis local. Existe orden del médico tratante y el accionante invoca derechos fundamentales. " +
-            "Según el precedente reiterado, un juez de tutela ampararía con alta probabilidad, por lo que sostener la negación expone a la EPS a un fallo en contra y a un eventual desacato.",
+          reglaAplicable: t("agent.localRule"),
+          razonamiento: t("agent.localReasoning"),
           sentencias: caso.sentenciasAplicables ?? [],
         });
       } finally {
@@ -113,7 +112,7 @@ export function DemandadoAgente({
     return () => {
       activo = false;
     };
-  }, [caso, abierto]);
+  }, [caso, abierto, t]);
 
   if (!caso) return null;
 
@@ -143,13 +142,13 @@ export function DemandadoAgente({
             <span
               className={`rounded-full px-2 py-0.5 text-xs font-medium ${u.clase}`}
             >
-              Urgencia {u.etiqueta}
+              {t("agent.urgencyLabel", { nivel: t(`urgency.${caso.urgencia}`) })}
             </span>
             <Badge variant="outline">{caso.esPBS ? "PBS" : "NO-PBS"}</Badge>
             {caso.demandante.sujetoEspecialProteccion && (
               <Badge variant="outline" className="gap-1">
                 <BadgeCheck className="size-3 text-info" />
-                Especial protección
+                {t("agent.specialProtection")}
               </Badge>
             )}
           </div>
@@ -160,7 +159,7 @@ export function DemandadoAgente({
             {/* Caso */}
             <section>
               <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Hechos
+                {t("agent.facts")}
               </h3>
               <p className="mt-1 text-sm leading-relaxed">{caso.hechos}</p>
             </section>
@@ -180,14 +179,14 @@ export function DemandadoAgente({
                   <Bot className="size-4" />
                 </span>
                 <h3 className="font-heading text-sm font-semibold">
-                  Agente-EPS · análisis costo/riesgo de negar
+                  {t("agent.title")}
                 </h3>
               </div>
 
               {analizando ? (
                 <div className="mt-3 flex items-center gap-2 rounded-xl border bg-muted/40 px-3 py-4 text-sm text-muted-foreground">
                   <Loader2 className="size-4 animate-spin" />
-                  Evaluando precedente, urgencia y exposición procesal…
+                  {t("agent.analyzing")}
                 </div>
               ) : (
                 <div className="mt-3 space-y-3">
@@ -195,10 +194,10 @@ export function DemandadoAgente({
                     <Scale className={`size-5 ${riesgo.clase}`} />
                     <div className="flex-1">
                       <p className={`text-sm font-semibold ${riesgo.clase}`}>
-                        {riesgo.etiqueta}
+                        {t(riesgo.etiquetaKey)}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Probabilidad de amparo estimada
+                        {t("agent.probabilityLabel")}
                       </p>
                     </div>
                     <span
@@ -209,7 +208,7 @@ export function DemandadoAgente({
                   </div>
 
                   <p className="rounded-lg bg-accent/60 px-3 py-2 text-sm font-medium">
-                    {costo.resumen}
+                    {t(costo.resumenKey)}
                   </p>
 
                   {analisis?.razonamiento && (
@@ -219,13 +218,13 @@ export function DemandadoAgente({
                   )}
 
                   <ul className="space-y-1.5">
-                    {costo.riesgos.map((r, i) => (
+                    {costo.riesgos.map((r) => (
                       <li
-                        key={i}
+                        key={r.key}
                         className="flex items-start gap-2 text-sm text-muted-foreground"
                       >
                         <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-warning" />
-                        <span>{r}</span>
+                        <span>{t(r.key, r.vars)}</span>
                       </li>
                     ))}
                   </ul>
@@ -234,7 +233,7 @@ export function DemandadoAgente({
                     <div className="rounded-xl border bg-card p-3">
                       <p className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
                         <Gavel className="size-3.5" />
-                        Precedente aplicable
+                        {t("agent.precedent")}
                       </p>
                       <ul className="mt-2 space-y-1.5">
                         {analisis.sentencias.slice(0, 3).map((s) => (
@@ -265,7 +264,7 @@ export function DemandadoAgente({
             className="gap-2"
           >
             <ShieldX className="size-4" />
-            Mantener negación
+            {t("agent.keepDenial")}
           </Button>
           <Button
             disabled={analizando}
@@ -273,7 +272,7 @@ export function DemandadoAgente({
             className="gap-2"
           >
             <CheckCircle2 className="size-4" />
-            Autorizar servicio
+            {t("agent.authorizeService")}
           </Button>
         </div>
       </DialogContent>

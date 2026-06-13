@@ -12,6 +12,7 @@ import { Volume2, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { hablar, detenerVoz, vozSoportada } from "@/lib/voz";
+import { useT } from "@/lib/i18n";
 
 // El soporte de voz no cambia en runtime: suscripción no-op, SSR -> false.
 const noop = () => () => {};
@@ -44,6 +45,7 @@ export function BotonVoz({
 }: BotonVozProps) {
   const [hablando, setHablando] = useState(false);
   const idRef = useRef(0);
+  const t = useT("common");
 
   // vozSoportada() depende de window → useSyncExternalStore es SSR-safe (server -> false).
   const soportada = useSyncExternalStore(noop, vozSoportada, () => false);
@@ -78,7 +80,7 @@ export function BotonVoz({
   if (!soportada) return null;
 
   const aria =
-    etiqueta ?? (hablando ? "Detener la lectura en voz alta" : "Escuchar en voz alta");
+    etiqueta ?? (hablando ? t("voice.stopAria") : t("voice.listenAria"));
 
   return (
     <Button
@@ -95,12 +97,12 @@ export function BotonVoz({
       {hablando ? (
         <>
           <Square className="size-4" aria-hidden />
-          {conTexto && "Detener"}
+          {conTexto && t("voice.stop")}
         </>
       ) : (
         <>
           <Volume2 className="size-4" aria-hidden />
-          {conTexto && "Escuchar"}
+          {conTexto && t("voice.listen")}
         </>
       )}
     </Button>

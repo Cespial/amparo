@@ -15,9 +15,12 @@ export interface PasoDef {
 export function DemandanteStepper({
   pasos,
   actual,
+  label,
 }: {
   pasos: PasoDef[];
   actual: number;
+  /** Texto "Paso X de N" ya resuelto en el idioma activo. */
+  label: string;
 }) {
   const total = pasos.length;
   const pasoActual = pasos.find((p) => p.id === actual);
@@ -25,10 +28,7 @@ export function DemandanteStepper({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-medium text-muted-foreground">
-          Paso{" "}
-          <span className="font-bold text-primary">{actual}</span> de {total}
-        </p>
+        <p className="text-sm font-medium text-muted-foreground">{label}</p>
         <p className="font-serif text-base font-semibold text-navy sm:hidden">
           {pasoActual?.titulo}
         </p>

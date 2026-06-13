@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { statsPorCodigo, fmt } from "./atlas-data";
+import { useT } from "@/lib/i18n";
 
 interface AtlasPanelContenidoProps {
   codigo: string;
@@ -36,6 +37,7 @@ function PanelContenido({
   casosEnDepto,
   onCerrar,
 }: AtlasPanelContenidoProps) {
+  const t = useT("atlas");
   const st = statsPorCodigo.get(codigo);
   if (!st) return null;
 
@@ -46,7 +48,7 @@ function PanelContenido({
           <div className="flex items-center gap-1.5 text-[#8B949E]">
             <MapPin className="size-4" />
             <span className="text-xs font-medium uppercase tracking-wide">
-              Departamento
+              {t("panel.kicker")}
             </span>
           </div>
           <h3 className="font-heading text-xl font-semibold leading-tight text-[#E6EDF3]">
@@ -57,7 +59,7 @@ function PanelContenido({
           variant="ghost"
           size="icon-sm"
           onClick={onCerrar}
-          aria-label="Cerrar panel"
+          aria-label={t("panel.closeAria")}
           className="hidden text-[#8B949E] hover:bg-white/5 hover:text-[#E6EDF3] lg:inline-flex"
         >
           <X className="size-4" />
@@ -68,13 +70,13 @@ function PanelContenido({
         <Metric
           Icono={Scale}
           tono="text-[#58a6ff]"
-          etiqueta="Tutelas de salud (2023)"
+          etiqueta={t("panel.tutelas")}
           valor={fmt(st.totalTutelas)}
         />
         <Metric
           Icono={TrendingUp}
           tono="text-[#d29922]"
-          etiqueta="Tasa por 10.000 hab."
+          etiqueta={t("panel.rate")}
           valor={fmt(st.tasaPor10k)}
         />
       </div>
@@ -83,7 +85,7 @@ function PanelContenido({
         <div className="mb-2 flex items-center justify-between">
           <span className="flex items-center gap-1.5 text-sm font-medium text-[#E6EDF3]">
             <Hospital className="size-4 text-[#58a6ff]" />
-            IPS de salud
+            {t("panel.ipsHealth")}
           </span>
           <span className="glow-num text-lg font-semibold text-[#E6EDF3]">
             {fmt(st.ipsTotal)}
@@ -106,11 +108,11 @@ function PanelContenido({
         <div className="glow-num mt-2 flex justify-between text-xs text-[#8B949E]">
           <span>
             <span className="text-[#3fb950]">{fmt(st.ipsPublicas)}</span>{" "}
-            públicas
+            {t("panel.ipsPublic")}
           </span>
           <span>
             <span className="text-[#58a6ff]">{fmt(st.ipsPrivadas)}</span>{" "}
-            privadas
+            {t("panel.ipsPrivate")}
           </span>
         </div>
       </div>
@@ -118,7 +120,7 @@ function PanelContenido({
       <Separator className="bg-[#30363D]" />
 
       <div className="flex items-center justify-between text-sm">
-        <span className="text-[#8B949E]">Casos en el demo</span>
+        <span className="text-[#8B949E]">{t("panel.casesInDemo")}</span>
         <Badge
           variant="secondary"
           className="glow-num border border-[#30363D] bg-[#0D1117] text-[#E6EDF3]"
@@ -133,7 +135,7 @@ function PanelContenido({
           className="w-full border border-[#1B6B6D] bg-[#1B6B6D] text-white shadow-[0_0_18px_-4px_rgba(27,107,109,0.8)] hover:bg-[#17585a]"
         >
           <UserPlus className="size-4" />
-          Iniciar un caso aquí
+          {t("panel.startCase")}
         </Button>
         <Button
           render={<Link href="/juez" />}
@@ -141,12 +143,12 @@ function PanelContenido({
           className="w-full border border-[#30363D] bg-[#0D1117] text-[#E6EDF3] hover:border-[#1B6B6D]/60 hover:bg-[#161B22]"
         >
           <Gavel className="size-4" />
-          Ver casos en despacho
+          {t("panel.viewInCourt")}
         </Button>
       </div>
 
       <p className="text-[10px] leading-tight text-[#8B949E]">
-        Datos reales 2023: Corte Constitucional (tutelas) y REPS/MinSalud (IPS).
+        {t("panel.source")}
       </p>
     </div>
   );
@@ -194,6 +196,7 @@ export function AtlasPanelMovil({
   abierto: boolean;
   onOpenChange: (v: boolean) => void;
 }) {
+  const t = useT("atlas");
   const st = statsPorCodigo.get(props.codigo);
   return (
     <Sheet open={abierto} onOpenChange={onOpenChange}>
@@ -202,11 +205,8 @@ export function AtlasPanelMovil({
         className="max-h-[85vh] overflow-auto border-[#30363D] bg-[#161B22] text-[#E6EDF3] lg:hidden"
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>{st?.nombre ?? "Departamento"}</SheetTitle>
-          <SheetDescription>
-            Estadísticas reales de tutelas de salud por departamento (2023,
-            Corte Constitucional) e IPS (REPS).
-          </SheetDescription>
+          <SheetTitle>{st?.nombre ?? t("panel.sheetFallbackTitle")}</SheetTitle>
+          <SheetDescription>{t("panel.sheetDescription")}</SheetDescription>
         </SheetHeader>
         <div className="px-4 pb-6">
           <PanelContenido {...props} />

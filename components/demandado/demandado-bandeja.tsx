@@ -5,6 +5,7 @@
 
 import { AlertTriangle, ChevronRight, Inbox } from "lucide-react";
 import type { Caso } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 import { Badge } from "@/components/ui/badge";
 import { PeticionReloj } from "@/components/demandante/peticion-reloj";
 import {
@@ -60,16 +61,17 @@ export function DemandadoBandeja({
   onAbrir,
   procesandoId,
 }: DemandadoBandejaProps) {
+  const t = useT("demandado");
+
   if (casos.length === 0) {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed bg-card/60 px-6 py-14 text-center">
         <span className="flex size-12 items-center justify-center rounded-full bg-success/10 text-success">
           <Inbox className="size-6" />
         </span>
-        <p className="font-medium">Bandeja al día</p>
+        <p className="font-medium">{t("inbox.emptyTitle")}</p>
         <p className="max-w-sm text-sm text-muted-foreground">
-          No hay reclamaciones en negociación. Los casos resueltos no vuelven a
-          la cola.
+          {t("inbox.emptyBody")}
         </p>
       </div>
     );
@@ -105,7 +107,7 @@ export function DemandadoBandeja({
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${u.clase}`}
                   >
-                    {u.etiqueta}
+                    {t(`urgency.${caso.urgencia}`)}
                   </span>
                 </div>
                 <p className="line-clamp-2 text-sm text-muted-foreground">
@@ -119,7 +121,7 @@ export function DemandadoBandeja({
                   {r.recomendacion === "ceder" && (
                     <span className="inline-flex items-center gap-1 text-xs font-medium text-danger">
                       <AlertTriangle className="size-3.5" />
-                      Ceder
+                      {t("inbox.cede")}
                     </span>
                   )}
                 </div>
@@ -134,11 +136,11 @@ export function DemandadoBandeja({
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead>Paciente</TableHead>
-              <TableHead>Servicio negado</TableHead>
-              <TableHead>Urgencia</TableHead>
-              <TableHead>Prob. de amparo</TableHead>
-              <TableHead className="text-right">Acción EPS</TableHead>
+              <TableHead>{t("inbox.colPatient")}</TableHead>
+              <TableHead>{t("inbox.colService")}</TableHead>
+              <TableHead>{t("inbox.colUrgency")}</TableHead>
+              <TableHead>{t("inbox.colProbability")}</TableHead>
+              <TableHead className="text-right">{t("inbox.colAction")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -180,7 +182,7 @@ export function DemandadoBandeja({
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs font-medium ${u.clase}`}
                     >
-                      {u.etiqueta}
+                      {t(`urgency.${caso.urgencia}`)}
                     </span>
                   </TableCell>
                   <TableCell>
@@ -191,12 +193,12 @@ export function DemandadoBandeja({
                       {r.recomendacion === "ceder" ? (
                         <Badge variant="destructive" className="gap-1">
                           <AlertTriangle className="size-3" />
-                          Ceder
+                          {t("inbox.cede")}
                         </Badge>
                       ) : r.recomendacion === "evaluar" ? (
-                        <Badge variant="outline">Evaluar</Badge>
+                        <Badge variant="outline">{t("inbox.evaluate")}</Badge>
                       ) : (
-                        <Badge variant="secondary">Sostenible</Badge>
+                        <Badge variant="secondary">{t("inbox.sustainable")}</Badge>
                       )}
                       <ChevronRight className="size-4 text-muted-foreground" />
                     </span>

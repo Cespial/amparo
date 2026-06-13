@@ -11,6 +11,7 @@ import {
   umbralesLeyenda,
   fmt,
 } from "./atlas-data";
+import { useT } from "@/lib/i18n";
 
 interface AtlasLeyendaProps {
   metrica: MetricaAtlas;
@@ -26,6 +27,7 @@ export function AtlasLeyenda({
   mostrarIps,
   onToggleIps,
 }: AtlasLeyendaProps) {
+  const t = useT("atlas");
   const cortes = umbralesLeyenda(metrica);
   const sufijo = METRICAS[metrica].sufijo;
 
@@ -48,7 +50,7 @@ export function AtlasLeyenda({
                   : "h-8 border border-[#30363D] bg-[#0D1117] px-2.5 text-xs text-[#8B949E] hover:border-[#1B6B6D]/60 hover:bg-[#161B22] hover:text-[#E6EDF3]"
               }
             >
-              {METRICAS[m].etiqueta}
+              {t(`metrics.${m}.label`)}
             </Button>
           );
         })}
@@ -56,7 +58,7 @@ export function AtlasLeyenda({
 
       <div>
         <p className="mb-1.5 text-[11px] font-medium text-[#8B949E]">
-          {METRICAS[metrica].descripcion}
+          {t(`metrics.${metrica}.description`)}
         </p>
         {/* Rampa teal→rojo, con anillo sutil para legibilidad sobre fondo dark. */}
         <div className="flex h-3 overflow-hidden rounded-full ring-1 ring-white/10">
@@ -65,14 +67,14 @@ export function AtlasLeyenda({
           ))}
         </div>
         <div className="glow-num mt-1.5 flex justify-between text-[10px] text-[#8B949E]">
-          <span className="text-[#2BD9C0]">menor</span>
+          <span className="text-[#2BD9C0]">{t("legend.lower")}</span>
           {cortes.map((c, i) => (
             <span key={i}>
               {fmt(c)}
               {sufijo}
             </span>
           ))}
-          <span className="text-[#f06a5e]">mayor</span>
+          <span className="text-[#f06a5e]">{t("legend.higher")}</span>
         </div>
       </div>
       {/* Toggle de la capa de puntos de IPS por municipio. */}
@@ -100,7 +102,7 @@ export function AtlasLeyenda({
                   : "text-xs font-medium text-[#8B949E]"
               }
             >
-              Mostrar IPS
+              {t("legend.toggleIps")}
             </span>
           </span>
           {/* Track del switch. */}
@@ -121,16 +123,12 @@ export function AtlasLeyenda({
           </span>
         </button>
         <p className="mt-1.5 text-[10px] leading-tight text-[#8B949E]">
-          {mostrarIps
-            ? "Cada punto es un municipio; su tamaño crece con el nº de IPS (REPS). Pasa el cursor para ver el detalle."
-            : "Capa de IPS por municipio (centroides DANE + conteo REPS)."}
+          {mostrarIps ? t("legend.ipsOn") : t("legend.ipsOff")}
         </p>
       </div>
 
       <p className="text-[10px] leading-tight text-[#8B949E]">
-        Datos reales 2023: tutelas de salud (Corte Constitucional, datos.gov.co;
-        validado vs Defensoría) e IPS (REPS / MinSalud). Centroides municipales
-        DANE.
+        {t("legend.source")}
       </p>
     </div>
   );

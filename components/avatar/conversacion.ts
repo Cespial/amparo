@@ -11,6 +11,7 @@
  */
 
 import type { Caso, TipoServicio } from "@/lib/types";
+import type { TFunction } from "@/lib/i18n";
 
 /** Fases del flujo de UNA pregunta a la vez. */
 export type Fase =
@@ -108,29 +109,18 @@ export function msg(autor: Autor, texto: string): Mensaje {
   return { id: nuevoId(), autor, texto };
 }
 
-export const SALUDO =
-  "Hola, soy Amparo. Estoy aquí para ayudarte, con calma y en palabras sencillas. Cuéntame: ¿qué servicio de salud te negó tu EPS?";
-
-/** Frase con la que Amparo confirma un campo concreto. */
+/**
+ * Frase con la que Amparo confirma un campo concreto, resuelta en el idioma
+ * activo vía la función de traducción `t` del namespace "asistente".
+ */
 export function fraseConfirmacion(
+  t: TFunction,
   campo: CampoConfirmable,
   datos: EstructuracionOutput,
 ): string {
   const valor = (datos[campo] ?? "").trim();
-  switch (campo) {
-    case "eps":
-      return valor
-        ? `Entendido. Tu EPS es ${valor}, ¿es correcto?`
-        : "No alcancé a entender el nombre de tu EPS. ¿Me dices cuál es?";
-    case "servicioNegado":
-      return valor
-        ? `Y lo que te negaron es: ${valor}. ¿Está bien así?`
-        : "¿Qué servicio exactamente te negó tu EPS?";
-    case "diagnostico":
-      return valor
-        ? `Anoté tu diagnóstico como: ${valor}. ¿Lo dejo así?`
-        : "Si tienes un diagnóstico del médico, dímelo. Si no, puedes dejarlo vacío y seguimos.";
-  }
+  const sub = valor ? "withValue" : "empty";
+  return t(`confirm.${campo}.${sub}`, valor ? { valor } : undefined);
 }
 
 /** Mapea TipoServicio a partir del texto si /api/estructurar no lo trae. */
@@ -199,32 +189,41 @@ export function construirCaso(datos: EstructuracionOutput): Caso {
   };
 }
 
-/** Frase hablada del veredicto del triaje (sin jerga jurídica). */
-export function fraseVeredicto(t: TriajeResultado): string {
-  if (t.veredicto === "inadmisible") {
-    return "Revisé tu caso. Con lo que me contaste, todavía no veo clara la procedencia de una tutela. No te preocupes: hay otros caminos y te acompaño igual.";
+/**
+ * Frase hablada del veredicto del triaje (sin jerga jurídica), resuelta en el
+ * idioma activo vía la función de traducción `t` del namespace "asistente".
+ */
+export function fraseVeredicto(t: TFunction, r: TriajeResultado): string {
+  if (r.veredicto === "inadmisible") {
+    return t("verdict.inadmissible");
   }
   const matiz =
-    t.veredicto === "admisible_con_reservas"
-      ? "Tu tutela podría proceder, con un par de detalles por afinar."
-      : "Buenas noticias: tu tutela procede.";
+    r.veredicto === "admisible_con_reservas"
+      ? t("verdict.mayProceed")
+      : t("verdict.proceeds");
   const ruta =
-    t.rutaRecomendada === "tutela"
-      ? "Lo más conveniente es ir por la acción de tutela."
-      : "Conviene primero intentar resolverlo directamente con tu EPS.";
+    r.rutaRecomendada === "tutela"
+      ? t("verdict.routeTutela")
+      : t("verdict.routeEps");
   return `${matiz} ${ruta}`;
 }
 
-/** Frase hablada de la predicción (probabilidad + sentencia citada). */
-export function frasePrediccion(p: PrediccionResultado): string {
+/**
+ * Frase hablada de la predicción (probabilidad + sentencia citada), resuelta
+ * en el idioma activo vía la función de traducción `t` del namespace
+ * "asistente".
+ */
+export function frasePrediccion(t: TFunction, p: PrediccionResultado): string {
   const pct = Math.round(p.probabilidadAmparo);
   const cita = p.sentenciasCitadas[0];
-  const refSentencia = cita
-    ? ` Me apoyo en la Sentencia ${formatearSentencia(cita.id)}${
-        cita.anio ? ` de ${cita.anio}` : ""
-      }.`
-    : "";
-  return `Tu caso tiene cerca de un ${pct} por ciento de probabilidad de que un juez ampare tu derecho.${refSentencia}`;
+  let ref = "";
+  if (cita) {
+    const anio = cita.anio ? t("prediction.year", { anio: cita.anio }) : "";
+    ref = t("prediction.ref", {
+      sentencia: `${formatearSentencia(cita.id)}${anio}`,
+    });
+  }
+  return t("prediction.base", { pct, ref });
 }
 
 /** Normaliza "T-760/2008" -> "T-760 de 2008" para que suene natural. */

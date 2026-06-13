@@ -24,6 +24,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 import {
   AvatarAmparo,
   type AvatarAmparoHandle,
@@ -38,7 +39,6 @@ import {
   fraseVeredicto,
   msg,
   PASOS_CONFIRMACION,
-  SALUDO,
   type EstadoConversacion,
   type EstructuracionOutput,
   type Mensaje,
@@ -100,6 +100,7 @@ function reducer(
 // --- Componente --------------------------------------------------------------
 
 export function AsistenteAmparo() {
+  const t = useT("asistente");
   const [estado, dispatch] = useReducer(reducer, ESTADO_INICIAL);
   const [borrador, setBorrador] = useState("");
   const [hablando, setHablando] = useState(false);
@@ -123,14 +124,14 @@ export function AsistenteAmparo() {
   useEffect(() => {
     if (iniciadoRef.current) return;
     iniciadoRef.current = true;
-    const t = window.setTimeout(() => {
+    const timer = window.setTimeout(() => {
       void (async () => {
-        await amparoDice(SALUDO);
+        await amparoDice(t("say.greeting"));
         dispatch({ tipo: "fase", fase: "relato" });
       })();
     }, 400);
-    return () => window.clearTimeout(t);
-  }, [amparoDice]);
+    return () => window.clearTimeout(timer);
+  }, [amparoDice, t]);
 
   // Auto-scroll del hilo al último mensaje.
   useEffect(() => {
@@ -217,16 +218,14 @@ export function AsistenteAmparo() {
       if (!triaje) {
         dispatch({
           tipo: "error",
-          mensaje: "No pude evaluar tu caso en este momento.",
+          mensaje: t("say.triageFailed"),
         });
-        await amparoDice(
-          "Tuve un problema evaluando tu caso. Intentémoslo de nuevo en un momento.",
-        );
+        await amparoDice(t("say.triageFailed"));
         return;
       }
       dispatch({ tipo: "triaje", triaje });
       dispatch({ tipo: "fase", fase: "triaje" });
-      await amparoDice(fraseVeredicto(triaje));
+      await amparoDice(fraseVeredicto(t, triaje));
 
       // Predicción
       dispatch({ tipo: "fase", fase: "prediciendo" });
@@ -234,48 +233,44 @@ export function AsistenteAmparo() {
       if (prediccion) {
         dispatch({ tipo: "prediccion", prediccion });
         dispatch({ tipo: "fase", fase: "prediccion" });
-        await amparoDice(frasePrediccion(prediccion));
+        await amparoDice(frasePrediccion(t, prediccion));
       }
 
       // Cierre
       dispatch({ tipo: "fase", fase: "cierre" });
-      await amparoDice(
-        "Eso es todo lo que necesitaba por ahora. Cuando quieras, seguimos con tu expediente completo para preparar tu tutela.",
-      );
+      await amparoDice(t("say.closing"));
     },
-    [amparoDice, llamarPredecir, llamarTriaje],
+    [amparoDice, llamarPredecir, llamarTriaje, t],
   );
 
   /** Hace la pregunta de confirmación del paso actual (o pasa al análisis). */
   const preguntarSiguienteConfirmacion = useCallback(
     async (paso: number, datos: EstructuracionOutput) => {
       if (paso >= PASOS_CONFIRMACION.length) {
-        await amparoDice("Perfecto, ya tengo lo esencial. Déjame revisarlo.");
+        await amparoDice(t("say.gotEssentials"));
         await correrAnalisis(datos);
         return;
       }
       dispatch({ tipo: "fase", fase: "confirmar" });
       await amparoDice(
-        fraseConfirmacion(PASOS_CONFIRMACION[paso].campo, datos),
+        fraseConfirmacion(t, PASOS_CONFIRMACION[paso].campo, datos),
       );
     },
-    [amparoDice, correrAnalisis],
+    [amparoDice, correrAnalisis, t],
   );
 
   /** Procesa el primer relato del usuario. */
   const procesarRelato = useCallback(
     async (relato: string) => {
       dispatch({ tipo: "fase", fase: "estructurando" });
-      await amparoDice("Gracias por contarme. Dame un momento, lo organizo.");
+      await amparoDice(t("say.organizing"));
       const out = await llamarEstructurar(relato);
       if (!out) {
         dispatch({
           tipo: "error",
-          mensaje: "No pude organizar tu relato.",
+          mensaje: t("say.organizeFailed"),
         });
-        await amparoDice(
-          "No logré organizar tu relato. ¿Puedes contármelo de otra forma?",
-        );
+        await amparoDice(t("say.organizeFailed"));
         dispatch({ tipo: "fase", fase: "relato" });
         return;
       }
@@ -287,7 +282,7 @@ export function AsistenteAmparo() {
       dispatch({ tipo: "datos", datos });
       await preguntarSiguienteConfirmacion(0, datos);
     },
-    [amparoDice, llamarEstructurar, preguntarSiguienteConfirmacion],
+    [amparoDice, llamarEstructurar, preguntarSiguienteConfirmacion, t],
   );
 
   /** Maneja la respuesta del usuario en la fase de confirmación. */
@@ -309,7 +304,7 @@ export function AsistenteAmparo() {
       if (negativo) {
         // Pide la corrección explícita y se queda en el mismo paso.
         await amparoDice(
-          `Sin problema. Dime entonces cuál es ${PASOS_CONFIRMACION[paso].etiqueta}.`,
+          t("say.askAgain", { etiqueta: t(`confirm.label.${campo}`) }),
         );
         return;
       }
@@ -318,7 +313,7 @@ export function AsistenteAmparo() {
         // El usuario dio un valor nuevo/corregido directamente.
         dispatch({ tipo: "patchDato", campo, valor: limpio });
         datosActuales = { ...estado.datos, [campo]: limpio };
-        await amparoDice("Listo, lo anoté así.");
+        await amparoDice(t("say.noted"));
       }
 
       dispatch({ tipo: "avanzarConfirmacion" });
@@ -329,6 +324,7 @@ export function AsistenteAmparo() {
       estado.datos,
       estado.pasoConfirmacion,
       preguntarSiguienteConfirmacion,
+      t,
     ],
   );
 
@@ -386,11 +382,21 @@ export function AsistenteAmparo() {
 
   const placeholder =
     estado.fase === "confirmar"
-      ? "Responde sí, o escribe la corrección…"
-      : "Escribe aquí lo que te pasó… (o usa el micrófono)";
+      ? t("input.placeholderConfirmar")
+      : t("input.placeholderRelato");
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-6">
+      {/* Encabezado de la página */}
+      <header className="mb-2 text-center">
+        <h1 className="font-serif text-3xl font-bold tracking-tight text-navy sm:text-4xl">
+          {t("page.title")}
+        </h1>
+        <p className="mx-auto mt-2 max-w-xl text-balance text-muted-foreground">
+          {t("page.subtitle")}
+        </p>
+      </header>
+
       {/* Avatar centrado arriba */}
       <div className="flex flex-col items-center gap-3 pt-2">
         <AvatarAmparo
@@ -402,16 +408,16 @@ export function AsistenteAmparo() {
         <div className="flex items-center gap-2" aria-live="polite">
           <Badge variant="secondary" className="gap-1.5 font-medium">
             <Sparkles className="size-3.5" aria-hidden="true" />
-            Amparo
+            {t("avatar.name")}
           </Badge>
           <span className="text-sm text-muted-foreground">
             {estadoAvatar === "hablando"
-              ? "está hablando…"
+              ? t("avatar.speaking")
               : estadoAvatar === "pensando"
-                ? "está pensando…"
+                ? t("avatar.thinking")
                 : estadoAvatar === "escuchando"
-                  ? "te está escuchando…"
-                  : "tu asistente de salud"}
+                  ? t("avatar.listening")
+                  : t("avatar.idle")}
           </span>
         </div>
       </div>
@@ -421,15 +427,15 @@ export function AsistenteAmparo() {
         ref={hiloRef}
         className="flex max-h-[46vh] w-full flex-col gap-3 overflow-y-auto rounded-2xl border bg-card/60 p-4"
         aria-live="polite"
-        aria-label="Conversación con Amparo"
+        aria-label={t("thread.label")}
       >
         {estado.mensajes.length === 0 && (
           <p className="py-6 text-center text-sm text-muted-foreground">
-            Amparo está a punto de saludarte…
+            {t("thread.aboutToGreet")}
           </p>
         )}
         {estado.mensajes.map((m) => (
-          <Burbuja key={m.id} mensaje={m} />
+          <Burbuja key={m.id} mensaje={m} t={t} />
         ))}
 
         {/* Indicador de "pensando" mientras se llaman las APIs */}
@@ -440,7 +446,7 @@ export function AsistenteAmparo() {
             <span className="flex gap-1">
               <Punto /> <Punto delay="0.15s" /> <Punto delay="0.3s" />
             </span>
-            <span className="sr-only">Amparo está procesando</span>
+            <span className="sr-only">{t("avatar.processing")}</span>
           </div>
         )}
       </div>
@@ -449,7 +455,7 @@ export function AsistenteAmparo() {
       {estado.fase === "cierre" && (
         <div className="flex w-full flex-col gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm font-medium text-navy">
-            ¿Listo para preparar tu tutela con todo el detalle?
+            {t("closing.question")}
           </p>
           <a
             href="/demandante"
@@ -459,7 +465,7 @@ export function AsistenteAmparo() {
             )}
           >
             <FileText className="size-5" aria-hidden="true" />
-            Continuar a mi expediente
+            {t("closing.cta")}
             <ArrowRight className="size-5" aria-hidden="true" />
           </a>
         </div>
@@ -481,7 +487,7 @@ export function AsistenteAmparo() {
               disabled={!puedeEscribir}
               placeholder={placeholder}
               rows={2}
-              aria-label="Tu respuesta para Amparo"
+              aria-label={t("input.ariaInput")}
               className="min-h-[3rem] resize-none border-0 bg-transparent text-base shadow-none focus-visible:ring-0"
             />
             {dictado.soportado && (
@@ -493,7 +499,9 @@ export function AsistenteAmparo() {
                 disabled={ocupado && !dictado.escuchando}
                 aria-pressed={dictado.escuchando}
                 aria-label={
-                  dictado.escuchando ? "Detener micrófono" : "Hablar por micrófono"
+                  dictado.escuchando
+                    ? t("input.ariaMicStop")
+                    : t("input.ariaMicStart")
                 }
                 className="size-12 shrink-0 rounded-xl"
               >
@@ -509,7 +517,7 @@ export function AsistenteAmparo() {
               size="icon-lg"
               onClick={() => void enviar()}
               disabled={!puedeEscribir || !borrador.trim()}
-              aria-label="Enviar respuesta"
+              aria-label={t("input.ariaSend")}
               className="size-12 shrink-0 rounded-xl"
             >
               <Send className="size-5" aria-hidden="true" />
@@ -524,11 +532,11 @@ export function AsistenteAmparo() {
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
             >
               <Volume2 className="size-3.5" aria-hidden="true" />
-              Repetir lo último que dijo Amparo
+              {t("input.repeat")}
             </button>
             {dictado.escuchando && (
               <span className="text-xs font-medium text-success">
-                Escuchando… habla con tranquilidad
+                {t("input.listeningHint")}
               </span>
             )}
           </div>
@@ -540,7 +548,13 @@ export function AsistenteAmparo() {
 
 // --- Subcomponentes ----------------------------------------------------------
 
-function Burbuja({ mensaje }: { mensaje: Mensaje }) {
+function Burbuja({
+  mensaje,
+  t,
+}: {
+  mensaje: Mensaje;
+  t: ReturnType<typeof useT>;
+}) {
   const esAmparo = mensaje.autor === "amparo";
   return (
     <div
@@ -557,8 +571,8 @@ function Burbuja({ mensaje }: { mensaje: Mensaje }) {
             : "rounded-br-sm bg-primary text-primary-foreground",
         )}
       >
-        {!esAmparo && <span className="sr-only">Tú dijiste: </span>}
-        {esAmparo && <span className="sr-only">Amparo dijo: </span>}
+        {!esAmparo && <span className="sr-only">{t("thread.youSaid")}</span>}
+        {esAmparo && <span className="sr-only">{t("thread.amparoSaid")}</span>}
         {mensaje.texto}
       </div>
     </div>

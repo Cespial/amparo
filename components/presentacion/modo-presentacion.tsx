@@ -15,46 +15,29 @@ import {
   ChevronRight,
   Presentation,
 } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 interface Paso {
-  titulo: string;
-  frase: string;
+  /** Clave de título en el namespace common ("present.sN.title"). */
+  tituloKey: string;
+  /** Clave de frase en el namespace common ("present.sN.phrase"). */
+  fraseKey: string;
   ruta: string;
 }
 
 // Guion del demo — cinco actos, cada uno con su ruta destino.
+// Las cadenas viven en el diccionario (common), aquí solo las claves + ruta.
 const PASOS: Paso[] = [
-  {
-    titulo: "El problema",
-    frase:
-      "Colombia: 197.737 tutelas de salud en 2023; el 80% se ganan porque ya eran un derecho.",
-    ruta: "/atlas",
-  },
-  {
-    titulo: "La persona",
-    frase:
-      "Amparo, 68 años, cuenta su caso —hablando— y la IA lo estructura.",
-    ruta: "/demandante",
-  },
-  {
-    titulo: "El pronóstico",
-    frase: "Predicción citada en jurisprudencia real: T-760/2008.",
-    ruta: "/demandante",
-  },
-  {
-    titulo: "Resolver sin juez",
-    frase: "La EPS cede ante el costo de negar. Descongestión.",
-    ruta: "/demandado",
-  },
-  {
-    titulo: "El juez decide",
-    frase: "Fallo sugerido y fundamentado. El humano firma.",
-    ruta: "/juez",
-  },
+  { tituloKey: "present.s1.title", fraseKey: "present.s1.phrase", ruta: "/atlas" },
+  { tituloKey: "present.s2.title", fraseKey: "present.s2.phrase", ruta: "/demandante" },
+  { tituloKey: "present.s3.title", fraseKey: "present.s3.phrase", ruta: "/demandante" },
+  { tituloKey: "present.s4.title", fraseKey: "present.s4.phrase", ruta: "/demandado" },
+  { tituloKey: "present.s5.title", fraseKey: "present.s5.phrase", ruta: "/juez" },
 ];
 
 export function ModoPresentacion() {
   const router = useRouter();
+  const t = useT("common");
   const [activo, setActivo] = useState(false);
   const [paso, setPaso] = useState(0);
 
@@ -107,12 +90,12 @@ export function ModoPresentacion() {
       <button
         type="button"
         onClick={iniciar}
-        aria-label="Iniciar modo presentación"
+        aria-label={t("present.launchAria")}
         className="presentacion-launcher inline-flex items-center gap-2 rounded-full border border-[#30363D] bg-[#161B22]/90 px-4 py-2.5 text-sm font-medium text-[#E6EDF3] shadow-[0_8px_30px_-12px_rgba(0,0,0,0.8)] backdrop-blur transition-colors hover:border-[#1B6B6D] hover:bg-[#161B22]"
       >
         <Play className="size-4 fill-[#1B6B6D] text-[#1B6B6D]" aria-hidden />
-        <span className="hidden sm:inline">Modo presentación</span>
-        <span className="sm:hidden">Presentar</span>
+        <span className="hidden sm:inline">{t("present.launch")}</span>
+        <span className="sm:hidden">{t("present.launchShort")}</span>
       </button>
     );
   }
@@ -123,7 +106,7 @@ export function ModoPresentacion() {
       className="presentacion-overlay"
       role="dialog"
       aria-modal="true"
-      aria-label="Modo presentación"
+      aria-label={t("present.dialogAria")}
       onClick={(e) => {
         if (e.target === e.currentTarget) salir();
       }}
@@ -132,7 +115,7 @@ export function ModoPresentacion() {
         <div className="mb-3 flex items-center justify-between gap-3">
           <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#1B6B6D]">
             <Presentation className="size-4" aria-hidden />
-            Demo guiado
+            {t("present.guidedDemo")}
           </span>
           <div className="flex items-center gap-3">
             <span className="glow-num text-xs text-[#8B949E]">
@@ -141,7 +124,7 @@ export function ModoPresentacion() {
             <button
               type="button"
               onClick={salir}
-              aria-label="Salir del modo presentación (Esc)"
+              aria-label={t("present.exitAria")}
               className="grid size-8 place-items-center rounded-full text-[#8B949E] transition-colors hover:bg-white/5 hover:text-[#E6EDF3]"
             >
               <X className="size-4" />
@@ -150,10 +133,10 @@ export function ModoPresentacion() {
         </div>
 
         <h2 className="font-heading text-2xl font-semibold leading-tight text-[#E6EDF3]">
-          {actual.titulo}
+          {t(actual.tituloKey)}
         </h2>
         <p className="mt-2 text-[15px] leading-relaxed text-[#8B949E] text-pretty">
-          {actual.frase}
+          {t(actual.fraseKey)}
         </p>
 
         {/* Indicador de progreso por pasos. */}
@@ -182,7 +165,7 @@ export function ModoPresentacion() {
             className="inline-flex items-center gap-1.5 rounded-full border border-[#30363D] bg-[#0D1117] px-4 py-2 text-sm font-medium text-[#E6EDF3] transition-colors hover:border-[#1B6B6D]/60 hover:bg-[#161B22] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="size-4" />
-            Anterior
+            {t("action.previous")}
           </button>
 
           {paso < total - 1 ? (
@@ -191,7 +174,7 @@ export function ModoPresentacion() {
               onClick={siguiente}
               className="inline-flex items-center gap-1.5 rounded-full border border-[#1B6B6D] bg-[#1B6B6D] px-5 py-2 text-sm font-semibold text-white shadow-[0_0_18px_-4px_rgba(27,107,109,0.9)] transition-colors hover:bg-[#17585a]"
             >
-              Siguiente
+              {t("action.next")}
               <ChevronRight className="size-4" />
             </button>
           ) : (
@@ -200,13 +183,13 @@ export function ModoPresentacion() {
               onClick={salir}
               className="inline-flex items-center gap-1.5 rounded-full border border-[#1B6B6D] bg-[#1B6B6D] px-5 py-2 text-sm font-semibold text-white shadow-[0_0_18px_-4px_rgba(27,107,109,0.9)] transition-colors hover:bg-[#17585a]"
             >
-              Terminar
+              {t("action.finish")}
             </button>
           )}
         </div>
 
         <p className="mt-3 text-center text-[10px] text-[#8B949E]">
-          Usa ← / → para navegar · Esc para salir
+          {t("present.keyboardHint")}
         </p>
       </div>
     </div>

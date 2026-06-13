@@ -52,7 +52,8 @@ import {
 import { cn } from "@/lib/utils";
 import type { Caso, EventoCaso, SentenciaRef } from "@/lib/types";
 import { useCasoStore } from "@/lib/store";
-import { progresoDeEstado, ETIQUETA_ESTADO } from "@/lib/progreso";
+import { useT, type TFunction } from "@/lib/i18n";
+import { progresoDeEstado } from "@/lib/progreso";
 import type { TriajeResultado, EstadoCriterio } from "@/lib/ai/triaje";
 import type { PrediccionResultado } from "@/lib/ai/predictor";
 import { Expediente } from "@/components/transparencia/expediente";
@@ -67,16 +68,18 @@ interface Props {
   onCerrar: () => void;
 }
 
-const ETIQUETA_CRITERIO: Record<string, string> = {
-  derechoFundamental: "Derecho fundamental",
-  legitimacion: "Legitimación por activa",
-  subsidiariedad: "Subsidiariedad",
-  inmediatez: "Inmediatez",
-  noTemeridad: "No temeridad",
-  hechoSuperado: "Vigencia (sin hecho superado)",
+/** Mapa criterio de triaje → clave i18n (detail.crit*) del namespace "juez". */
+const CRITERIO_I18N: Record<string, string> = {
+  derechoFundamental: "detail.critFundamental",
+  legitimacion: "detail.critLegitimacion",
+  subsidiariedad: "detail.critSubsidiariedad",
+  inmediatez: "detail.critInmediatez",
+  noTemeridad: "detail.critNoTemeridad",
+  hechoSuperado: "detail.critHechoSuperado",
 };
 
 export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
+  const t = useT("juez");
   const updateCaso = useCasoStore((s) => s.updateCaso);
   const addEvento = useCasoStore((s) => s.addEvento);
 
@@ -115,10 +118,10 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
       if (tRes.ok) setTriaje(await tRes.json());
       if (pRes.ok) setPrediccion(await pRes.json());
       if (!tRes.ok && !pRes.ok) {
-        toast.warning("El estudio asistido por IA no está disponible ahora.");
+        toast.warning(t("detail.studyUnavailable"));
       }
     } catch {
-      toast.error("No se pudo contactar el módulo de estudio.");
+      toast.error(t("detail.studyContactError"));
     } finally {
       setCargandoEstudio(false);
     }
@@ -136,12 +139,12 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
       if (res.ok) {
         const data = await res.json();
         setFallo(data.documento as string);
-        toast.success("Proyecto de fallo generado.");
+        toast.success(t("detail.rulingGeneratedToast"));
       } else {
-        toast.warning("El generador de fallos no está disponible ahora.");
+        toast.warning(t("detail.rulingUnavailable"));
       }
     } catch {
-      toast.error("No se pudo generar el proyecto de fallo.");
+      toast.error(t("detail.rulingGenError"));
     } finally {
       setCargandoFallo(false);
     }
@@ -160,16 +163,16 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
       tipo: "fallo",
       estado: "FALLADO",
       actor: "juez",
-      titulo: "Fallo firmado por el despacho",
+      titulo: t("detail.signEventTitle"),
       detalle:
         prediccion && prediccion.probabilidadAmparo >= 50
-          ? "Se TUTELAN los derechos fundamentales invocados y se ordena el servicio de salud."
-          : "Sentencia proferida por el despacho judicial.",
+          ? t("detail.signEventGranted")
+          : t("detail.signEventGeneric"),
     };
     addEvento(caso.id, evento);
     setConfirmarOpen(false);
-    toast.success("Fallo firmado y notificado.", {
-      description: `${caso.demandante.nombre} · ${ETIQUETA_ESTADO.FALLADO}`,
+    toast.success(t("detail.signedToast"), {
+      description: `${caso.demandante.nombre} · ${t("estado.FALLADO")}`,
     });
     onCerrar();
   }
@@ -206,7 +209,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
             <UrgenciaBadge urgencia={caso.urgencia} />
             {caso.demandante.sujetoEspecialProteccion && (
               <Badge className="border-0 bg-white/10 font-medium text-navy-foreground">
-                Sujeto de especial protección
+                {t("detail.specialProtection")}
               </Badge>
             )}
           </div>
@@ -219,35 +222,51 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm">
                   <Stethoscope className="size-4 text-primary" />
-                  Resumen del caso
+                  {t("detail.summaryTitle")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <Dato icon={<User className="size-3.5" />} label="Accionante">
-                  {caso.demandante.nombre}, {caso.demandante.edad} años ·{" "}
-                  {caso.demandante.ciudad} ({caso.demandante.departamento}) ·
-                  régimen {caso.demandante.regimen}
+                <Dato
+                  icon={<User className="size-3.5" />}
+                  label={t("detail.claimant")}
+                >
+                  {t("detail.claimantValue", {
+                    nombre: caso.demandante.nombre,
+                    edad: caso.demandante.edad,
+                    ciudad: caso.demandante.ciudad,
+                    departamento: caso.demandante.departamento,
+                    regimen: caso.demandante.regimen,
+                  })}
                 </Dato>
-                <Dato icon={<Scale3d className="size-3.5" />} label="Accionada">
-                  {caso.demandado.nombre} ({caso.demandado.tipo})
+                <Dato
+                  icon={<Scale3d className="size-3.5" />}
+                  label={t("detail.respondent")}
+                >
+                  {t("detail.respondentValue", {
+                    nombre: caso.demandado.nombre,
+                    tipo: caso.demandado.tipo,
+                  })}
                 </Dato>
                 <Dato
                   icon={<Stethoscope className="size-3.5" />}
-                  label="Servicio negado"
+                  label={t("detail.deniedService")}
                 >
-                  {caso.servicioNegado} · {caso.diagnostico} ·{" "}
-                  {caso.esPBS ? "incluido en PBS" : "NO PBS"}
+                  {t("detail.deniedServiceValue", {
+                    servicio: caso.servicioNegado,
+                    diagnostico: caso.diagnostico,
+                    pbs: caso.esPBS ? t("detail.inPbs") : t("detail.notPbs"),
+                  })}
                 </Dato>
                 <Separator />
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
-                    Hechos
+                    {t("detail.facts")}
                   </p>
                   <p className="mt-0.5 leading-relaxed">{caso.hechos}</p>
                 </div>
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
-                    Pretensión
+                    {t("detail.claim")}
                   </p>
                   <p className="mt-0.5 leading-relaxed">{caso.pretension}</p>
                 </div>
@@ -269,9 +288,9 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm">
                   <Scale className="size-4 text-info" />
-                  Triaje de admisibilidad
+                  {t("detail.triageTitle")}
                   <Badge variant="ghost" className="ml-auto gap-1 text-muted-foreground">
-                    <Sparkles className="size-3" /> IA
+                    <Sparkles className="size-3" /> {t("detail.aiBadge")}
                   </Badge>
                 </CardTitle>
               </CardHeader>
@@ -281,12 +300,15 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                 ) : triaje ? (
                   <>
                     <div className="flex items-center gap-2">
-                      <VeredictoBadge veredicto={triaje.veredicto} />
+                      <VeredictoBadge veredicto={triaje.veredicto} t={t} />
                       <span className="text-xs text-muted-foreground">
-                        Confianza {Math.round(triaje.confianza * 100)}% · ruta{" "}
-                        {triaje.rutaRecomendada === "tutela"
-                          ? "tutela"
-                          : "negociación EPS"}
+                        {t("detail.confidence", {
+                          pct: Math.round(triaje.confianza * 100),
+                          ruta:
+                            triaje.rutaRecomendada === "tutela"
+                              ? t("detail.routeTutela")
+                              : t("detail.routeEps"),
+                        })}
                       </span>
                     </div>
                     <div className="grid gap-1.5 sm:grid-cols-2">
@@ -303,7 +325,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                           <CriterioIcono estado={c.estado} />
                           <div className="min-w-0">
                             <p className="text-xs font-medium">
-                              {ETIQUETA_CRITERIO[clave] ?? clave}
+                              {CRITERIO_I18N[clave] ? t(CRITERIO_I18N[clave]) : clave}
                             </p>
                             <p className="text-[11px] leading-snug text-muted-foreground">
                               {c.explicacion}
@@ -315,7 +337,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                     {triaje.banderas.length > 0 && (
                       <div className="rounded-lg border border-warning/30 bg-warning/5 px-3 py-2">
                         <p className="flex items-center gap-1.5 text-xs font-medium text-warning">
-                          <CircleAlert className="size-3.5" /> Advertencias
+                          <CircleAlert className="size-3.5" /> {t("detail.warnings")}
                         </p>
                         <ul className="mt-1 ml-4 list-disc text-[11px] text-muted-foreground">
                           {triaje.banderas.map((b, i) => (
@@ -327,7 +349,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                   </>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    Estudio de admisibilidad no disponible.
+                    {t("detail.triageUnavailable")}
                   </p>
                 )}
               </CardContent>
@@ -338,9 +360,9 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm">
                   <Gavel className="size-4 text-primary" />
-                  Predicción de amparo
+                  {t("detail.predictionTitle")}
                   <Badge variant="ghost" className="ml-auto gap-1 text-muted-foreground">
-                    <Sparkles className="size-3" /> IA
+                    <Sparkles className="size-3" /> {t("detail.aiBadge")}
                   </Badge>
                 </CardTitle>
               </CardHeader>
@@ -356,7 +378,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                       <div className="flex-1">
                         <Progress value={prob} />
                         <p className="mt-1 text-xs text-muted-foreground">
-                          probabilidad de tutelar el derecho
+                          {t("detail.predictionCaption")}
                         </p>
                       </div>
                     </div>
@@ -364,7 +386,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                       <>
                         <div className="rounded-lg bg-muted/40 px-3 py-2">
                           <p className="text-xs font-medium text-muted-foreground">
-                            Regla aplicable
+                            {t("detail.applicableRule")}
                           </p>
                           <p className="mt-0.5 text-[13px] leading-snug">
                             {prediccion.reglaAplicable}
@@ -376,6 +398,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                       </>
                     )}
                     <PrecedenteLista
+                      t={t}
                       sentencias={
                         prediccion?.sentenciasCitadas ??
                         caso.sentenciasAplicables ??
@@ -392,9 +415,9 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm">
                   <FileSignature className="size-4 text-primary" />
-                  Fallo sugerido
+                  {t("detail.rulingTitle")}
                   <Badge variant="ghost" className="ml-auto gap-1 text-muted-foreground">
-                    <Sparkles className="size-3" /> IA
+                    <Sparkles className="size-3" /> {t("detail.aiBadge")}
                   </Badge>
                 </CardTitle>
               </CardHeader>
@@ -413,8 +436,7 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                 ) : (
                   <div className="rounded-lg border border-dashed bg-muted/30 px-4 py-6 text-center">
                     <p className="text-sm text-muted-foreground">
-                      Genera un proyecto de fallo con su parte resolutiva y los
-                      fundamentos citando el corpus.
+                      {t("detail.rulingEmpty")}
                     </p>
                   </div>
                 )}
@@ -429,7 +451,9 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                   ) : (
                     <PenLine className="size-4" />
                   )}
-                  {fallo ? "Regenerar proyecto de fallo" : "Generar proyecto de fallo"}
+                  {fallo
+                    ? t("detail.rulingRegenerate")
+                    : t("detail.rulingGenerate")}
                 </Button>
               </CardContent>
             </Card>
@@ -439,13 +463,13 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-sm">
                   <BookOpen className="size-4 text-info" />
-                  Cronograma de plazos
+                  {t("detail.scheduleTitle")}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Progreso del trámite</span>
+                    <span>{t("detail.progress")}</span>
                     <span className="tabular-nums">{caso.progreso}%</span>
                   </div>
                   <Progress value={caso.progreso} className="mt-1" />
@@ -467,20 +491,20 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
               )}
             >
               {diasFallo < 0
-                ? `Fallo vencido hace ${Math.abs(diasFallo)} d`
-                : `Plazo de fallo: ${diasFallo} d`}
+                ? t("detail.rulingOverdueBy", { dias: Math.abs(diasFallo) })
+                : t("detail.rulingDeadline", { dias: diasFallo })}
             </span>
           )}
           {yaFallado ? (
             <Badge className="ml-auto border-0 bg-success/10 font-medium text-success">
-              <CheckCircle2 className="size-3.5" /> Caso fallado
+              <CheckCircle2 className="size-3.5" /> {t("detail.caseRuled")}
             </Badge>
           ) : (
             <Button
               className="ml-auto"
               onClick={() => setConfirmarOpen(true)}
             >
-              <FileSignature className="size-4" /> Firmar fallo
+              <FileSignature className="size-4" /> {t("detail.signRuling")}
             </Button>
           )}
         </div>
@@ -492,24 +516,23 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <FileSignature className="size-5 text-primary" />
-              Firmar fallo
+              {t("detail.confirmSignTitle")}
             </DialogTitle>
             <DialogDescription>
-              Confirma la firma del fallo para{" "}
-              <strong>{caso.demandante.nombre}</strong> (radicado{" "}
-              <span className="font-mono text-xs">{caso.radicado}</span>). El
-              caso pasará a estado <strong>Fallado</strong> y se notificará a
-              las partes con término de impugnación de 3 días.
+              {t("detail.confirmSignBody", {
+                nombre: caso.demandante.nombre,
+                radicado: caso.radicado,
+              })}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose
               render={
-                <Button variant="outline">Cancelar</Button>
+                <Button variant="outline">{t("detail.cancel")}</Button>
               }
             />
             <Button onClick={firmarFallo}>
-              <FileSignature className="size-4" /> Confirmar y firmar
+              <FileSignature className="size-4" /> {t("detail.confirmAndSign")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -540,19 +563,29 @@ function Dato({
 
 function VeredictoBadge({
   veredicto,
+  t,
 }: {
   veredicto: TriajeResultado["veredicto"];
+  t: TFunction;
 }) {
   const map = {
-    admisible: { txt: "Admisible", cls: "bg-success/10 text-success" },
+    admisible: {
+      key: "detail.verdictAdmissible",
+      cls: "bg-success/10 text-success",
+    },
     admisible_con_reservas: {
-      txt: "Admisible con reservas",
+      key: "detail.verdictAdmissibleReservations",
       cls: "bg-warning/10 text-warning",
     },
-    inadmisible: { txt: "Inadmisible", cls: "bg-danger/10 text-danger" },
+    inadmisible: {
+      key: "detail.verdictInadmissible",
+      cls: "bg-danger/10 text-danger",
+    },
   } as const;
   const v = map[veredicto];
-  return <Badge className={cn("border-0 font-medium", v.cls)}>{v.txt}</Badge>;
+  return (
+    <Badge className={cn("border-0 font-medium", v.cls)}>{t(v.key)}</Badge>
+  );
 }
 
 function CriterioIcono({ estado }: { estado: EstadoCriterio }) {
@@ -563,12 +596,18 @@ function CriterioIcono({ estado }: { estado: EstadoCriterio }) {
   return <XCircle className="mt-0.5 size-3.5 shrink-0 text-danger" />;
 }
 
-function PrecedenteLista({ sentencias }: { sentencias: SentenciaRef[] }) {
+function PrecedenteLista({
+  sentencias,
+  t,
+}: {
+  sentencias: SentenciaRef[];
+  t: TFunction;
+}) {
   if (sentencias.length === 0) return null;
   return (
     <div>
       <p className="mb-1.5 text-xs font-medium text-muted-foreground">
-        Precedente citado
+        {t("detail.citedPrecedent")}
       </p>
       <div className="space-y-1.5">
         {sentencias.map((s) => (

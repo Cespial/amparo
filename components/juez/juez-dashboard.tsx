@@ -13,6 +13,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCasoStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
 import type { Caso } from "@/lib/types";
 import { ESTADOS_DESPACHO } from "./juez-utils";
@@ -23,6 +24,7 @@ import { JuezDetalle } from "./juez-detalle";
 type Filtro = "despacho" | "todos";
 
 export function JuezDashboard() {
+  const t = useT("juez");
   const casos = useCasoStore((s) => s.casos);
   const [filtro, setFiltro] = useState<Filtro>("despacho");
   const [abiertoId, setAbiertoId] = useState<string | null>(null);
@@ -48,19 +50,17 @@ export function JuezDashboard() {
             <span className="flex size-9 items-center justify-center rounded-xl bg-navy text-navy-foreground">
               <Scale className="size-5" />
             </span>
-            Despacho del juez
+            {t("dashboard.title")}
           </h1>
           <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-            Cola priorizada de tutelas, estudio asistido de admisibilidad y
-            predicción, y proyección de fallo con fundamentos del precedente.
+            {t("dashboard.subtitle")}
           </p>
           <p className="mt-1.5 text-xs font-medium text-primary">
-            Amparo propone, con criterios consistentes por jurisprudencia; la
-            última palabra es suya. Usted firma el fallo.
+            {t("dashboard.lastWord")}
           </p>
         </div>
         <Badge className="border-0 bg-primary/10 font-medium text-primary">
-          <Gavel className="size-3.5" /> {enCola.length} en despacho
+          <Gavel className="size-3.5" /> {t("dashboard.inDocket", { count: enCola.length })}
         </Badge>
       </header>
 
@@ -73,9 +73,9 @@ export function JuezDashboard() {
             <CardHeader className="flex-row items-center justify-between gap-2 space-y-0 pb-3">
               <CardTitle className="flex items-center gap-2 text-base">
                 <ListFilter className="size-4 text-primary" />
-                Tutelas por prioridad
+                {t("dashboard.queueTitle")}
                 <span className="text-xs font-normal text-muted-foreground">
-                  (urgencia × probabilidad)
+                  {t("dashboard.queueHint")}
                 </span>
               </CardTitle>
               <Tabs
@@ -84,9 +84,9 @@ export function JuezDashboard() {
               >
                 <TabsList>
                   <TabsTrigger value="despacho">
-                    En despacho
+                    {t("dashboard.tabDocket")}
                   </TabsTrigger>
-                  <TabsTrigger value="todos">Todos</TabsTrigger>
+                  <TabsTrigger value="todos">{t("dashboard.tabAll")}</TabsTrigger>
                 </TabsList>
               </Tabs>
             </CardHeader>
@@ -105,7 +105,7 @@ export function JuezDashboard() {
           <SegundoCerebro
             rol="juez"
             casoId={abiertoId ?? undefined}
-            titulo="Asistente del despacho"
+            titulo={t("dashboard.advisorTitle")}
           />
         </aside>
       </div>

@@ -17,52 +17,50 @@ import {
   Info,
 } from "lucide-react";
 import { kpisNacionales, fmt } from "./atlas-data";
+import { useT } from "@/lib/i18n";
 
 interface KpiItem {
-  etiqueta: string;
+  /** Clave del KPI en el namespace atlas (kpis.<key>.label/.note/.sourceAria). */
+  clave: "tutelas" | "granted" | "ips" | "resolved";
   valor: string;
   Icono: typeof FileText;
   /** Color del acento del ícono (estética Tensor dark). */
   tono: string;
   ilustrativo: boolean;
-  nota: string;
 }
 
 export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
+  const t = useT("atlas");
   const k = kpisNacionales();
 
   const items: KpiItem[] = [
     {
-      etiqueta: "Tutelas de salud (2023)",
+      clave: "tutelas",
       valor: fmt(k.totalTutelasSalud),
       Icono: FileText,
       tono: "text-[#58a6ff]",
       ilustrativo: false,
-      nota: "Dato real: Corte Constitucional (datos.gov.co), validado vs. Defensoría del Pueblo 2023.",
     },
     {
-      etiqueta: "% concedidas",
+      clave: "granted",
       valor: `~${k.porcentajeConcedidas}%`,
       Icono: CheckCircle2,
       tono: "text-[#3fb950]",
       ilustrativo: false,
-      nota: "La gran mayoría se conceden: el juez confirma un derecho que ya existía (Defensoría del Pueblo).",
     },
     {
-      etiqueta: "IPS en el país",
+      clave: "ips",
       valor: fmt(k.ipsNacional),
       Icono: Hospital,
       tono: "text-[#d29922]",
       ilustrativo: false,
-      nota: "Instituciones Prestadoras de Servicios de Salud — REPS / Ministerio de Salud.",
     },
     {
-      etiqueta: "Resueltos sin juez",
+      clave: "resolved",
       valor: fmt(resueltosSinJuez),
       Icono: Handshake,
       tono: "text-[#1B6B6D]",
       ilustrativo: false,
-      nota: "Casos resueltos en negociación con la EPS, sin llegar a despacho judicial.",
     },
   ];
 
@@ -70,7 +68,7 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {items.map((it) => (
         <Card
-          key={it.etiqueta}
+          key={it.clave}
           className="glow-card glow-card--teal gap-0 border-0 bg-transparent py-0"
         >
           <CardContent className="flex flex-col gap-2 p-4">
@@ -80,20 +78,22 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
               </span>
               <Tooltip>
                 <TooltipTrigger
-                  aria-label={`Fuente: ${it.etiqueta}`}
+                  aria-label={t(`kpis.${it.clave}.sourceAria`)}
                   className="text-[#8B949E]/70 transition-colors hover:text-[#E6EDF3]"
                 >
                   <Info className="size-3.5" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-[220px] text-pretty">
-                  {it.nota}
+                  {t(`kpis.${it.clave}.note`)}
                 </TooltipContent>
               </Tooltip>
             </div>
             <div className="glow-num text-2xl leading-none font-semibold text-[#E6EDF3] sm:text-3xl">
               {it.valor}
             </div>
-            <p className="text-xs leading-tight text-[#8B949E]">{it.etiqueta}</p>
+            <p className="text-xs leading-tight text-[#8B949E]">
+              {t(`kpis.${it.clave}.label`)}
+            </p>
           </CardContent>
         </Card>
       ))}

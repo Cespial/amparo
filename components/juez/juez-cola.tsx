@@ -5,6 +5,7 @@
 import { ChevronRight, Gavel, Inbox } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { Caso } from "@/lib/types";
 import { EstadoBadge, UrgenciaBadge, PlazoBadge } from "./juez-badges";
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
+  const t = useT("juez");
   const ordenados = [...casos].sort(
     (a, b) => prioridadCaso(b) - prioridadCaso(a),
   );
@@ -33,10 +35,9 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
         <span className="flex size-12 items-center justify-center rounded-full bg-success/10 text-success">
           <Inbox className="size-6" />
         </span>
-        <p className="font-medium text-navy">Sin tutelas en cola</p>
+        <p className="font-medium text-navy">{t("queue.emptyTitle")}</p>
         <p className="max-w-xs text-sm text-muted-foreground">
-          No hay casos en despacho. La descongestión está funcionando: las
-          disputas se resuelven antes de llegar al juez.
+          {t("queue.emptyBody")}
         </p>
       </Card>
     );
@@ -65,11 +66,13 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
                   e.stopPropagation();
                   onAbrir(caso);
                 }}
-                aria-label={`Abrir caso de ${caso.demandante.nombre}`}
+                aria-label={t("queue.openAria", { nombre: caso.demandante.nombre })}
               >
                 {/* Rango de prioridad */}
                 <div className="flex w-12 shrink-0 flex-col items-center justify-center rounded-l-[inherit] bg-navy py-3 text-navy-foreground">
-                  <span className="text-[10px] uppercase opacity-60">Prio</span>
+                  <span className="text-[10px] uppercase opacity-60">
+                    {t("queue.priorityShort")}
+                  </span>
                   <span className="font-heading text-lg font-bold tabular-nums">
                     {i + 1}
                   </span>
@@ -104,7 +107,9 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
                     <Progress value={prob} className="h-1.5 flex-1" />
                     {plazo && (
                       <span className="hidden text-[11px] text-muted-foreground sm:inline">
-                        Fallo: {fechaCorta(plazo.fechaLimite)}
+                        {t("queue.rulingDate", {
+                          fecha: fechaCorta(plazo.fechaLimite),
+                        })}
                       </span>
                     )}
                   </div>

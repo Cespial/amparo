@@ -1,18 +1,17 @@
 // components/juez/juez-badges.tsx — Badges de estado, urgencia y plazo para /juez.
 
+"use client";
+
 import { AlertTriangle, Clock, ShieldCheck, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { EstadoCaso, Urgencia } from "@/lib/types";
-import { ETIQUETA_ESTADO } from "@/lib/progreso";
-import {
-  ETIQUETA_URGENCIA,
-  semaforoPlazo,
-  type SemaforoPlazo,
-} from "./juez-utils";
+import { semaforoPlazo, type SemaforoPlazo } from "./juez-utils";
 
 /** Badge del estado del caso con color institucional. */
 export function EstadoBadge({ estado }: { estado: EstadoCaso }) {
+  const t = useT("juez");
   const clase: Record<EstadoCaso, string> = {
     INTAKE: "bg-muted text-muted-foreground",
     TRIADO: "bg-info/10 text-info",
@@ -24,13 +23,14 @@ export function EstadoBadge({ estado }: { estado: EstadoCaso }) {
   };
   return (
     <Badge className={cn("border-0 font-medium", clase[estado])}>
-      {ETIQUETA_ESTADO[estado]}
+      {t(`estado.${estado}`)}
     </Badge>
   );
 }
 
 /** Badge de urgencia clínico-jurídica. */
 export function UrgenciaBadge({ urgencia }: { urgencia: Urgencia }) {
+  const t = useT("juez");
   const clase: Record<Urgencia, string> = {
     vital: "bg-danger/10 text-danger",
     alta: "bg-warning/10 text-warning",
@@ -44,7 +44,7 @@ export function UrgenciaBadge({ urgencia }: { urgencia: Urgencia }) {
       ) : urgencia === "alta" ? (
         <AlertTriangle className="size-3" />
       ) : null}
-      {ETIQUETA_URGENCIA[urgencia]}
+      {t(`urgency.${urgencia}`)}
     </Badge>
   );
 }
@@ -64,21 +64,22 @@ export function PlazoBadge({
   dias: number;
   cumplido?: boolean;
 }) {
+  const t = useT("juez");
   if (cumplido) {
     return (
       <Badge className="border-0 bg-success/10 font-medium text-success">
         <ShieldCheck className="size-3" />
-        Cumplido
+        {t("deadline.met")}
       </Badge>
     );
   }
   const sem = semaforoPlazo(dias);
   const etiqueta =
     dias < 0
-      ? `Vencido hace ${Math.abs(dias)} d`
+      ? t("deadline.overdueBy", { dias: Math.abs(dias) })
       : dias === 0
-        ? "Vence hoy"
-        : `Faltan ${dias} d`;
+        ? t("deadline.dueToday")
+        : t("deadline.remaining", { dias });
   return (
     <Badge
       className={cn(

@@ -47,6 +47,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { cn } from "@/lib/utils";
+import { useT, useLang, type TFunction } from "@/lib/i18n";
 import { useCasoStore } from "@/lib/store";
 import { heroeId } from "@/lib/seed";
 import { generarRadicado, formatearRadicado } from "@/lib/radicado";
@@ -122,61 +123,45 @@ interface PrediccionResultado {
 }
 
 // --- Constantes UI ---
+// Las ETIQUETAS visibles se resuelven en el idioma activo vía useT("demandante").
+// Aquí se conservan solo las claves estructurales (ids, valores, iconos).
 
-const PASOS: PasoDef[] = [
-  { id: 1, titulo: "Cuéntanos qué pasó" },
-  { id: 2, titulo: "Tu caso" },
-  { id: 3, titulo: "¿Procede?" },
-  { id: 4, titulo: "Pronóstico" },
-  { id: 5, titulo: "Decisión" },
+const PASO_KEYS = [
+  { id: 1, key: "tell" },
+  { id: 2, key: "yourCase" },
+  { id: 3, key: "proceeds" },
+  { id: 4, key: "forecast" },
+  { id: 5, key: "decision" },
+] as const;
+
+const TIPO_SERVICIO_KEYS: TipoServicio[] = [
+  "cirugia",
+  "medicamento",
+  "examen_diagnostico",
+  "tratamiento",
+  "traslado_ambulancia",
+  "terapia",
+  "insumo_dispositivo",
+  "consulta_especialista",
+  "otro",
 ];
 
-const TIPOS_SERVICIO: { v: TipoServicio; label: string }[] = [
-  { v: "cirugia", label: "Cirugía" },
-  { v: "medicamento", label: "Medicamento" },
-  { v: "examen_diagnostico", label: "Examen diagnóstico" },
-  { v: "tratamiento", label: "Tratamiento" },
-  { v: "traslado_ambulancia", label: "Traslado / ambulancia" },
-  { v: "terapia", label: "Terapia" },
-  { v: "insumo_dispositivo", label: "Insumo o dispositivo" },
-  { v: "consulta_especialista", label: "Consulta con especialista" },
-  { v: "otro", label: "Otro" },
-];
-
-const URGENCIAS: { v: Urgencia; label: string }[] = [
-  { v: "baja", label: "Baja" },
-  { v: "media", label: "Media" },
-  { v: "alta", label: "Alta" },
-  { v: "vital", label: "Vital (riesgo de vida)" },
-];
-
-const RELATO_EJEMPLO =
-  "Mi nombre es Amparo Restrepo, tengo 68 años y vivo en Medellín. " +
-  "Estoy afiliada a la EPS Sura. Hace meses mi médico me ordenó una cirugía de cadera, " +
-  "una artroplastia, porque tengo coxartrosis severa y el dolor no me deja caminar ni dormir. " +
-  "La EPS no me ha autorizado la operación, dicen que está en trámites de pertinencia, " +
-  "y cada día estoy peor. Necesito que me operen pronto.";
+const URGENCIA_KEYS: Urgencia[] = ["baja", "media", "alta", "vital"];
 
 const ICONO_CRITERIO = {
-  ok: { Icon: CheckCircle2, color: "text-success", bg: "bg-success/10", label: "Cumple" },
-  reserva: { Icon: CircleAlert, color: "text-warning", bg: "bg-warning/10", label: "Con reserva" },
-  falla: { Icon: XCircle, color: "text-danger", bg: "bg-danger/10", label: "No cumple" },
+  ok: { Icon: CheckCircle2, color: "text-success", bg: "bg-success/10", labelKey: "ok" },
+  reserva: { Icon: CircleAlert, color: "text-warning", bg: "bg-warning/10", labelKey: "reserva" },
+  falla: { Icon: XCircle, color: "text-danger", bg: "bg-danger/10", labelKey: "falla" },
 } as const;
 
-const VEREDICTO_TITULO: Record<TriajeResultado["veredicto"], string> = {
-  admisible: "Tu caso es admisible",
-  admisible_con_reservas: "Admisible, con algunas reservas",
-  inadmisible: "Por ahora, el caso no procedería",
-};
-
-const NOMBRE_CRITERIO: Record<keyof TriajeResultado["criterios"], string> = {
-  derechoFundamental: "Derecho fundamental afectado",
-  legitimacion: "Legitimación para actuar",
-  subsidiariedad: "Subsidiariedad / perjuicio irremediable",
-  inmediatez: "Inmediatez de la afectación",
-  noTemeridad: "Ausencia de temeridad",
-  hechoSuperado: "Vulneración aún vigente",
-};
+const CRITERIO_KEYS: (keyof TriajeResultado["criterios"])[] = [
+  "derechoFundamental",
+  "legitimacion",
+  "subsidiariedad",
+  "inmediatez",
+  "noTemeridad",
+  "hechoSuperado",
+];
 
 // --- Componente principal ---
 
@@ -187,6 +172,23 @@ export function DemandanteWizard({
 }) {
   const { getCaso, updateCaso, addEvento, addCaso, seleccionarCaso } =
     useCasoStore();
+  const t = useT("demandante");
+  const { lang } = useLang();
+  const fechaLocale = lang === "en" ? "en-US" : "es-CO";
+
+  // Constantes UI derivadas en el idioma activo.
+  const PASOS: PasoDef[] = PASO_KEYS.map((p) => ({
+    id: p.id,
+    titulo: t(`steps.${p.key}`),
+  }));
+  const TIPOS_SERVICIO = TIPO_SERVICIO_KEYS.map((v) => ({
+    v,
+    label: t(`tipoServicio.${v}`),
+  }));
+  const URGENCIAS = URGENCIA_KEYS.map((v) => ({ v, label: t(`urgencia.${v}`) }));
+  const RELATO_EJEMPLO = t("step1.ejemplo");
+  const veredictoTitulo = (v: TriajeResultado["veredicto"]) =>
+    t(`veredicto.${v}`);
 
   const [paso, setPaso] = useState(1);
 
@@ -247,8 +249,8 @@ export function DemandanteWizard({
 
   function precargarHeroe() {
     setRelato(RELATO_EJEMPLO);
-    toast.success("Ejemplo de Amparo cargado", {
-      description: "Puedes editarlo o continuar tal cual.",
+    toast.success(t("step1.toast.ejemploTitle"), {
+      description: t("step1.toast.ejemploDesc"),
     });
   }
 
@@ -291,7 +293,7 @@ export function DemandanteWizard({
           tipo: "creacion",
           estado: "INTAKE",
           actor: "demandante",
-          titulo: "Caso recibido en Amparo",
+          titulo: t("evento.casoRecibido"),
         },
       ],
     };
@@ -303,8 +305,8 @@ export function DemandanteWizard({
   async function estructurar() {
     const texto = relato.trim();
     if (texto.length < 20) {
-      toast.error("Cuéntanos un poco más", {
-        description: "Describe qué servicio te negaron y por qué lo necesitas.",
+      toast.error(t("step1.toast.cortoTitle"), {
+        description: t("step1.toast.cortoDesc"),
       });
       return;
     }
@@ -331,12 +333,12 @@ export function DemandanteWizard({
       setEps(data.eps ?? "");
       setPaciente(data.paciente ?? "");
       setPaso(2);
-      toast.success("Amparo organizó tu caso", {
-        description: "Revisa los datos y corrige lo que necesites.",
+      toast.success(t("step1.toast.okTitle"), {
+        description: t("step1.toast.okDesc"),
       });
     } catch {
-      toast.error("No se pudo estructurar el caso", {
-        description: "Revisa tu conexión e inténtalo de nuevo.",
+      toast.error(t("step1.toast.errorTitle"), {
+        description: t("step1.toast.errorDesc"),
       });
     } finally {
       setCargando(null);
@@ -386,14 +388,24 @@ export function DemandanteWizard({
       const data = (await res.json()) as TriajeResultado;
       setTriaje(data);
       updateCaso(caso.id, { estado: "TRIADO" });
-      addEvento(caso.id, evento(caso.id, "ia", "Triaje de admisibilidad", "TRIADO", {
-        detalle: `Veredicto: ${data.veredicto.replace(/_/g, " ")}.`,
-      }));
+      addEvento(
+        caso.id,
+        evento(caso.id, "ia", t("evento.triajeTitulo"), "TRIADO", {
+          detalle: t("evento.triajeDetalle", {
+            veredicto: data.veredicto.replace(/_/g, " "),
+          }),
+        }),
+      );
       setPaso(3);
-      leerSiModoVoz(`${VEREDICTO_TITULO[data.veredicto]}. ${data.recomendacion}`);
+      leerSiModoVoz(
+        t("say.veredicto", {
+          titulo: veredictoTitulo(data.veredicto),
+          recomendacion: data.recomendacion,
+        }),
+      );
     } catch {
-      toast.error("No se pudo evaluar la admisibilidad", {
-        description: "Inténtalo de nuevo en un momento.",
+      toast.error(t("step2.toast.errorTitle"), {
+        description: t("step2.toast.errorDesc"),
       });
     } finally {
       setCargando(null);
@@ -415,15 +427,23 @@ export function DemandanteWizard({
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as PrediccionResultado;
       setPrediccion(data);
-      addEvento(caso.id, evento(caso.id, "ia", "Predicción del resultado", undefined, {
-        detalle: `Probabilidad estimada de amparo: ${data.probabilidadAmparo}%.`,
-      }));
+      addEvento(
+        caso.id,
+        evento(caso.id, "ia", t("evento.prediccionTitulo"), undefined, {
+          detalle: t("evento.prediccionDetalle", {
+            pct: data.probabilidadAmparo,
+          }),
+        }),
+      );
       setPaso(4);
       leerSiModoVoz(
-        `Tu pronóstico: la probabilidad estimada de que prospere el amparo es del ${data.probabilidadAmparo} por ciento. ${data.reglaAplicable}`,
+        t("say.pronostico", {
+          pct: data.probabilidadAmparo,
+          regla: data.reglaAplicable,
+        }),
       );
     } catch {
-      toast.error("No se pudo calcular el pronóstico");
+      toast.error(t("step3.toast.errorTitle"));
     } finally {
       setCargando(null);
     }
@@ -460,11 +480,18 @@ export function DemandanteWizard({
           evento(
             caso.id,
             "documento",
-            "Derecho de petición radicado ante la EPS",
+            t("evento.peticionTitulo"),
             "EN_NEGOCIACION_EPS",
             {
               actor: "demandante",
-              detalle: `Responsable: ${nuevaPeticion.dependencia}. Término de respuesta: ${nuevaPeticion.slaDias} días ${nuevaPeticion.slaHabiles ? "hábiles" : "calendario"} (radicado ${nuevaPeticion.radicadoPeticion}).`,
+              detalle: t("evento.peticionDetalle", {
+                dependencia: nuevaPeticion.dependencia,
+                dias: nuevaPeticion.slaDias,
+                tipo: nuevaPeticion.slaHabiles
+                  ? t("resultado.diasHabiles")
+                  : t("resultado.diasCalendario"),
+                radicado: nuevaPeticion.radicadoPeticion,
+              }),
             },
           ),
         );
@@ -482,10 +509,18 @@ export function DemandanteWizard({
         });
         addEvento(
           caso.id,
-          evento(caso.id, "documento", "Tutela radicada", "ESCALADO_TUTELA", {
-            actor: "demandante",
-            detalle: `Radicado ${formatearRadicado(caso.radicado)}.`,
-          }),
+          evento(
+            caso.id,
+            "documento",
+            t("evento.tutelaTitulo"),
+            "ESCALADO_TUTELA",
+            {
+              actor: "demandante",
+              detalle: t("evento.tutelaDetalle", {
+                radicado: formatearRadicado(caso.radicado),
+              }),
+            },
+          ),
         );
         setPeticion(null);
         setEstadoFinal("ESCALADO_TUTELA");
@@ -497,13 +532,11 @@ export function DemandanteWizard({
       onCasoActivo?.(caso.id);
       setPaso(5);
       leerSiModoVoz(
-        via === "tutela"
-          ? "Tu tutela está lista. Revísala, descárgala o llévala al juzgado de reparto."
-          : "Tu reclamación está lista. Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela.",
+        via === "tutela" ? t("say.docTutela") : t("say.docReclamacion"),
       );
     } catch {
-      toast.error("No se pudo generar el documento", {
-        description: "Inténtalo de nuevo en un momento.",
+      toast.error(t("step5.toast.errorTitle"), {
+        description: t("step5.toast.errorDesc"),
       });
     } finally {
       setCargando(null);
@@ -514,8 +547,8 @@ export function DemandanteWizard({
     if (!documento) return;
     void navigator.clipboard
       ?.writeText(documento)
-      .then(() => toast.success("Documento copiado al portapapeles"))
-      .catch(() => toast.error("No se pudo copiar"));
+      .then(() => toast.success(t("resultado.toast.copiadoOk")))
+      .catch(() => toast.error(t("resultado.toast.copiadoError")));
   }
 
   function reiniciar() {
@@ -546,7 +579,11 @@ export function DemandanteWizard({
     <div className="space-y-6">
       <Card className="surface-card border-0">
         <CardHeader className="gap-3 pb-4">
-          <DemandanteStepper pasos={PASOS} actual={paso} />
+          <DemandanteStepper
+            pasos={PASOS}
+            actual={paso}
+            label={t("stepper.label", { actual: paso, total: PASOS.length })}
+          />
           <div className="flex items-center justify-end">
             <Button
               type="button"
@@ -554,12 +591,8 @@ export function DemandanteWizard({
               size="sm"
               onClick={alternarModoVoz}
               aria-pressed={modoVoz}
-              aria-label={
-                modoVoz
-                  ? "Desactivar modo voz: Amparo dejará de leer en voz alta"
-                  : "Activar modo voz: Amparo leerá en voz alta cada paso"
-              }
-              title="Amparo te lee cada paso en voz alta"
+              aria-label={modoVoz ? t("voice.ariaOn") : t("voice.ariaOff")}
+              title={t("voice.title")}
               className="gap-1.5"
             >
               {modoVoz ? (
@@ -567,7 +600,7 @@ export function DemandanteWizard({
               ) : (
                 <VolumeX className="size-4" aria-hidden />
               )}
-              Modo voz {modoVoz ? "activo" : "apagado"}
+              {modoVoz ? t("voice.on") : t("voice.off")}
             </Button>
           </div>
         </CardHeader>
@@ -577,11 +610,10 @@ export function DemandanteWizard({
             <section className="space-y-5">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-navy">
-                  Cuéntanos qué pasó
+                  {t("step1.title")}
                 </h2>
                 <p className="mt-1 text-muted-foreground">
-                  Con tus palabras: qué te negó tu EPS y por qué lo necesitas.
-                  Puedes escribir o dictar con el micrófono.
+                  {t("step1.subtitle")}
                 </p>
               </div>
 
@@ -589,9 +621,9 @@ export function DemandanteWizard({
                 <Textarea
                   value={relato}
                   onChange={(e) => setRelato(e.target.value)}
-                  placeholder="Por ejemplo: «Mi médico me ordenó una cirugía de cadera y mi EPS no me la ha autorizado…»"
+                  placeholder={t("step1.placeholder")}
                   className="min-h-44 resize-none bg-card p-4 text-base leading-relaxed"
-                  aria-label="Relato de los hechos"
+                  aria-label={t("step1.ariaRelato")}
                 />
                 {dictado.soportado && (
                   <Button
@@ -607,11 +639,11 @@ export function DemandanteWizard({
                   >
                     {dictado.escuchando ? (
                       <>
-                        <MicOff className="size-5" /> Detener
+                        <MicOff className="size-5" /> {t("step1.detener")}
                       </>
                     ) : (
                       <>
-                        <Mic className="size-5" /> Dictar
+                        <Mic className="size-5" /> {t("step1.dictar")}
                       </>
                     )}
                   </Button>
@@ -621,7 +653,7 @@ export function DemandanteWizard({
               {!dictado.soportado && (
                 <p className="flex items-center gap-2 text-xs text-muted-foreground">
                   <MicOff className="size-3.5" />
-                  Tu navegador no permite dictar por voz; escribe el relato.
+                  {t("step1.noDictado")}
                 </p>
               )}
 
@@ -634,7 +666,7 @@ export function DemandanteWizard({
                   className="gap-2"
                 >
                   <Sparkles className="size-4" />
-                  Usar el ejemplo de Amparo
+                  {t("step1.usarEjemplo")}
                 </Button>
                 <Button
                   type="button"
@@ -645,12 +677,12 @@ export function DemandanteWizard({
                 >
                   {cargando === "estructurar" ? (
                     <>
-                      <Loader2 className="size-5 animate-spin" /> Amparo está
-                      organizando tu caso…
+                      <Loader2 className="size-5 animate-spin" />{" "}
+                      {t("step1.organizando")}
                     </>
                   ) : (
                     <>
-                      <Wand2 className="size-5" /> Continuar
+                      <Wand2 className="size-5" /> {t("step1.continuar")}
                       <ArrowRight className="size-4" />
                     </>
                   )}
@@ -664,29 +696,29 @@ export function DemandanteWizard({
             <section className="space-y-5">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-navy">
-                  Así entendí tu caso
+                  {t("step2.title")}
                 </h2>
                 <p className="mt-1 text-muted-foreground">
-                  Revisa y corrige. Tú tienes la última palabra.
+                  {t("step2.subtitle")}
                 </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <Campo label="Paciente">
+                <Campo label={t("step2.fields.paciente")}>
                   <Input
                     value={paciente}
                     onChange={(e) => setPaciente(e.target.value)}
-                    placeholder="Nombre del paciente"
+                    placeholder={t("step2.fields.pacientePlaceholder")}
                   />
                 </Campo>
-                <Campo label="EPS o entidad">
+                <Campo label={t("step2.fields.eps")}>
                   <Input
                     value={eps}
                     onChange={(e) => setEps(e.target.value)}
-                    placeholder="Nombre de la EPS"
+                    placeholder={t("step2.fields.epsPlaceholder")}
                   />
                 </Campo>
-                <Campo label="Servicio negado">
+                <Campo label={t("step2.fields.servicioNegado")}>
                   <Input
                     value={estructura.servicioNegado ?? ""}
                     onChange={(e) =>
@@ -694,7 +726,7 @@ export function DemandanteWizard({
                     }
                   />
                 </Campo>
-                <Campo label="Tipo de servicio">
+                <Campo label={t("step2.fields.tipoServicio")}>
                   <Select
                     value={estructura.tipoServicio ?? "otro"}
                     onValueChange={(v) =>
@@ -705,15 +737,15 @@ export function DemandanteWizard({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {TIPOS_SERVICIO.map((t) => (
-                        <SelectItem key={t.v} value={t.v}>
-                          {t.label}
+                      {TIPOS_SERVICIO.map((ts) => (
+                        <SelectItem key={ts.v} value={ts.v}>
+                          {ts.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </Campo>
-                <Campo label="Diagnóstico">
+                <Campo label={t("step2.fields.diagnostico")}>
                   <Input
                     value={estructura.diagnostico ?? ""}
                     onChange={(e) =>
@@ -721,7 +753,7 @@ export function DemandanteWizard({
                     }
                   />
                 </Campo>
-                <Campo label="Urgencia">
+                <Campo label={t("step2.fields.urgencia")}>
                   <Select
                     value={estructura.urgencia ?? "media"}
                     onValueChange={(v) =>
@@ -742,7 +774,7 @@ export function DemandanteWizard({
                 </Campo>
               </div>
 
-              <Campo label="Hechos">
+              <Campo label={t("step2.fields.hechos")}>
                 <Textarea
                   value={estructura.hechos ?? ""}
                   onChange={(e) =>
@@ -751,7 +783,7 @@ export function DemandanteWizard({
                   className="min-h-28 resize-none"
                 />
               </Campo>
-              <Campo label="Lo que pides (pretensión)">
+              <Campo label={t("step2.fields.pretension")}>
                 <Textarea
                   value={estructura.pretension ?? ""}
                   onChange={(e) =>
@@ -764,7 +796,7 @@ export function DemandanteWizard({
               {(estructura.derechosInvocados?.length ?? 0) > 0 && (
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm font-medium text-muted-foreground">
-                    Derechos en juego:
+                    {t("step2.derechosEnJuego")}
                   </span>
                   {estructura.derechosInvocados!.map((d) => (
                     <Badge key={d} variant="secondary" className="capitalize">
@@ -778,8 +810,9 @@ export function DemandanteWizard({
                 onAtras={() => setPaso(1)}
                 onSiguiente={correrTriaje}
                 cargando={cargando === "triaje"}
-                textoSiguiente="Evaluar si procede"
-                textoCargando="Evaluando admisibilidad…"
+                textoSiguiente={t("step2.siguiente")}
+                textoCargando={t("step2.cargando")}
+                textoAtras={t("nav.atras")}
               />
             </section>
           )}
@@ -787,12 +820,10 @@ export function DemandanteWizard({
           {/* ---------- PASO 3 ---------- */}
           {paso === 3 && triaje && (
             <section className="space-y-5">
-              <VeredictoBanner triaje={triaje} />
+              <VeredictoBanner triaje={triaje} t={t} />
 
               <div className="grid gap-3">
-                {(
-                  Object.keys(triaje.criterios) as (keyof TriajeResultado["criterios"])[]
-                ).map((k) => {
+                {CRITERIO_KEYS.map((k) => {
                   const c = triaje.criterios[k];
                   const meta = ICONO_CRITERIO[c.estado];
                   return (
@@ -810,9 +841,9 @@ export function DemandanteWizard({
                       </span>
                       <div className="min-w-0">
                         <p className="flex flex-wrap items-center gap-2 font-medium text-navy">
-                          {NOMBRE_CRITERIO[k]}
+                          {t(`criterio.${k}`)}
                           <Badge variant="outline" className={cn("font-normal", meta.color)}>
-                            {meta.label}
+                            {t(`criterio.estado.${meta.labelKey}`)}
                           </Badge>
                         </p>
                         <p className="mt-0.5 text-sm text-muted-foreground">
@@ -827,7 +858,7 @@ export function DemandanteWizard({
               {triaje.banderas.length > 0 && (
                 <div className="rounded-xl border border-warning/30 bg-warning/5 p-3">
                   <p className="flex items-center gap-2 text-sm font-medium text-warning">
-                    <AlertTriangle className="size-4" /> A tener en cuenta
+                    <AlertTriangle className="size-4" /> {t("step3.banderasTitulo")}
                   </p>
                   <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
                     {triaje.banderas.map((b, i) => (
@@ -841,8 +872,9 @@ export function DemandanteWizard({
                 onAtras={() => setPaso(2)}
                 onSiguiente={correrPrediccion}
                 cargando={cargando === "prediccion"}
-                textoSiguiente="Ver mi pronóstico"
-                textoCargando="Analizando precedentes…"
+                textoSiguiente={t("step3.siguiente")}
+                textoCargando={t("step3.cargando")}
+                textoAtras={t("nav.atras")}
               />
             </section>
           )}
@@ -853,14 +885,18 @@ export function DemandanteWizard({
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <h2 className="font-serif text-2xl font-bold text-navy">
-                    Tu pronóstico
+                    {t("step4.title")}
                   </h2>
                   <p className="mt-1 text-muted-foreground">
-                    Estimación basada en casos reales de la Corte Constitucional.
+                    {t("step4.subtitle")}
                   </p>
                 </div>
                 <BotonVoz
-                  texto={`Tu pronóstico. La probabilidad estimada de que prospere el amparo es del ${prediccion.probabilidadAmparo} por ciento. ${prediccion.reglaAplicable}. ${prediccion.razonamiento}`}
+                  texto={t("say.pronosticoCompleto", {
+                    pct: prediccion.probabilidadAmparo,
+                    regla: prediccion.reglaAplicable,
+                    razonamiento: prediccion.razonamiento,
+                  })}
                   conTexto={false}
                   className="shrink-0"
                 />
@@ -872,7 +908,7 @@ export function DemandanteWizard({
                 </div>
                 <div className="rounded-2xl border bg-secondary/50 p-4">
                   <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Regla aplicable
+                    {t("step4.reglaAplicable")}
                   </p>
                   <p className="mt-1 font-serif text-base font-medium text-navy">
                     {prediccion.reglaAplicable}
@@ -887,7 +923,7 @@ export function DemandanteWizard({
               <div>
                 <h3 className="mb-3 flex items-center gap-2 font-serif text-lg font-semibold text-navy">
                   <ScrollText className="size-5 text-primary" />
-                  Sentencias que respaldan tu caso
+                  {t("step4.sentenciasTitulo")}
                 </h3>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {prediccion.sentenciasCitadas.map((s) => (
@@ -911,12 +947,16 @@ export function DemandanteWizard({
                   ))}
                 </div>
                 <p className="mt-2 text-xs text-muted-foreground">
-                  Material ilustrativo. Una persona profesional del derecho debe
-                  revisar el caso antes de su uso formal.
+                  {t("step4.sentenciasNota")}
                 </p>
               </div>
 
-              <NavPasos onAtras={() => setPaso(3)} onSiguiente={() => setPaso(5)} textoSiguiente="Decidir mi camino" />
+              <NavPasos
+                onAtras={() => setPaso(3)}
+                onSiguiente={() => setPaso(5)}
+                textoSiguiente={t("step4.siguiente")}
+                textoAtras={t("nav.atras")}
+              />
             </section>
           )}
 
@@ -925,28 +965,30 @@ export function DemandanteWizard({
             <section className="space-y-5">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-navy">
-                  ¿Cómo quieres avanzar?
+                  {t("step5.title")}
                 </h2>
                 <p className="mt-1 text-muted-foreground">
-                  Elige un camino. Amparo redacta el documento por ti.
+                  {t("step5.subtitle")}
                 </p>
               </div>
 
               <div className="grid gap-4 md:grid-cols-2">
                 <CaminoCard
                   icon={Handshake}
-                  titulo="Intentar con mi EPS"
-                  descripcion="Radicamos un derecho de petición formal: identificamos quién en tu EPS debe responder y desde cuándo corre el plazo legal. Suele ser más rápido si la entidad responde a tiempo."
-                  cta="Radicar derecho de petición"
+                  titulo={t("step5.reclamacion.titulo")}
+                  descripcion={t("step5.reclamacion.descripcion")}
+                  cta={t("step5.reclamacion.cta")}
+                  textoCargando={t("step5.redactando")}
                   variant="outline"
                   cargando={cargando === "reclamacion"}
                   onClick={() => decidir("reclamacion")}
                 />
                 <CaminoCard
                   icon={Gavel}
-                  titulo="Generar mi tutela"
-                  descripcion="Redactamos la acción de tutela completa, con radicado y plazos legales. La vía constitucional para proteger tu derecho."
-                  cta="Generar tutela"
+                  titulo={t("step5.tutela.titulo")}
+                  descripcion={t("step5.tutela.descripcion")}
+                  cta={t("step5.tutela.cta")}
+                  textoCargando={t("step5.redactando")}
                   variant="default"
                   cargando={cargando === "tutela"}
                   onClick={() => decidir("tutela")}
@@ -954,7 +996,7 @@ export function DemandanteWizard({
               </div>
 
               <Button variant="ghost" onClick={() => setPaso(4)} className="gap-2">
-                <ArrowLeft className="size-4" /> Volver al pronóstico
+                <ArrowLeft className="size-4" /> {t("step5.volverPronostico")}
               </Button>
             </section>
           )}
@@ -967,14 +1009,14 @@ export function DemandanteWizard({
                   <p className="flex items-center gap-2 font-serif text-lg font-semibold text-success">
                     <CheckCircle2 className="size-5" />
                     {tipoDoc === "tutela"
-                      ? "Tu tutela está lista"
-                      : "Tu reclamación está lista"}
+                      ? t("resultado.tutelaLista")
+                      : t("resultado.reclamacionLista")}
                   </p>
                   <BotonVoz
                     texto={
                       tipoDoc === "tutela"
-                        ? "Tu tutela está lista. Revísala, descárgala o llévala al juzgado de reparto."
-                        : "Tu reclamación está lista. Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela."
+                        ? t("say.docTutela")
+                        : t("say.docReclamacion")
                     }
                     conTexto={false}
                     className="-mr-1 -mt-1 shrink-0 text-success"
@@ -982,8 +1024,8 @@ export function DemandanteWizard({
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {tipoDoc === "tutela"
-                    ? "Revísala, descárgala o llévala al juzgado de reparto."
-                    : "Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela."}
+                    ? t("resultado.tutelaSub")
+                    : t("resultado.reclamacionSub")}
                 </p>
               </div>
 
@@ -1005,7 +1047,7 @@ export function DemandanteWizard({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-2xl border bg-card p-4">
                     <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      Radicado
+                      {t("resultado.radicado")}
                     </p>
                     <p className="mt-1 font-mono text-base font-semibold text-navy">
                       {formatearRadicado(radicado)}
@@ -1013,7 +1055,7 @@ export function DemandanteWizard({
                   </div>
                   <div className="rounded-2xl border bg-card p-4">
                     <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      Avance del caso
+                      {t("resultado.avanceCaso")}
                     </p>
                     <Progress value={progresoCaso}>
                       <span className="ml-auto text-sm font-semibold text-navy">
@@ -1027,7 +1069,7 @@ export function DemandanteWizard({
               {cronograma.length > 0 && (
                 <div>
                   <h3 className="mb-3 font-serif text-lg font-semibold text-navy">
-                    Plazos legales de tu tutela
+                    {t("resultado.plazosTitulo")}
                   </h3>
                   <ol className="space-y-2">
                     {cronograma.map((p) => (
@@ -1041,14 +1083,21 @@ export function DemandanteWizard({
                         <div className="min-w-0">
                           <p className="font-medium text-navy">{p.etiqueta}</p>
                           <p className="text-xs text-muted-foreground">
-                            Vence el{" "}
-                            {new Date(p.fechaLimite).toLocaleDateString("es-CO", {
-                              day: "2-digit",
-                              month: "long",
-                              year: "numeric",
-                            })}{" "}
-                            · {p.dias} días {p.habiles ? "hábiles" : "calendario"} ·{" "}
-                            {p.fundamento}
+                            {t("resultado.plazoVence", {
+                              fecha: new Date(p.fechaLimite).toLocaleDateString(
+                                fechaLocale,
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                },
+                              ),
+                              dias: p.dias,
+                              tipo: p.habiles
+                                ? t("resultado.diasHabiles")
+                                : t("resultado.diasCalendario"),
+                              fundamento: p.fundamento,
+                            })}
                           </p>
                         </div>
                       </li>
@@ -1061,7 +1110,9 @@ export function DemandanteWizard({
                 <CardHeader className="flex-row items-center justify-between gap-2 space-y-0 pb-3">
                   <CardTitle className="flex items-center gap-2 text-base">
                     <FileText className="size-4 text-primary" />
-                    {tipoDoc === "tutela" ? "Acción de tutela" : "Reclamación a la EPS"}
+                    {tipoDoc === "tutela"
+                      ? t("resultado.docTutela")
+                      : t("resultado.docReclamacion")}
                   </CardTitle>
                   <div className="flex gap-2">
                     <BotonVoz texto={documento} variant="outline" size="sm" />
@@ -1071,7 +1122,7 @@ export function DemandanteWizard({
                       onClick={copiarDocumento}
                       className="gap-1.5"
                     >
-                      <Copy className="size-4" /> Copiar
+                      <Copy className="size-4" /> {t("resultado.copiar")}
                     </Button>
                   </div>
                 </CardHeader>
@@ -1084,7 +1135,7 @@ export function DemandanteWizard({
 
               <div className="flex flex-wrap gap-3">
                 <Button variant="secondary" onClick={reiniciar} className="gap-2">
-                  <Sparkles className="size-4" /> Iniciar otro caso
+                  <Sparkles className="size-4" /> {t("resultado.otroCaso")}
                 </Button>
               </div>
             </section>
@@ -1118,23 +1169,25 @@ function NavPasos({
   cargando,
   textoSiguiente,
   textoCargando,
+  textoAtras,
 }: {
   onAtras: () => void;
   onSiguiente: () => void;
   cargando?: boolean;
   textoSiguiente: string;
   textoCargando?: string;
+  textoAtras: string;
 }) {
   return (
     <div className="flex items-center justify-between gap-3 pt-1">
       <Button variant="ghost" onClick={onAtras} className="gap-2" disabled={cargando}>
-        <ArrowLeft className="size-4" /> Atrás
+        <ArrowLeft className="size-4" /> {textoAtras}
       </Button>
       <Button onClick={onSiguiente} disabled={cargando} size="lg" className="gap-2">
         {cargando ? (
           <>
             <Loader2 className="size-5 animate-spin" />
-            {textoCargando ?? "Procesando…"}
+            {textoCargando ?? textoSiguiente}
           </>
         ) : (
           <>
@@ -1147,7 +1200,13 @@ function NavPasos({
   );
 }
 
-function VeredictoBanner({ triaje }: { triaje: TriajeResultado }) {
+function VeredictoBanner({
+  triaje,
+  t,
+}: {
+  triaje: TriajeResultado;
+  t: TFunction;
+}) {
   const map = {
     admisible: {
       Icon: CheckCircle2,
@@ -1163,7 +1222,7 @@ function VeredictoBanner({ triaje }: { triaje: TriajeResultado }) {
     },
   } as const;
   const m = map[triaje.veredicto];
-  const titulo = VEREDICTO_TITULO[triaje.veredicto];
+  const titulo = t(`veredicto.${triaje.veredicto}`);
   return (
     <div className={cn("rounded-2xl border p-4", m.cls)}>
       <div className="flex items-start justify-between gap-2">
@@ -1171,7 +1230,10 @@ function VeredictoBanner({ triaje }: { triaje: TriajeResultado }) {
           <m.Icon className="size-5" /> {titulo}
         </p>
         <BotonVoz
-          texto={`${titulo}. ${triaje.recomendacion}`}
+          texto={t("say.veredicto", {
+            titulo,
+            recomendacion: triaje.recomendacion,
+          })}
           conTexto={false}
           className="-mr-1 -mt-1 shrink-0"
         />
@@ -1179,13 +1241,13 @@ function VeredictoBanner({ triaje }: { triaje: TriajeResultado }) {
       <p className="mt-1 text-sm text-foreground/80">{triaje.recomendacion}</p>
       <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
         <Stethoscope className="size-3.5" />
-        Ruta sugerida:{" "}
-        <span className="font-medium capitalize">
+        {t("step3.rutaSugerida")}{" "}
+        <span className="font-medium">
           {triaje.rutaRecomendada === "tutela"
-            ? "acción de tutela"
-            : "negociación con la EPS"}
+            ? t("step3.rutaTutela")
+            : t("step3.rutaEps")}
         </span>
-        · confianza {Math.round(triaje.confianza * 100)}%
+        · {t("step3.confianza", { pct: Math.round(triaje.confianza * 100) })}
       </div>
     </div>
   );
@@ -1196,6 +1258,7 @@ function CaminoCard({
   titulo,
   descripcion,
   cta,
+  textoCargando,
   variant,
   cargando,
   onClick,
@@ -1204,6 +1267,7 @@ function CaminoCard({
   titulo: string;
   descripcion: string;
   cta: string;
+  textoCargando: string;
   variant: "default" | "outline";
   cargando: boolean;
   onClick: () => void;
@@ -1239,7 +1303,7 @@ function CaminoCard({
         >
           {cargando ? (
             <>
-              <Loader2 className="size-5 animate-spin" /> Redactando…
+              <Loader2 className="size-5 animate-spin" /> {textoCargando}
             </>
           ) : (
             <>

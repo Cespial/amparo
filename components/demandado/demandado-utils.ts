@@ -6,15 +6,16 @@ import type { Caso, Urgencia } from "@/lib/types";
 /** Estimación de días de despacho judicial que se ahorran al ceder sin tutela. */
 export const DIAS_JUEZ_POR_CASO = 12;
 
-/** Etiquetas y tono visual por nivel de urgencia. */
-export const URGENCIA_META: Record<
-  Urgencia,
-  { etiqueta: string; clase: string }
-> = {
-  vital: { etiqueta: "Vital", clase: "bg-danger/10 text-danger" },
-  alta: { etiqueta: "Alta", clase: "bg-warning/15 text-warning" },
-  media: { etiqueta: "Media", clase: "bg-info/10 text-info" },
-  baja: { etiqueta: "Baja", clase: "bg-muted text-muted-foreground" },
+/**
+ * Tono visual por nivel de urgencia. La etiqueta legible se resuelve en los
+ * componentes con useT("demandado")("urgency.<nivel>") para no acoplar i18n
+ * a este módulo puro.
+ */
+export const URGENCIA_META: Record<Urgencia, { clase: string }> = {
+  vital: { clase: "bg-danger/10 text-danger" },
+  alta: { clase: "bg-warning/15 text-warning" },
+  media: { clase: "bg-info/10 text-info" },
+  baja: { clase: "bg-muted text-muted-foreground" },
 };
 
 /** Peso de urgencia para ordenar la bandeja (mayor = más arriba). */
@@ -51,17 +52,21 @@ export function estimarProbabilidadAmparo(caso: Caso): number {
   return Math.max(20, Math.min(96, p));
 }
 
-/** Nivel de riesgo para la EPS derivado de la probabilidad de amparo. */
+/**
+ * Nivel de riesgo para la EPS derivado de la probabilidad de amparo.
+ * `etiquetaKey` apunta a la clave i18n del namespace "demandado" (risk.*) que
+ * el componente resuelve con useT; este módulo permanece libre de i18n.
+ */
 export function nivelRiesgoEPS(prob: number): {
   nivel: "alto" | "medio" | "bajo";
-  etiqueta: string;
+  etiquetaKey: "risk.high" | "risk.medium" | "risk.low";
   recomendacion: "ceder" | "evaluar" | "sostener";
   clase: string;
 } {
   if (prob >= 75) {
     return {
       nivel: "alto",
-      etiqueta: "Riesgo alto de perder en tutela",
+      etiquetaKey: "risk.high",
       recomendacion: "ceder",
       clase: "text-danger",
     };
@@ -69,14 +74,14 @@ export function nivelRiesgoEPS(prob: number): {
   if (prob >= 55) {
     return {
       nivel: "medio",
-      etiqueta: "Riesgo medio — evaluar costo/beneficio",
+      etiquetaKey: "risk.medium",
       recomendacion: "evaluar",
       clase: "text-warning",
     };
   }
   return {
     nivel: "bajo",
-    etiqueta: "Riesgo bajo — posición sostenible",
+    etiquetaKey: "risk.low",
     recomendacion: "sostener",
     clase: "text-success",
   };
@@ -92,36 +97,39 @@ export function ordenarBandeja(casos: Caso[]): Caso[] {
   });
 }
 
-/** Costo procesal/reputacional cualitativo de mantener la negación. */
-export function costoDeNegar(caso: Caso, prob: number): {
-  resumen: string;
-  riesgos: string[];
+/** Una entrada de riesgo: clave i18n (namespace "demandado", cost.*) + vars. */
+export interface RiesgoEntry {
+  key: string;
+  vars?: Record<string, string | number>;
+}
+
+/**
+ * Costo procesal/reputacional cualitativo de mantener la negación.
+ * Devuelve CLAVES i18n (no texto): el componente las resuelve con
+ * useT("demandado") para que este módulo no dependa del idioma.
+ */
+export function costoDeNegar(
+  caso: Caso,
+  prob: number,
+): {
+  resumenKey: "cost.summaryHigh" | "cost.summaryMedium" | "cost.summaryLow";
+  riesgos: RiesgoEntry[];
 } {
-  const riesgos: string[] = [];
-  riesgos.push(
-    `Probabilidad ${prob}% de fallo en contra dentro de 10 días hábiles (art. 86 C.P.).`,
-  );
+  const riesgos: RiesgoEntry[] = [];
+  riesgos.push({ key: "cost.probability", vars: { prob } });
   if (caso.demandante.sujetoEspecialProteccion) {
-    riesgos.push(
-      "Accionante es sujeto de especial protección constitucional: el juez aplica un estándar más estricto.",
-    );
+    riesgos.push({ key: "cost.specialProtection" });
   }
   if (caso.urgencia === "vital" || caso.urgencia === "alta") {
-    riesgos.push(
-      "Urgencia clínica alta: alto riesgo de fallo de tutela y eventual medida provisional inmediata.",
-    );
+    riesgos.push({ key: "cost.clinicalUrgency" });
   }
-  riesgos.push(
-    "Si se incumple el fallo: incidente de desacato (arresto hasta 6 meses y multa) contra el representante legal.",
-  );
-  riesgos.push(
-    "Costos de defensa judicial, recobro tardío ante ADRES y desgaste reputacional ante la Supersalud.",
-  );
-  const resumen =
+  riesgos.push({ key: "cost.contempt" });
+  riesgos.push({ key: "cost.defense" });
+  const resumenKey =
     prob >= 75
-      ? "El análisis costo/riesgo recomienda CEDER y autorizar: negar casi con certeza deriva en tutela perdida, fallo en 10 días y exposición a desacato."
+      ? "cost.summaryHigh"
       : prob >= 55
-        ? "Caso fronterizo: ceder evita litigio, pero hay margen para sostener con sustento clínico. Evalúe caso a caso."
-        : "Posición administrativamente sostenible; documente la negación con soporte técnico-científico.";
-  return { resumen, riesgos };
+        ? "cost.summaryMedium"
+        : "cost.summaryLow";
+  return { resumenKey, riesgos };
 }

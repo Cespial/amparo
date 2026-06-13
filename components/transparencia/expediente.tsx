@@ -15,21 +15,34 @@ import {
 } from "lucide-react";
 import type { Caso } from "@/lib/types";
 import { relojPeticion } from "@/lib/peticion";
+import { useT, useLang, type TFunction } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type Vista = "demandante" | "demandado" | "juez";
 
-const FMT = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
+/** Etiqueta localizada del reloj del término de petición (sin tocar lib/peticion). */
+function relojEtiqueta(caso: Caso, t: TFunction): string {
+  const reloj = relojPeticion(caso.peticion!);
+  const tipo = caso.peticion!.slaHabiles
+    ? t("expediente.daysBusiness")
+    : t("expediente.daysCalendar");
+  if (reloj.vencida)
+    return t("expediente.clockOverdue", {
+      dias: Math.abs(reloj.diasRestantes),
+      tipo,
+    });
+  if (reloj.diasRestantes <= 0) return t("expediente.clockDueToday");
+  return t("expediente.clockDueIn", { dias: reloj.diasRestantes, tipo });
+}
 
-/** ¿La EPS ya respondió (acuerdo, negación o fallo)? Deriva del timeline. */
-function respuestaEps(caso: Caso): { texto: string; tono: "ok" | "alerta" | "pendiente" } {
+/** Respuesta de la EPS derivada del estado: clave i18n + tono + vars. */
+function respuestaEps(
+  caso: Caso,
+  t: TFunction,
+): { texto: string; tono: "ok" | "alerta" | "pendiente" } {
   if (caso.estado === "RESUELTO_EPS") {
     return {
-      texto: `La EPS autorizó ${caso.servicioNegado} mediante acuerdo, sin acudir al juez.`,
+      texto: t("expediente.respAuthorized", { servicio: caso.servicioNegado }),
       tono: "ok",
     };
   }
@@ -39,8 +52,7 @@ function respuestaEps(caso: Caso): { texto: string; tono: "ok" | "alerta" | "pen
     caso.estado === "FALLADO"
   ) {
     return {
-      texto:
-        "La EPS mantuvo su posición en la etapa de negociación. La disputa se trasladó a la vía judicial.",
+      texto: t("expediente.respMovedToCourt"),
       tono: "alerta",
     };
   }
@@ -48,13 +60,13 @@ function respuestaEps(caso: Caso): { texto: string; tono: "ok" | "alerta" | "pen
     const reloj = relojPeticion(caso.peticion);
     return {
       texto: reloj.vencida
-        ? "El término del derecho de petición venció sin respuesta de fondo de la EPS."
-        : `Pendiente: la EPS debe responder de fondo. ${reloj.etiqueta}.`,
+        ? t("expediente.respPetitionExpired")
+        : t("expediente.respPetitionPending", { reloj: relojEtiqueta(caso, t) }),
       tono: reloj.vencida ? "alerta" : "pendiente",
     };
   }
   return {
-    texto: "Aún no se ha abierto la negociación con la EPS.",
+    texto: t("expediente.respNotStarted"),
     tono: "pendiente",
   };
 }
@@ -123,17 +135,24 @@ export interface ExpedienteProps {
  * juez. Cada parte ve los insumos de la otra.
  */
 export function Expediente({ caso, vista, className }: ExpedienteProps) {
-  const resp = respuestaEps(caso);
+  const t = useT("juez");
+  const { lang } = useLang();
+  const resp = respuestaEps(caso, t);
+  const FMT = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-CO", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <div className={cn("space-y-3", className)}>
       <div className="flex items-center gap-2">
         <Scale className="size-4 text-primary" />
         <h3 className="font-serif text-base font-semibold text-navy">
-          Expediente compartido
+          {t("expediente.title")}
         </h3>
         <span className="text-xs text-muted-foreground">
-          Transparencia bilateral · cada parte ve los insumos de la otra
+          {t("expediente.tagline")}
         </span>
       </div>
 
@@ -141,12 +160,12 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
         {/* Demandante */}
         <Columna
           icon={<User className="size-4" />}
-          titulo="Lo que aporta el demandante"
+          titulo={t("expediente.claimantTitle")}
           subtitulo={`${caso.demandante.nombre} · ${caso.demandante.ciudad}`}
           resaltado={vista === "demandante"}
         >
-          <Bloque label="Relato de los hechos">{caso.hechos}</Bloque>
-          <Bloque label="Lo que pide">{caso.pretension}</Bloque>
+          <Bloque label={t("expediente.factsLabel")}>{caso.hechos}</Bloque>
+          <Bloque label={t("expediente.requestLabel")}>{caso.pretension}</Bloque>
           <div className="flex items-start gap-2 rounded-lg bg-muted/40 px-2.5 py-2 text-xs">
             <Stethoscope className="mt-0.5 size-3.5 shrink-0 text-primary" />
             <span>
@@ -159,7 +178,7 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
         {/* EPS */}
         <Columna
           icon={<Building2 className="size-4" />}
-          titulo="Lo que responde la EPS"
+          titulo={t("expediente.epsTitle")}
           subtitulo={caso.demandado.nombre}
           resaltado={vista === "demandado"}
         >
@@ -167,15 +186,23 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
             <div className="rounded-lg border bg-background/60 px-2.5 py-2 text-xs">
               <p className="flex items-center gap-1.5 font-medium text-navy">
                 <ShieldQuestion className="size-3.5 text-primary" />
-                Derecho de petición {caso.peticion.radicadoPeticion}
+                {t("expediente.rightOfPetition", {
+                  radicado: caso.peticion.radicadoPeticion,
+                })}
               </p>
               <p className="mt-0.5 text-muted-foreground">
-                Responsable: {caso.peticion.dependencia}
+                {t("expediente.responsible", {
+                  dependencia: caso.peticion.dependencia,
+                })}
               </p>
               <p className="mt-0.5 text-muted-foreground">
-                Vence el {FMT.format(new Date(caso.peticion.slaVence))} ·{" "}
-                {caso.peticion.slaDias} días{" "}
-                {caso.peticion.slaHabiles ? "hábiles" : "calendario"}
+                {t("expediente.dueOn", {
+                  fecha: FMT.format(new Date(caso.peticion.slaVence)),
+                  dias: caso.peticion.slaDias,
+                  tipo: caso.peticion.slaHabiles
+                    ? t("expediente.daysBusiness")
+                    : t("expediente.daysCalendar"),
+                })}
               </p>
             </div>
           )}
@@ -187,11 +214,11 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
         {/* Juez */}
         <Columna
           icon={<Gavel className="size-4" />}
-          titulo="Lo que valora el juez"
-          subtitulo="Despacho judicial"
+          titulo={t("expediente.judgeTitle")}
+          subtitulo={t("expediente.judgeSubtitle")}
           resaltado={vista === "juez"}
         >
-          <Bloque label="Derechos invocados">
+          <Bloque label={t("expediente.rightsInvoked")}>
             <span className="flex flex-wrap gap-1.5">
               {caso.derechosInvocados.map((d) => (
                 <span
@@ -204,7 +231,7 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
             </span>
           </Bloque>
           {caso.sentenciasAplicables && caso.sentenciasAplicables.length > 0 && (
-            <Bloque label="Precedente aplicable">
+            <Bloque label={t("expediente.applicablePrecedent")}>
               <span className="space-y-1">
                 {caso.sentenciasAplicables.slice(0, 3).map((s) => (
                   <span key={s.id} className="block text-xs">
@@ -218,8 +245,7 @@ export function Expediente({ caso, vista, className }: ExpedienteProps) {
             </Bloque>
           )}
           <p className="rounded-lg bg-muted/40 px-2.5 py-2 text-[11px] text-muted-foreground">
-            Amparo propone un análisis consistente con el precedente. La última
-            palabra es del juez, que firma el fallo.
+            {t("expediente.judgeNote")}
           </p>
         </Columna>
       </div>

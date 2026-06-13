@@ -6,9 +6,11 @@
 import { Gavel, Handshake, TrendingDown } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useT } from "@/lib/i18n";
 import type { Caso } from "@/lib/types";
 
 export function Descongestion({ casos }: { casos: Caso[] }) {
+  const t = useT("juez");
   const resueltosSinJuez = casos.filter(
     (c) => c.estado === "RESUELTO_EPS",
   ).length;
@@ -30,13 +32,13 @@ export function Descongestion({ casos }: { casos: Caso[] }) {
           <div>
             <p className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
               <TrendingDown className="size-4 text-success" />
-              Descongestión judicial
+              {t("decongestion.label")}
             </p>
             <p className="mt-1 font-heading text-3xl font-bold tabular-nums text-navy">
               {pctDescongestion}%
             </p>
             <p className="mt-0.5 text-xs text-muted-foreground">
-              de disputas resueltas sin llegar a fallo
+              {t("decongestion.headline")}
             </p>
           </div>
           <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-success/10 text-success">
@@ -50,17 +52,17 @@ export function Descongestion({ casos }: { casos: Caso[] }) {
           <Metrica
             icon={<Handshake className="size-4 text-success" />}
             valor={resueltosSinJuez}
-            etiqueta="Acuerdo EPS"
+            etiqueta={t("decongestion.epsAgreement")}
           />
           <Metrica
             icon={<Gavel className="size-4 text-navy" />}
             valor={fallados}
-            etiqueta="Fallados"
+            etiqueta={t("decongestion.ruled")}
           />
           <Metrica
             icon={<Gavel className="size-4 text-primary" />}
             valor={enDespacho}
-            etiqueta="En despacho"
+            etiqueta={t("decongestion.inDocket")}
           />
         </div>
       </CardContent>

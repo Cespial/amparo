@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { BotonVoz } from "@/components/boton-voz";
 import type { RolUsuario } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 
 interface Mensaje {
   id: string;
@@ -21,11 +22,11 @@ interface Mensaje {
   texto: string;
 }
 
-const ETIQUETA_ROL: Record<RolUsuario, string> = {
-  atlas: "Atlas",
-  demandante: "Demandante",
-  demandado: "Demandado",
-  juez: "Juez",
+const ROL_KEY: Record<RolUsuario, string> = {
+  atlas: "role.atlas",
+  demandante: "role.demandante",
+  demandado: "role.demandado",
+  juez: "role.juez",
 };
 
 export interface SegundoCerebroProps {
@@ -45,6 +46,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
   const [mensajes, setMensajes] = useState<Mensaje[]>([]);
   const [input, setInput] = useState("");
   const [cargando, setCargando] = useState(false);
+  const t = useT("common");
 
   async function enviar() {
     const pregunta = input.trim();
@@ -89,8 +91,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
               msg.id === respId
                 ? {
                     ...msg,
-                    texto:
-                      "El copiloto no devolvió contenido. Intenta reformular tu pregunta.",
+                    texto: t("copilot.emptyResponse"),
                   }
                 : msg,
             ),
@@ -102,9 +103,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
           {
             id: crypto.randomUUID(),
             rol: "copiloto",
-            texto:
-              "El copiloto aún no está disponible (módulo de IA en construcción). " +
-              "Pronto podré ayudarte con tu caso.",
+            texto: t("copilot.unavailable"),
           },
         ]);
       }
@@ -114,7 +113,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
         {
           id: crypto.randomUUID(),
           rol: "copiloto",
-          texto: "No se pudo contactar al copiloto. Intenta de nuevo.",
+          texto: t("copilot.error"),
         },
       ]);
     } finally {
@@ -129,9 +128,9 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Brain className="size-4" />
           </span>
-          {titulo ?? "Segundo cerebro"}
+          {titulo ?? t("copilot.title")}
           <Badge variant="secondary" className="ml-auto font-normal">
-            {ETIQUETA_ROL[rol]}
+            {t(ROL_KEY[rol])}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -140,7 +139,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
           {mensajes.length === 0 ? (
             <p className="flex items-center gap-2 text-sm text-muted-foreground">
               <Sparkles className="size-4" />
-              Pregúntame sobre tu caso, plazos o precedentes aplicables.
+              {t("copilot.empty")}
             </p>
           ) : (
             <div className="flex flex-col gap-3">
@@ -181,7 +180,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
                 void enviar();
               }
             }}
-            placeholder="Escribe tu pregunta…"
+            placeholder={t("copilot.placeholder")}
             className="min-h-11 resize-none bg-card"
             rows={1}
           />
@@ -189,7 +188,7 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
             onClick={() => void enviar()}
             disabled={cargando || !input.trim()}
             size="icon"
-            aria-label="Enviar"
+            aria-label={t("copilot.send")}
           >
             <Send className="size-4" />
           </Button>

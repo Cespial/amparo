@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/lib/i18n";
 
 /**
  * Medidor semicircular de probabilidad (0-100). SVG puro, animado, accesible.
  * Color según el nivel (rojo/ámbar/verde) para lectura intuitiva.
  */
 export function DemandanteGauge({ valor }: { valor: number }) {
+  const t = useT("demandante");
   const v = Math.max(0, Math.min(100, Math.round(valor)));
   const [animado, setAnimado] = useState(0);
 
@@ -25,13 +27,13 @@ export function DemandanteGauge({ valor }: { valor: number }) {
   const color =
     v >= 75 ? "var(--success)" : v >= 50 ? "var(--warning)" : "var(--danger)";
   const etiqueta =
-    v >= 75 ? "Probabilidad alta" : v >= 50 ? "Probabilidad media" : "Probabilidad baja";
+    v >= 75 ? t("gauge.alta") : v >= 50 ? t("gauge.media") : t("gauge.baja");
 
   return (
     <div
       className="flex flex-col items-center"
       role="img"
-      aria-label={`Probabilidad estimada de fallo a favor: ${v} por ciento. ${etiqueta}.`}
+      aria-label={t("gauge.aria", { v, etiqueta })}
     >
       <svg viewBox="0 0 200 116" className="w-full max-w-[280px]">
         {/* Arco de fondo */}

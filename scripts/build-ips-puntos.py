@@ -20,9 +20,10 @@ Salida (public/data/ips-puntos.json):
     puntos: [ { municipio, departamento, cod_dane_mpio, lat, lng, ips_total }, ... ]
   }
 
-El array `puntos` se ORDENA por ips_total desc y se LIMITA (CAP) a los municipios
-con más IPS para mantener el archivo liviano (<400 KB). NO se inventan coordenadas:
-solo se incluyen municipios con centroide oficial.
+El array `puntos` se ORDENA por ips_total desc e INCLUYE a TODOS los municipios con
+al menos 1 IPS (clase IPS del REPS) que tengan centroide oficial DANE. NO se inventan
+coordenadas: solo se incluyen municipios con centroide oficial. El archivo se mantiene
+muy por debajo de 400 KB.
 
 Uso:  python3 scripts/build-ips-puntos.py
 Requiere conexión a internet (Socrata). Usa snapshots en /tmp si existen.
@@ -38,9 +39,10 @@ DATA = os.path.join(BASE, "public", "data")
 URL_IPS = "https://www.datos.gov.co/resource/c36g-9fc2.json"
 URL_CENTROIDES = "https://www.datos.gov.co/resource/gdxc-w37w.json"
 
-# Cap de municipios a incluir como puntos (los de mayor ips_total).
-# 500 municipios * ~140 bytes/registro ≈ 70 KB → muy por debajo de 400 KB.
-CAP_MUNICIPIOS = 500
+# Cap de municipios a incluir como puntos. None = SIN CAP: se incluyen TODOS los
+# municipios con al menos 1 IPS (clase IPS del REPS) que tengan centroide oficial DANE.
+# ~923 municipios * ~140 bytes/registro ≈ 130 KB → muy por debajo de 400 KB.
+CAP_MUNICIPIOS = None
 
 # Nombres oficiales de departamento por código DANE (2 dígitos), para normalizar
 # el `departamentoprestadordesc` del REPS (que viene con mayúsculas/typos).
@@ -171,9 +173,10 @@ def main():
             "ips_total": v["n"],
         })
 
-    # Orden por ips_total desc y CAP.
+    # Orden por ips_total desc. Sin CAP (CAP_MUNICIPIOS=None) se incluyen TODOS los
+    # municipios con >=1 IPS y centroide oficial.
     puntos.sort(key=lambda p: p["ips_total"], reverse=True)
-    if len(puntos) > CAP_MUNICIPIOS:
+    if CAP_MUNICIPIOS is not None and len(puntos) > CAP_MUNICIPIOS:
         puntos = puntos[:CAP_MUNICIPIOS]
 
     total_ips_en_puntos = sum(p["ips_total"] for p in puntos)
@@ -188,11 +191,11 @@ def main():
             "DATOS REALES geocodificados por MUNICIPIO. ips_total = nº de IPS (clase IPS del REPS) "
             "con sede en ese municipio. lat/lng = centroide oficial del municipio (cod_dane_mpio, 5 dígitos), "
             "NO la ubicación exacta de cada IPS (el REPS nacional no trae lat/lng por sede). "
-            "El array 'puntos' está ordenado por ips_total desc y limitado a los %d municipios con más IPS; "
-            "estos puntos concentran %d de las %d IPS nacionales (%.1f%%). "
+            "El array 'puntos' está ordenado por ips_total desc e incluye TODOS los %d municipios con al menos "
+            "1 IPS y centroide oficial; estos puntos concentran %d de las %d IPS nacionales (%.1f%%). "
             "Municipios con IPS pero sin centroide oficial: %d (%d IPS, excluidos para no inventar coordenadas)."
         ) % (
-            CAP_MUNICIPIOS, total_ips_en_puntos, total_ips_nacional,
+            len(puntos), total_ips_en_puntos, total_ips_nacional,
             100.0 * total_ips_en_puntos / total_ips_nacional if total_ips_nacional else 0.0,
             len(sin_centroide), ips_sin_centroide,
         ),

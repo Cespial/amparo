@@ -31,19 +31,21 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCasoStore } from "@/lib/store";
 import type { RolUsuario } from "@/lib/types";
+import { useT } from "@/lib/i18n";
+import { LanguageToggle } from "@/components/language-toggle";
 
 interface NavLink {
   href: string;
-  label: string;
+  labelKey: string;
   rol: RolUsuario;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const LINKS: NavLink[] = [
-  { href: "/atlas", label: "Atlas", rol: "atlas", icon: Map },
-  { href: "/demandante", label: "Demandante", rol: "demandante", icon: User },
-  { href: "/demandado", label: "Demandado", rol: "demandado", icon: Building2 },
-  { href: "/juez", label: "Juez", rol: "juez", icon: Scale },
+  { href: "/atlas", labelKey: "link.atlas", rol: "atlas", icon: Map },
+  { href: "/demandante", labelKey: "link.demandante", rol: "demandante", icon: User },
+  { href: "/demandado", labelKey: "link.demandado", rol: "demandado", icon: Building2 },
+  { href: "/juez", labelKey: "link.juez", rol: "juez", icon: Scale },
 ];
 
 const ROL_HREF: Record<RolUsuario, string> = {
@@ -55,9 +57,10 @@ const ROL_HREF: Record<RolUsuario, string> = {
 
 function NavItems({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const t = useT("nav");
   return (
     <>
-      {LINKS.map(({ href, label, icon: Icon }) => {
+      {LINKS.map(({ href, labelKey, icon: Icon }) => {
         const active = pathname.startsWith(href);
         return (
           <Link
@@ -72,7 +75,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
             )}
           >
             <Icon className="size-4" />
-            {label}
+            {t(labelKey)}
           </Link>
         );
       })}
@@ -83,6 +86,7 @@ function NavItems({ onNavigate }: { onNavigate?: () => void }) {
 function RolSelector() {
   const rolActivo = useCasoStore((s) => s.rolActivo);
   const setRolActivo = useCasoStore((s) => s.setRolActivo);
+  const t = useT("nav");
 
   return (
     <Select
@@ -91,16 +95,16 @@ function RolSelector() {
     >
       <SelectTrigger
         size="sm"
-        aria-label="Seleccionar rol"
+        aria-label={t("rol.aria")}
         className="w-[150px] border-white/20 bg-white/10 text-white"
       >
-        <SelectValue placeholder="Rol" />
+        <SelectValue placeholder={t("rol.placeholder")} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="atlas">Atlas</SelectItem>
-        <SelectItem value="demandante">Demandante</SelectItem>
-        <SelectItem value="demandado">Demandado (EPS)</SelectItem>
-        <SelectItem value="juez">Juez</SelectItem>
+        <SelectItem value="atlas">{t("rol.atlas")}</SelectItem>
+        <SelectItem value="demandante">{t("rol.demandante")}</SelectItem>
+        <SelectItem value="demandado">{t("rol.demandado")}</SelectItem>
+        <SelectItem value="juez">{t("rol.juez")}</SelectItem>
       </SelectContent>
     </Select>
   );
@@ -108,6 +112,7 @@ function RolSelector() {
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const t = useT("nav");
 
   return (
     <header className="sticky top-0 z-50 w-full bg-navy text-navy-foreground shadow-md">
@@ -119,10 +124,10 @@ export function SiteNav() {
           </span>
           <span className="flex flex-col leading-tight">
             <span className="text-base font-bold tracking-tight text-white">
-              Amparo
+              {t("brand.name")}
             </span>
             <span className="hidden text-[11px] text-white/60 sm:block">
-              Centro de Resolución de Disputas en Salud
+              {t("brand.tagline")}
             </span>
           </span>
         </Link>
@@ -134,7 +139,7 @@ export function SiteNav() {
             className="mr-1 flex items-center gap-2 rounded-lg bg-primary/90 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-colors min-h-11 hover:bg-primary"
           >
             <Mic className="size-4" />
-            Habla con Amparo
+            {t("cta.talk")}
           </Link>
           <NavItems />
           {/* Enlace discreto al deck de pitch */}
@@ -143,11 +148,14 @@ export function SiteNav() {
             className="ml-1 flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-white/55 transition-colors min-h-11 hover:bg-white/10 hover:text-white/90"
           >
             <Presentation className="size-4" />
-            Pitch
+            {t("link.pitch")}
           </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
+          <div className="hidden sm:block">
+            <LanguageToggle />
+          </div>
           <div className="hidden sm:block">
             <RolSelector />
           </div>
@@ -160,7 +168,7 @@ export function SiteNav() {
                   variant="ghost"
                   size="icon"
                   className="text-white hover:bg-white/10 md:hidden"
-                  aria-label="Abrir menú"
+                  aria-label={t("menu.open")}
                 />
               }
             >
@@ -169,7 +177,7 @@ export function SiteNav() {
             <SheetContent side="right" className="bg-navy text-navy-foreground">
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2 text-white">
-                  <Shield className="size-5 text-primary" /> Amparo
+                  <Shield className="size-5 text-primary" /> {t("brand.name")}
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
@@ -179,7 +187,7 @@ export function SiteNav() {
                   className="mb-1 flex items-center gap-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white min-h-11"
                 >
                   <Mic className="size-4" />
-                  Habla con Amparo
+                  {t("cta.talk")}
                 </Link>
                 <NavItems onNavigate={() => setOpen(false)} />
                 {/* Enlace discreto al deck de pitch */}
@@ -189,11 +197,12 @@ export function SiteNav() {
                   className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-white/55 transition-colors min-h-11 hover:bg-white/10 hover:text-white/90"
                 >
                   <Presentation className="size-4" />
-                  Pitch
+                  {t("link.pitch")}
                 </Link>
               </nav>
-              <div className="mt-4 px-4">
+              <div className="mt-4 flex items-center justify-between gap-2 px-4">
                 <RolSelector />
+                <LanguageToggle />
               </div>
             </SheetContent>
           </Sheet>

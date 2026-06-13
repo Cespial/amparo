@@ -4,6 +4,7 @@
 // Panel de impacto de la descongestión judicial lograda por la EPS.
 
 import { Gavel, HandCoins, ShieldCheck, TrendingDown } from "lucide-react";
+import { useT } from "@/lib/i18n";
 import { DIAS_JUEZ_POR_CASO } from "./demandado-utils";
 
 export interface DemandadoImpactoProps {
@@ -45,6 +46,7 @@ export function DemandadoImpacto({
   resueltos,
   totalEntrantes,
 }: DemandadoImpactoProps) {
+  const t = useT("demandado");
   const diasJuez = resueltos * DIAS_JUEZ_POR_CASO;
   const tasa =
     totalEntrantes > 0 ? Math.round((resueltos / totalEntrantes) * 100) : 0;
@@ -54,31 +56,30 @@ export function DemandadoImpacto({
       <div className="flex items-center gap-2">
         <TrendingDown className="size-4 text-success" />
         <h2 className="font-heading text-sm font-semibold tracking-tight">
-          Impacto de la resolución sin juez
+          {t("impact.heading")}
         </h2>
       </div>
       <p className="mt-1 text-xs text-navy-foreground/70">
-        Cada acuerdo descongestiona la rama judicial y resuelve antes para el
-        paciente.
+        {t("impact.subtitle")}
       </p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         <Metrica
           icon={<ShieldCheck className="size-5 text-success" />}
           valor={String(resueltos)}
-          etiqueta="Casos resueltos sin juez"
+          etiqueta={t("impact.resolved")}
           acento="bg-success/15"
         />
         <Metrica
           icon={<Gavel className="size-5 text-info" />}
           valor={String(diasJuez)}
-          etiqueta="Días-juez ahorrados"
+          etiqueta={t("impact.judgeDays")}
           acento="bg-info/20"
         />
         <Metrica
           icon={<HandCoins className="size-5 text-warning" />}
           valor={`${tasa}%`}
-          etiqueta="Tasa de descongestión"
+          etiqueta={t("impact.rate")}
           acento="bg-warning/20"
         />
       </div>

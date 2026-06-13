@@ -1,0 +1,695 @@
+{
+  "fuente": "Lista de ciudades (32 capitales departamentales + Bogotá D.C. + municipios con población > 100.000 hab en 2023) geocodificada con centroides municipales oficiales de datos.gov.co (Socrata) resource 'gdxc-w37w' ('Municipios de Colombia', 1.122 municipios con cod_mpio, latitud y longitud). El join es por cod_mpio (5 dígitos). NO se inventan coordenadas.",
+  "url_centroides": "https://www.datos.gov.co/resource/gdxc-w37w.json",
+  "fuente_poblacion": "DANE — Proyecciones de población municipal 2018-2035 (base CNPV 2018), año 2023. Cifras oficiales públicas del DANE.",
+  "fecha_corte": "Población DANE 2023; centroides DANE (gdxc-w37w).",
+  "nota": "lat/lng = centroide oficial del municipio (cod_dane_mpio, 5 dígitos), NO una coordenada inventada. 'es_capital'=true para las 32 capitales departamentales y Bogotá D.C. (Cundinamarca no tiene capital municipal propia: su capital de facto es Bogotá D.C.). El umbral de inclusión es >100.000 hab (2023) salvo las capitales, que se incluyen todas aunque tengan menos. Municipios sin centroide oficial excluidos: 0.",
+  "total_ciudades": 76,
+  "total_capitales": 32,
+  "ciudades": [
+    {
+      "nombre": "Bogotá, D.C.",
+      "departamento": "Bogotá D.C.",
+      "cod_dane_mpio": "11001",
+      "lat": 4.649251,
+      "lng": -74.106992,
+      "poblacion": 7968095,
+      "es_capital": true
+    },
+    {
+      "nombre": "Medellín",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05001",
+      "lat": 6.246631,
+      "lng": -75.581775,
+      "poblacion": 2613720,
+      "es_capital": true
+    },
+    {
+      "nombre": "Santiago de Cali",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76001",
+      "lat": 3.413686,
+      "lng": -76.52133,
+      "poblacion": 2280906,
+      "es_capital": true
+    },
+    {
+      "nombre": "Barranquilla",
+      "departamento": "Atlántico",
+      "cod_dane_mpio": "08001",
+      "lat": 10.977961,
+      "lng": -74.815546,
+      "poblacion": 1331156,
+      "es_capital": true
+    },
+    {
+      "nombre": "Cartagena de Indias",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13001",
+      "lat": 10.385126,
+      "lng": -75.496269,
+      "poblacion": 1064521,
+      "es_capital": true
+    },
+    {
+      "nombre": "Soacha",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25754",
+      "lat": 4.579268,
+      "lng": -74.215463,
+      "poblacion": 805058,
+      "es_capital": false
+    },
+    {
+      "nombre": "San José de Cúcuta",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54001",
+      "lat": 7.905725,
+      "lng": -72.508178,
+      "poblacion": 778938,
+      "es_capital": true
+    },
+    {
+      "nombre": "Bucaramanga",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68001",
+      "lat": 7.11647,
+      "lng": -73.132562,
+      "poblacion": 622410,
+      "es_capital": true
+    },
+    {
+      "nombre": "Villavicencio",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50001",
+      "lat": 4.126369,
+      "lng": -73.622601,
+      "poblacion": 559937,
+      "es_capital": true
+    },
+    {
+      "nombre": "Ibagué",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73001",
+      "lat": 4.432248,
+      "lng": -75.19425,
+      "poblacion": 542876,
+      "es_capital": true
+    },
+    {
+      "nombre": "Montería",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23001",
+      "lat": 8.759789,
+      "lng": -75.873096,
+      "poblacion": 528203,
+      "es_capital": true
+    },
+    {
+      "nombre": "Valledupar",
+      "departamento": "Cesar",
+      "cod_dane_mpio": "20001",
+      "lat": 10.460472,
+      "lng": -73.259398,
+      "poblacion": 511811,
+      "es_capital": true
+    },
+    {
+      "nombre": "Santa Marta",
+      "departamento": "Magdalena",
+      "cod_dane_mpio": "47001",
+      "lat": 11.204679,
+      "lng": -74.199829,
+      "poblacion": 511402,
+      "es_capital": true
+    },
+    {
+      "nombre": "Pereira",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66001",
+      "lat": 4.804985,
+      "lng": -75.719711,
+      "poblacion": 488669,
+      "es_capital": true
+    },
+    {
+      "nombre": "Bello",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05088",
+      "lat": 6.333587,
+      "lng": -75.555245,
+      "poblacion": 481768,
+      "es_capital": false
+    },
+    {
+      "nombre": "Manizales",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17001",
+      "lat": 5.057657,
+      "lng": -75.491025,
+      "poblacion": 446003,
+      "es_capital": true
+    },
+    {
+      "nombre": "Itagüí",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05360",
+      "lat": 6.175079,
+      "lng": -75.612056,
+      "poblacion": 415601,
+      "es_capital": false
+    },
+    {
+      "nombre": "Pasto",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52001",
+      "lat": 1.212352,
+      "lng": -77.278795,
+      "poblacion": 392930,
+      "es_capital": true
+    },
+    {
+      "nombre": "Neiva",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41001",
+      "lat": 2.935432,
+      "lng": -75.277327,
+      "poblacion": 366927,
+      "es_capital": true
+    },
+    {
+      "nombre": "Palmira",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76520",
+      "lat": 3.531544,
+      "lng": -76.298846,
+      "poblacion": 357517,
+      "es_capital": false
+    },
+    {
+      "nombre": "Buenaventura",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76109",
+      "lat": 3.875708,
+      "lng": -77.01074,
+      "poblacion": 333328,
+      "es_capital": false
+    },
+    {
+      "nombre": "Popayán",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19001",
+      "lat": 2.459641,
+      "lng": -76.599377,
+      "poblacion": 320618,
+      "es_capital": true
+    },
+    {
+      "nombre": "Riohacha",
+      "departamento": "La Guajira",
+      "cod_dane_mpio": "44001",
+      "lat": 11.528588,
+      "lng": -72.911795,
+      "poblacion": 311555,
+      "es_capital": true
+    },
+    {
+      "nombre": "Armenia",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63001",
+      "lat": 4.53598,
+      "lng": -75.680786,
+      "poblacion": 305060,
+      "es_capital": true
+    },
+    {
+      "nombre": "Floridablanca",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68276",
+      "lat": 7.072329,
+      "lng": -73.099104,
+      "poblacion": 296953,
+      "es_capital": false
+    },
+    {
+      "nombre": "Soledad",
+      "departamento": "Atlántico",
+      "cod_dane_mpio": "08758",
+      "lat": 10.909921,
+      "lng": -74.786054,
+      "poblacion": 296257,
+      "es_capital": false
+    },
+    {
+      "nombre": "Sincelejo",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70001",
+      "lat": 9.302322,
+      "lng": -75.395445,
+      "poblacion": 290521,
+      "es_capital": true
+    },
+    {
+      "nombre": "Envigado",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05266",
+      "lat": 6.166695,
+      "lng": -75.582192,
+      "poblacion": 263685,
+      "es_capital": false
+    },
+    {
+      "nombre": "Barrancabermeja",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68081",
+      "lat": 7.064857,
+      "lng": -73.849243,
+      "poblacion": 230373,
+      "es_capital": false
+    },
+    {
+      "nombre": "Tuluá",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76834",
+      "lat": 4.085399,
+      "lng": -76.197731,
+      "poblacion": 222127,
+      "es_capital": false
+    },
+    {
+      "nombre": "Apartadó",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05045",
+      "lat": 7.882968,
+      "lng": -76.625279,
+      "poblacion": 195215,
+      "es_capital": false
+    },
+    {
+      "nombre": "Yopal",
+      "departamento": "Casanare",
+      "cod_dane_mpio": "85001",
+      "lat": 5.327102,
+      "lng": -72.396132,
+      "poblacion": 187783,
+      "es_capital": true
+    },
+    {
+      "nombre": "Florencia",
+      "departamento": "Caquetá",
+      "cod_dane_mpio": "18001",
+      "lat": 1.618196,
+      "lng": -75.609831,
+      "poblacion": 184546,
+      "es_capital": true
+    },
+    {
+      "nombre": "Maicao",
+      "departamento": "La Guajira",
+      "cod_dane_mpio": "44430",
+      "lat": 11.378535,
+      "lng": -72.242738,
+      "poblacion": 184498,
+      "es_capital": false
+    },
+    {
+      "nombre": "Tunja",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15001",
+      "lat": 5.53988,
+      "lng": -73.355539,
+      "poblacion": 178119,
+      "es_capital": true
+    },
+    {
+      "nombre": "Piedecuesta",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68547",
+      "lat": 6.997245,
+      "lng": -73.054795,
+      "poblacion": 174929,
+      "es_capital": false
+    },
+    {
+      "nombre": "Turbo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05837",
+      "lat": 8.089929,
+      "lng": -76.728858,
+      "poblacion": 169740,
+      "es_capital": false
+    },
+    {
+      "nombre": "Facatativá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25269",
+      "lat": 4.813353,
+      "lng": -74.350085,
+      "poblacion": 165986,
+      "es_capital": false
+    },
+    {
+      "nombre": "Magangué",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13430",
+      "lat": 9.263799,
+      "lng": -74.766742,
+      "poblacion": 165794,
+      "es_capital": false
+    },
+    {
+      "nombre": "Jamundí",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76364",
+      "lat": 3.258751,
+      "lng": -76.538472,
+      "poblacion": 162787,
+      "es_capital": false
+    },
+    {
+      "nombre": "Chía",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25175",
+      "lat": 4.866508,
+      "lng": -74.05,
+      "poblacion": 162514,
+      "es_capital": false
+    },
+    {
+      "nombre": "Fusagasugá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25290",
+      "lat": 4.336723,
+      "lng": -74.37543,
+      "poblacion": 159278,
+      "es_capital": false
+    },
+    {
+      "nombre": "Ipiales",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52356",
+      "lat": 0.827732,
+      "lng": -77.646367,
+      "poblacion": 152798,
+      "es_capital": false
+    },
+    {
+      "nombre": "Zipaquirá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25899",
+      "lat": 5.025477,
+      "lng": -73.994444,
+      "poblacion": 152307,
+      "es_capital": false
+    },
+    {
+      "nombre": "Mosquera",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25473",
+      "lat": 4.70653,
+      "lng": -74.221154,
+      "poblacion": 152093,
+      "es_capital": false
+    },
+    {
+      "nombre": "Madrid",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25430",
+      "lat": 4.732791,
+      "lng": -74.265854,
+      "poblacion": 145131,
+      "es_capital": false
+    },
+    {
+      "nombre": "Caucasia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05154",
+      "lat": 7.977278,
+      "lng": -75.197996,
+      "poblacion": 138480,
+      "es_capital": false
+    },
+    {
+      "nombre": "Pitalito",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41551",
+      "lat": 1.852631,
+      "lng": -76.049441,
+      "poblacion": 137641,
+      "es_capital": false
+    },
+    {
+      "nombre": "Malambo",
+      "departamento": "Atlántico",
+      "cod_dane_mpio": "08433",
+      "lat": 10.857086,
+      "lng": -74.776923,
+      "poblacion": 137621,
+      "es_capital": false
+    },
+    {
+      "nombre": "Cartago",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76147",
+      "lat": 4.742192,
+      "lng": -75.924374,
+      "poblacion": 137330,
+      "es_capital": false
+    },
+    {
+      "nombre": "Rionegro",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05615",
+      "lat": 6.147148,
+      "lng": -75.377316,
+      "poblacion": 135465,
+      "es_capital": false
+    },
+    {
+      "nombre": "San Andrés de Tumaco",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52835",
+      "lat": 1.807399,
+      "lng": -78.764073,
+      "poblacion": 134950,
+      "es_capital": false
+    },
+    {
+      "nombre": "Girón",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68307",
+      "lat": 7.070432,
+      "lng": -73.166832,
+      "poblacion": 130863,
+      "es_capital": false
+    },
+    {
+      "nombre": "Yumbo",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76892",
+      "lat": 3.540097,
+      "lng": -76.499893,
+      "poblacion": 130855,
+      "es_capital": false
+    },
+    {
+      "nombre": "Quibdó",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27001",
+      "lat": 5.682166,
+      "lng": -76.638144,
+      "poblacion": 130825,
+      "es_capital": true
+    },
+    {
+      "nombre": "Lorica",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23417",
+      "lat": 9.240789,
+      "lng": -75.816084,
+      "poblacion": 126316,
+      "es_capital": false
+    },
+    {
+      "nombre": "Sogamoso",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15759",
+      "lat": 5.723976,
+      "lng": -72.924355,
+      "poblacion": 124838,
+      "es_capital": false
+    },
+    {
+      "nombre": "Ciénaga",
+      "departamento": "Magdalena",
+      "cod_dane_mpio": "47189",
+      "lat": 11.006654,
+      "lng": -74.241286,
+      "poblacion": 119337,
+      "es_capital": false
+    },
+    {
+      "nombre": "Guadalajara de Buga",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76111",
+      "lat": 3.900736,
+      "lng": -76.298979,
+      "poblacion": 117499,
+      "es_capital": false
+    },
+    {
+      "nombre": "Sabaneta",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05631",
+      "lat": 6.149903,
+      "lng": -75.615479,
+      "poblacion": 117200,
+      "es_capital": false
+    },
+    {
+      "nombre": "Duitama",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15238",
+      "lat": 5.822964,
+      "lng": -73.03063,
+      "poblacion": 110936,
+      "es_capital": false
+    },
+    {
+      "nombre": "Girardot",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25307",
+      "lat": 4.313069,
+      "lng": -74.798201,
+      "poblacion": 110589,
+      "es_capital": false
+    },
+    {
+      "nombre": "Cajicá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25126",
+      "lat": 4.920009,
+      "lng": -74.02298,
+      "poblacion": 110179,
+      "es_capital": false
+    },
+    {
+      "nombre": "Funza",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25286",
+      "lat": 4.710412,
+      "lng": -74.201528,
+      "poblacion": 110140,
+      "es_capital": false
+    },
+    {
+      "nombre": "Santander de Quilichao",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19698",
+      "lat": 3.015008,
+      "lng": -76.485141,
+      "poblacion": 105979,
+      "es_capital": false
+    },
+    {
+      "nombre": "Ocaña",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54498",
+      "lat": 8.248574,
+      "lng": -73.35607,
+      "poblacion": 105360,
+      "es_capital": false
+    },
+    {
+      "nombre": "Arauca",
+      "departamento": "Arauca",
+      "cod_dane_mpio": "81001",
+      "lat": 7.072726,
+      "lng": -70.747408,
+      "poblacion": 102217,
+      "es_capital": true
+    },
+    {
+      "nombre": "Turbaco",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13836",
+      "lat": 10.348316,
+      "lng": -75.427249,
+      "poblacion": 100867,
+      "es_capital": false
+    },
+    {
+      "nombre": "Villa del Rosario",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54874",
+      "lat": 7.847672,
+      "lng": -72.469758,
+      "poblacion": 100513,
+      "es_capital": false
+    },
+    {
+      "nombre": "San José del Guaviare",
+      "departamento": "Guaviare",
+      "cod_dane_mpio": "95001",
+      "lat": 2.565932,
+      "lng": -72.639254,
+      "poblacion": 71498,
+      "es_capital": true
+    },
+    {
+      "nombre": "Mocoa",
+      "departamento": "Putumayo",
+      "cod_dane_mpio": "86001",
+      "lat": 1.151172,
+      "lng": -76.654238,
+      "poblacion": 60997,
+      "es_capital": true
+    },
+    {
+      "nombre": "Leticia",
+      "departamento": "Amazonas",
+      "cod_dane_mpio": "91001",
+      "lat": -4.19895,
+      "lng": -69.941721,
+      "poblacion": 51623,
+      "es_capital": true
+    },
+    {
+      "nombre": "San Andrés",
+      "departamento": "Archipiélago de San Andrés, Providencia y Santa Catalina",
+      "cod_dane_mpio": "88001",
+      "lat": 12.578108,
+      "lng": -81.707181,
+      "poblacion": 49099,
+      "es_capital": true
+    },
+    {
+      "nombre": "Mitú",
+      "departamento": "Vaupés",
+      "cod_dane_mpio": "97001",
+      "lat": 1.253151,
+      "lng": -70.232641,
+      "poblacion": 31694,
+      "es_capital": true
+    },
+    {
+      "nombre": "Inírida",
+      "departamento": "Guainía",
+      "cod_dane_mpio": "94001",
+      "lat": 3.866764,
+      "lng": -67.918613,
+      "poblacion": 26960,
+      "es_capital": true
+    },
+    {
+      "nombre": "Puerto Carreño",
+      "departamento": "Vichada",
+      "cod_dane_mpio": "99001",
+      "lat": 6.186636,
+      "lng": -67.487095,
+      "poblacion": 19024,
+      "es_capital": true
+    }
+  ]
+}

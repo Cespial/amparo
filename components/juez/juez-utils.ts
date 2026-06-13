@@ -11,13 +11,11 @@ export const PESO_URGENCIA: Record<Urgencia, number> = {
   baja: 1,
 };
 
-/** Etiqueta legible de urgencia. */
-export const ETIQUETA_URGENCIA: Record<Urgencia, string> = {
-  vital: "Vital",
-  alta: "Alta",
-  media: "Media",
-  baja: "Baja",
-};
+/**
+ * Las etiquetas legibles de urgencia se resuelven vía i18n en los componentes
+ * (useT("juez")("urgency.<nivel>")); este módulo solo mantiene pesos y helpers
+ * de presentación libres de idioma.
+ */
 
 /** Estados que pertenecen a la cola del despacho judicial. */
 export const ESTADOS_DESPACHO: EstadoCaso[] = ["ESCALADO_TUTELA", "EN_DESPACHO"];

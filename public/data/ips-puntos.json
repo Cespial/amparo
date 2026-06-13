@@ -3,9 +3,9 @@
   "url_ips": "https://www.datos.gov.co/resource/c36g-9fc2.json",
   "url_centroides": "https://www.datos.gov.co/resource/gdxc-w37w.json",
   "fecha_corte": "REPS marzo 2026; centroides DANE",
-  "nota": "DATOS REALES geocodificados por MUNICIPIO. ips_total = nº de IPS (clase IPS del REPS) con sede en ese municipio. lat/lng = centroide oficial del municipio (cod_dane_mpio, 5 dígitos), NO la ubicación exacta de cada IPS (el REPS nacional no trae lat/lng por sede). El array 'puntos' está ordenado por ips_total desc y limitado a los 500 municipios con más IPS; estos puntos concentran 19047 de las 19551 IPS nacionales (97.4%). Municipios con IPS pero sin centroide oficial: 1 (3 IPS, excluidos para no inventar coordenadas).",
-  "total_municipios": 500,
-  "total_ips_en_puntos": 19047,
+  "nota": "DATOS REALES geocodificados por MUNICIPIO. ips_total = nº de IPS (clase IPS del REPS) con sede en ese municipio. lat/lng = centroide oficial del municipio (cod_dane_mpio, 5 dígitos), NO la ubicación exacta de cada IPS (el REPS nacional no trae lat/lng por sede). El array 'puntos' está ordenado por ips_total desc e incluye TODOS los 922 municipios con al menos 1 IPS y centroide oficial; estos puntos concentran 19548 de las 19551 IPS nacionales (100.0%). Municipios con IPS pero sin centroide oficial: 1 (3 IPS, excluidos para no inventar coordenadas).",
+  "total_municipios": 922,
+  "total_ips_en_puntos": 19548,
   "total_ips_nacional": 19551,
   "puntos": [
     {
@@ -4007,6 +4007,3382 @@
       "lat": 9.30403,
       "lng": -74.567479,
       "ips_total": 2
+    },
+    {
+      "municipio": "Villanueva",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13873",
+      "lat": 10.444089,
+      "lng": -75.275613,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Chitaraque",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15185",
+      "lat": 6.027425,
+      "lng": -73.4471,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Villa de Leyva",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15407",
+      "lat": 5.632455,
+      "lng": -73.524948,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Moniquirá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15469",
+      "lat": 5.876331,
+      "lng": -73.573374,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Nobsa",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15491",
+      "lat": 5.768046,
+      "lng": -72.937042,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Paya",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15533",
+      "lat": 5.625699,
+      "lng": -72.423775,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Quípama",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15580",
+      "lat": 5.52055,
+      "lng": -74.180033,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Ramiriquí",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15599",
+      "lat": 5.400303,
+      "lng": -73.334839,
+      "ips_total": 2
+    },
+    {
+      "municipio": "San Luis de Gaceno",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15667",
+      "lat": 4.81976,
+      "lng": -73.168076,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Sotaquirá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15763",
+      "lat": 5.764986,
+      "lng": -73.246585,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Tutazá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15839",
+      "lat": 6.032608,
+      "lng": -72.856035,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Umbita",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15842",
+      "lat": 5.221176,
+      "lng": -73.456917,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Aguadas",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17013",
+      "lat": 5.610244,
+      "lng": -75.45487,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Filadelfia",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17272",
+      "lat": 5.297091,
+      "lng": -75.562474,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Marulanda",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17446",
+      "lat": 5.284304,
+      "lng": -75.259721,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Pácora",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17513",
+      "lat": 5.527172,
+      "lng": -75.459621,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Risaralda",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17616",
+      "lat": 5.164509,
+      "lng": -75.76722,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Salamina",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17653",
+      "lat": 5.403025,
+      "lng": -75.487223,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Caldono",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19137",
+      "lat": 2.798059,
+      "lng": -76.484319,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Corinto",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19212",
+      "lat": 3.173854,
+      "lng": -76.261866,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Miranda",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19455",
+      "lat": 3.254651,
+      "lng": -76.228722,
+      "ips_total": 2
+    },
+    {
+      "municipio": "González",
+      "departamento": "Cesar",
+      "cod_dane_mpio": "20310",
+      "lat": 8.389604,
+      "lng": -73.38004,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Canalete",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23090",
+      "lat": 8.786939,
+      "lng": -76.241476,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Anapoima",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25035",
+      "lat": 4.562737,
+      "lng": -74.528676,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Choachí",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25181",
+      "lat": 4.527048,
+      "lng": -73.922894,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Fosca",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25281",
+      "lat": 4.339093,
+      "lng": -73.93902,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Guasca",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25322",
+      "lat": 4.866719,
+      "lng": -73.877143,
+      "ips_total": 2
+    },
+    {
+      "municipio": "La Palma",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25394",
+      "lat": 5.358816,
+      "lng": -74.391022,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Sesquilé",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25736",
+      "lat": 5.04476,
+      "lng": -73.796099,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Subachoque",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25769",
+      "lat": 4.929118,
+      "lng": -74.172773,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Vergara",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25862",
+      "lat": 5.117258,
+      "lng": -74.346163,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Acevedo",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41006",
+      "lat": 1.805173,
+      "lng": -75.888706,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Campoalegre",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41132",
+      "lat": 2.686767,
+      "lng": -75.325748,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Guadalupe",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41319",
+      "lat": 2.02426,
+      "lng": -75.757185,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Iquira",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41357",
+      "lat": 2.649359,
+      "lng": -75.634497,
+      "ips_total": 2
+    },
+    {
+      "municipio": "La Argentina",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41378",
+      "lat": 2.198496,
+      "lng": -75.979763,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Tesalia",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41797",
+      "lat": 2.486364,
+      "lng": -75.730271,
+      "ips_total": 2
+    },
+    {
+      "municipio": "La Jagua del Pilar",
+      "departamento": "La Guajira",
+      "cod_dane_mpio": "44420",
+      "lat": 10.511862,
+      "lng": -73.072638,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Fuente de Oro",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50287",
+      "lat": 3.462875,
+      "lng": -73.618121,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Vistahermosa",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50711",
+      "lat": 3.125579,
+      "lng": -73.750966,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Consaca",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52207",
+      "lat": 1.207854,
+      "lng": -77.466136,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Cuaspud",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52224",
+      "lat": 0.862978,
+      "lng": -77.728947,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Gualmatán",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52323",
+      "lat": 0.919652,
+      "lng": -77.568701,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Linares",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52411",
+      "lat": 1.350814,
+      "lng": -77.523953,
+      "ips_total": 2
+    },
+    {
+      "municipio": "San Pablo",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52693",
+      "lat": 1.669429,
+      "lng": -77.013984,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Sardinata",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54720",
+      "lat": 8.082105,
+      "lng": -72.800577,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Circasia",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63190",
+      "lat": 4.617759,
+      "lng": -75.636533,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Quimbaya",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63594",
+      "lat": 4.624387,
+      "lng": -75.765074,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Apía",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66045",
+      "lat": 5.106526,
+      "lng": -75.942356,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Quinchía",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66594",
+      "lat": 5.340456,
+      "lng": -75.730431,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Santa Rosa de Cabal",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66682",
+      "lat": 4.876271,
+      "lng": -75.623268,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Aratoca",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68051",
+      "lat": 6.694418,
+      "lng": -73.01786,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Betulia",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68092",
+      "lat": 6.899525,
+      "lng": -73.283669,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Cerrito",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68162",
+      "lat": 6.840405,
+      "lng": -72.694851,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Charalá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68167",
+      "lat": 6.284339,
+      "lng": -73.146873,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Coromoro",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68217",
+      "lat": 6.294999,
+      "lng": -73.040816,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Oiba",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68500",
+      "lat": 6.26521,
+      "lng": -73.299791,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Puente Nacional",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68572",
+      "lat": 5.878381,
+      "lng": -73.677567,
+      "ips_total": 2
+    },
+    {
+      "municipio": "San José de Miranda",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68684",
+      "lat": 6.658995,
+      "lng": -72.733616,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Tona",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68820",
+      "lat": 7.201417,
+      "lng": -72.967023,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Buenavista",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70110",
+      "lat": 9.319794,
+      "lng": -74.972827,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Chalán",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70230",
+      "lat": 9.545352,
+      "lng": -75.312697,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Los Palmitos",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70418",
+      "lat": 9.380269,
+      "lng": -75.268716,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Cajamarca",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73124",
+      "lat": 4.438812,
+      "lng": -75.431971,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Casabianca",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73152",
+      "lat": 5.078465,
+      "lng": -75.120966,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Coyaima",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73217",
+      "lat": 3.798036,
+      "lng": -75.193862,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Lérida",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73408",
+      "lat": 4.862046,
+      "lng": -74.910716,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Piedras",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73547",
+      "lat": 4.543951,
+      "lng": -74.878106,
+      "ips_total": 2
+    },
+    {
+      "municipio": "San Antonio",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73675",
+      "lat": 3.914146,
+      "lng": -75.480074,
+      "ips_total": 2
+    },
+    {
+      "municipio": "San Luis",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73678",
+      "lat": 4.133721,
+      "lng": -75.095804,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Venadillo",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73861",
+      "lat": 4.717878,
+      "lng": -74.929333,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Ginebra",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76306",
+      "lat": 3.724181,
+      "lng": -76.268068,
+      "ips_total": 2
+    },
+    {
+      "municipio": "La Unión",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76400",
+      "lat": 4.533869,
+      "lng": -76.099661,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Restrepo",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76606",
+      "lat": 3.821351,
+      "lng": -76.523329,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Riofrío",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76616",
+      "lat": 4.156908,
+      "lng": -76.288313,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Vijes",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76869",
+      "lat": 3.698686,
+      "lng": -76.441804,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Maní",
+      "departamento": "Casanare",
+      "cod_dane_mpio": "85139",
+      "lat": 4.81681,
+      "lng": -72.281384,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Puerto Caicedo",
+      "departamento": "Putumayo",
+      "cod_dane_mpio": "86569",
+      "lat": 0.687784,
+      "lng": -76.606118,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Cumaribo",
+      "departamento": "Vichada",
+      "cod_dane_mpio": "99773",
+      "lat": 4.446352,
+      "lng": -69.795533,
+      "ips_total": 2
+    },
+    {
+      "municipio": "Alejandría",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05021",
+      "lat": 6.376061,
+      "lng": -75.141346,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Angelópolis",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05036",
+      "lat": 6.109719,
+      "lng": -75.711389,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Angostura",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05038",
+      "lat": 6.885175,
+      "lng": -75.335116,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Anza",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05044",
+      "lat": 6.302641,
+      "lng": -75.854442,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Argelia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05055",
+      "lat": 5.731474,
+      "lng": -75.14107,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Armenia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05059",
+      "lat": 6.155667,
+      "lng": -75.786647,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Belmira",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05086",
+      "lat": 6.606319,
+      "lng": -75.667779,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Betania",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05091",
+      "lat": 5.74615,
+      "lng": -75.97679,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Buriticá",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05113",
+      "lat": 6.720759,
+      "lng": -75.907,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caicedo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05125",
+      "lat": 6.405607,
+      "lng": -75.98293,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Campamento",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05134",
+      "lat": 6.979771,
+      "lng": -75.298091,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cañasgordas",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05138",
+      "lat": 6.753859,
+      "lng": -76.028228,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caracolí",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05142",
+      "lat": 6.409829,
+      "lng": -74.757421,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caramanta",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05145",
+      "lat": 5.54853,
+      "lng": -75.643868,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Carmen de Viboral",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05148",
+      "lat": 6.082885,
+      "lng": -75.333901,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Carolina",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05150",
+      "lat": 6.725995,
+      "lng": -75.283192,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cocorná",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05197",
+      "lat": 6.058295,
+      "lng": -75.185483,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Concepción",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05206",
+      "lat": 6.394348,
+      "lng": -75.257587,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Concordia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05209",
+      "lat": 6.045738,
+      "lng": -75.908448,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Dabeiba",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05234",
+      "lat": 6.998112,
+      "lng": -76.261614,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Giraldo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05306",
+      "lat": 6.680808,
+      "lng": -75.952158,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Gómez Plata",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05310",
+      "lat": 6.683269,
+      "lng": -75.220018,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guadalupe",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05315",
+      "lat": 6.815069,
+      "lng": -75.239862,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guatape",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05321",
+      "lat": 6.232461,
+      "lng": -75.160041,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Heliconia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05347",
+      "lat": 6.206757,
+      "lng": -75.734322,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Hispania",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05353",
+      "lat": 5.799461,
+      "lng": -75.906587,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Jericó",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05368",
+      "lat": 5.789748,
+      "lng": -75.785499,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Pintada",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05390",
+      "lat": 5.743808,
+      "lng": -75.60781,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Liborina",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05411",
+      "lat": 6.677316,
+      "lng": -75.812838,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Maceo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05425",
+      "lat": 6.552116,
+      "lng": -74.78716,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Montebello",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05467",
+      "lat": 5.946313,
+      "lng": -75.523455,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Murindó",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05475",
+      "lat": 6.97771,
+      "lng": -76.817485,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Mutatá",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05480",
+      "lat": 7.242875,
+      "lng": -76.435875,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Peñol",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05541",
+      "lat": 6.219349,
+      "lng": -75.242693,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Peque",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05543",
+      "lat": 7.021029,
+      "lng": -75.910357,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pueblorrico",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05576",
+      "lat": 5.79158,
+      "lng": -75.839903,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sabanalarga",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05628",
+      "lat": 6.850028,
+      "lng": -75.816645,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Andrés",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05647",
+      "lat": 6.916676,
+      "lng": -75.674564,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Francisco",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05652",
+      "lat": 5.963476,
+      "lng": -75.101562,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Jerónimo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05656",
+      "lat": 6.44809,
+      "lng": -75.726975,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San José de la Montaña",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05658",
+      "lat": 6.85009,
+      "lng": -75.683352,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Juan de Urabá",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05659",
+      "lat": 8.758964,
+      "lng": -76.52857,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Vicente",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05674",
+      "lat": 6.282164,
+      "lng": -75.332616,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa Bárbara",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05679",
+      "lat": 5.875527,
+      "lng": -75.567351,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sopetrán",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05761",
+      "lat": 6.500745,
+      "lng": -75.747378,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tarazá",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05790",
+      "lat": 7.580127,
+      "lng": -75.401407,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tarso",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05792",
+      "lat": 5.864542,
+      "lng": -75.822956,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Titiribí",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05809",
+      "lat": 6.062391,
+      "lng": -75.791887,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Toledo",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05819",
+      "lat": 7.010328,
+      "lng": -75.692281,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Uramita",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05842",
+      "lat": 6.898393,
+      "lng": -76.173284,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Urrao",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05847",
+      "lat": 6.317343,
+      "lng": -76.133951,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Valdivia",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05854",
+      "lat": 7.1652,
+      "lng": -75.439274,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Valparaíso",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05856",
+      "lat": 5.614555,
+      "lng": -75.624452,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Vegachí",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05858",
+      "lat": 6.773525,
+      "lng": -74.798714,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Yalí",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05885",
+      "lat": 6.676554,
+      "lng": -74.840059,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Yondó",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05893",
+      "lat": 7.00396,
+      "lng": -73.912445,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Zaragoza",
+      "departamento": "Antioquia",
+      "cod_dane_mpio": "05895",
+      "lat": 7.488583,
+      "lng": -74.867075,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Suan",
+      "departamento": "Atlántico",
+      "cod_dane_mpio": "08770",
+      "lat": 10.335432,
+      "lng": -74.881687,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Usiacurí",
+      "departamento": "Atlántico",
+      "cod_dane_mpio": "08849",
+      "lat": 10.74298,
+      "lng": -74.976985,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Altos del Rosario",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13030",
+      "lat": 8.791865,
+      "lng": -74.164905,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Arroyohondo",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13062",
+      "lat": 10.250075,
+      "lng": -75.019215,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Peñón",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13268",
+      "lat": 8.988271,
+      "lng": -73.949274,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Margarita",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13440",
+      "lat": 9.15784,
+      "lng": -74.285137,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Turbana",
+      "departamento": "Bolívar",
+      "cod_dane_mpio": "13838",
+      "lat": 10.274585,
+      "lng": -75.44265,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Aquitania",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15047",
+      "lat": 5.518602,
+      "lng": -72.88399,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Arcabuco",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15051",
+      "lat": 5.755673,
+      "lng": -73.437503,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Belén",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15087",
+      "lat": 5.98923,
+      "lng": -72.911641,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Berbeo",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15090",
+      "lat": 5.227451,
+      "lng": -73.12721,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Betéitiva",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15092",
+      "lat": 5.909978,
+      "lng": -72.809014,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Boyacá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15104",
+      "lat": 5.454578,
+      "lng": -73.361945,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Briceño",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15106",
+      "lat": 5.690879,
+      "lng": -73.92326,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Buenavista",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15109",
+      "lat": 5.512594,
+      "lng": -73.94217,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caldas",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15131",
+      "lat": 5.55458,
+      "lng": -73.865553,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Campohermoso",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15135",
+      "lat": 5.031676,
+      "lng": -73.104173,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cerinza",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15162",
+      "lat": 5.955939,
+      "lng": -72.947918,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Chivatá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15187",
+      "lat": 5.558949,
+      "lng": -73.282529,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ciénega",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15189",
+      "lat": 5.408694,
+      "lng": -73.296049,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Coper",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15212",
+      "lat": 5.475074,
+      "lng": -74.045636,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Corrales",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15215",
+      "lat": 5.828064,
+      "lng": -72.844795,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cubará",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15223",
+      "lat": 6.997275,
+      "lng": -72.107939,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cucaita",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15224",
+      "lat": 5.544452,
+      "lng": -73.454338,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cuítiva",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15226",
+      "lat": 5.580367,
+      "lng": -72.965923,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Chíquiza",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15232",
+      "lat": 5.639834,
+      "lng": -73.449463,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Firavitoba",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15272",
+      "lat": 5.668885,
+      "lng": -72.993392,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Floresta",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15276",
+      "lat": 5.859519,
+      "lng": -72.918111,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Gachantivá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15293",
+      "lat": 5.751891,
+      "lng": -73.549092,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Gameza",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15296",
+      "lat": 5.802333,
+      "lng": -72.80553,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Garagoa",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15299",
+      "lat": 5.083234,
+      "lng": -73.364413,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Iza",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15362",
+      "lat": 5.611577,
+      "lng": -72.979559,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Jenesano",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15367",
+      "lat": 5.385813,
+      "lng": -73.363738,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Jericó",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15368",
+      "lat": 6.145735,
+      "lng": -72.571122,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Labranzagrande",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15377",
+      "lat": 5.562687,
+      "lng": -72.57777,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Capilla",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15380",
+      "lat": 5.095687,
+      "lng": -73.444347,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Uvita",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15403",
+      "lat": 6.31616,
+      "lng": -72.559982,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Macanal",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15425",
+      "lat": 4.972464,
+      "lng": -73.319593,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Miraflores",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15455",
+      "lat": 5.196515,
+      "lng": -73.14563,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Mongua",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15464",
+      "lat": 5.754242,
+      "lng": -72.79809,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Monguí",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15466",
+      "lat": 5.723486,
+      "lng": -72.849292,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Motavita",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15476",
+      "lat": 5.5777,
+      "lng": -73.367841,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Muzo",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15480",
+      "lat": 5.532758,
+      "lng": -74.10269,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Nuevo Colón",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15494",
+      "lat": 5.355317,
+      "lng": -73.456759,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Oicatá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15500",
+      "lat": 5.595235,
+      "lng": -73.308399,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Otanche",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15507",
+      "lat": 5.657536,
+      "lng": -74.180965,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pachavita",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15511",
+      "lat": 5.140065,
+      "lng": -73.396953,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Páez",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15514",
+      "lat": 5.097319,
+      "lng": -73.052737,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pauna",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15531",
+      "lat": 5.656323,
+      "lng": -73.978449,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Paz de Río",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15537",
+      "lat": 5.987645,
+      "lng": -72.749137,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pesca",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15542",
+      "lat": 5.558808,
+      "lng": -73.050872,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pisba",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15550",
+      "lat": 5.72141,
+      "lng": -72.486023,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ráquira",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15600",
+      "lat": 5.539136,
+      "lng": -73.632543,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Rondón",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15621",
+      "lat": 5.357378,
+      "lng": -73.208474,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Saboyá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15632",
+      "lat": 5.697756,
+      "lng": -73.764456,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sáchica",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15638",
+      "lat": 5.584305,
+      "lng": -73.542539,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Eduardo",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15660",
+      "lat": 5.22401,
+      "lng": -73.077747,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San José de Pare",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15664",
+      "lat": 6.018924,
+      "lng": -73.545397,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Miguel de Sema",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15676",
+      "lat": 5.518083,
+      "lng": -73.722009,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Pablo de Borbur",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15681",
+      "lat": 5.650743,
+      "lng": -74.069963,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santana",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15686",
+      "lat": 6.056866,
+      "lng": -73.481639,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa Sofía",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15696",
+      "lat": 5.713269,
+      "lng": -73.602707,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Siachoque",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15740",
+      "lat": 5.511811,
+      "lng": -73.24466,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Socotá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15755",
+      "lat": 6.041162,
+      "lng": -72.636653,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Socha",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15757",
+      "lat": 5.996717,
+      "lng": -72.691963,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Somondoco",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15761",
+      "lat": 4.985726,
+      "lng": -73.433393,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sora",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15762",
+      "lat": 5.56684,
+      "lng": -73.450153,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Soracá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15764",
+      "lat": 5.500898,
+      "lng": -73.332804,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Susacón",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15774",
+      "lat": 6.230332,
+      "lng": -72.690289,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sutamarchán",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15776",
+      "lat": 5.619781,
+      "lng": -73.620536,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tasco",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15790",
+      "lat": 5.909821,
+      "lng": -72.781011,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tibaná",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15804",
+      "lat": 5.317251,
+      "lng": -73.396457,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tibasosa",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15806",
+      "lat": 5.74723,
+      "lng": -72.999449,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tinjacá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15808",
+      "lat": 5.579713,
+      "lng": -73.646847,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tipacoque",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15810",
+      "lat": 6.419203,
+      "lng": -72.691729,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Toca",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15814",
+      "lat": 5.566464,
+      "lng": -73.184794,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Togüí",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15816",
+      "lat": 5.937438,
+      "lng": -73.513655,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tópaga",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15820",
+      "lat": 5.768201,
+      "lng": -72.832245,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tota",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15822",
+      "lat": 5.560497,
+      "lng": -72.985898,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tununguá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15832",
+      "lat": 5.730582,
+      "lng": -73.933155,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Turmequé",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15835",
+      "lat": 5.323261,
+      "lng": -73.491825,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tuta",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15837",
+      "lat": 5.689082,
+      "lng": -73.230285,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Viracachá",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15879",
+      "lat": 5.436833,
+      "lng": -73.296894,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Zetaquira",
+      "departamento": "Boyacá",
+      "cod_dane_mpio": "15897",
+      "lat": 5.283443,
+      "lng": -73.17098,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Aranzazu",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17050",
+      "lat": 5.271195,
+      "lng": -75.49129,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Belalcázar",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17088",
+      "lat": 4.993785,
+      "lng": -75.811918,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Merced",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17388",
+      "lat": 5.39647,
+      "lng": -75.546486,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Manzanares",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17433",
+      "lat": 5.255699,
+      "lng": -75.152829,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Marmato",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17442",
+      "lat": 5.47422,
+      "lng": -75.600049,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Marquetalia",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17444",
+      "lat": 5.297525,
+      "lng": -75.053097,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Neira",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17486",
+      "lat": 5.166895,
+      "lng": -75.520006,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Norcasia",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17495",
+      "lat": 5.574796,
+      "lng": -74.889543,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San José",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17665",
+      "lat": 5.08231,
+      "lng": -75.792063,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Victoria",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17867",
+      "lat": 5.317437,
+      "lng": -74.911239,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Viterbo",
+      "departamento": "Caldas",
+      "cod_dane_mpio": "17877",
+      "lat": 5.062664,
+      "lng": -75.87061,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cartagena del Chairá",
+      "departamento": "Caquetá",
+      "cod_dane_mpio": "18150",
+      "lat": 1.332371,
+      "lng": -74.847867,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Curillo",
+      "departamento": "Caquetá",
+      "cod_dane_mpio": "18205",
+      "lat": 1.033473,
+      "lng": -75.919205,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Balboa",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19075",
+      "lat": 2.040998,
+      "lng": -77.215773,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guachené",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19300",
+      "lat": 3.134153,
+      "lng": -76.392189,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Inzá",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19355",
+      "lat": 2.549183,
+      "lng": -76.063503,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Totoró",
+      "departamento": "Cauca",
+      "cod_dane_mpio": "19824",
+      "lat": 2.510252,
+      "lng": -76.403628,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Chimá",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23168",
+      "lat": 9.149698,
+      "lng": -75.626886,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cotorra",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23300",
+      "lat": 9.037163,
+      "lng": -75.799216,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Apartada",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23350",
+      "lat": 8.050125,
+      "lng": -75.336031,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Los Córdobas",
+      "departamento": "Córdoba",
+      "cod_dane_mpio": "23419",
+      "lat": 8.892098,
+      "lng": -76.35518,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Agua de Dios",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25001",
+      "lat": 4.375309,
+      "lng": -74.669221,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caparrapí",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25148",
+      "lat": 5.34758,
+      "lng": -74.491045,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Carmen de Carupa",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25154",
+      "lat": 5.349119,
+      "lng": -73.901357,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cucunubá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25224",
+      "lat": 5.249795,
+      "lng": -73.766113,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Peñón",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25258",
+      "lat": 5.248747,
+      "lng": -74.290207,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Gachancipá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25295",
+      "lat": 4.990947,
+      "lng": -73.873464,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guachetá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25317",
+      "lat": 5.383378,
+      "lng": -73.686972,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Junín",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25372",
+      "lat": 4.79057,
+      "lng": -73.662961,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Peña",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25398",
+      "lat": 5.198945,
+      "lng": -74.394105,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Nemocón",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25486",
+      "lat": 5.068705,
+      "lng": -73.877888,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Nimaima",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25489",
+      "lat": 5.125992,
+      "lng": -74.38604,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Francisco",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25658",
+      "lat": 4.972917,
+      "lng": -74.289672,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Sasaima",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25718",
+      "lat": 4.962167,
+      "lng": -74.432628,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Suesca",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25772",
+      "lat": 5.103495,
+      "lng": -73.798227,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tausa",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25793",
+      "lat": 5.196333,
+      "lng": -73.887813,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Une",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25845",
+      "lat": 4.40245,
+      "lng": -74.025183,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Útica",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25851",
+      "lat": 5.19055,
+      "lng": -74.483154,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Vianí",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25867",
+      "lat": 4.875208,
+      "lng": -74.56132,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Viotá",
+      "departamento": "Cundinamarca",
+      "cod_dane_mpio": "25878",
+      "lat": 4.43935,
+      "lng": -74.523131,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Atrato",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27050",
+      "lat": 5.531419,
+      "lng": -76.635674,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Bagadó",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27073",
+      "lat": 5.409681,
+      "lng": -76.416063,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Bahía Solano",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27075",
+      "lat": 6.222807,
+      "lng": -77.401359,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Bojaya",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27099",
+      "lat": 6.559708,
+      "lng": -76.886773,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Cantón del San Pablo",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27135",
+      "lat": 5.335321,
+      "lng": -76.726844,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cértegui",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27160",
+      "lat": 5.371373,
+      "lng": -76.607619,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Carmen de Atrato",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27245",
+      "lat": 5.899789,
+      "lng": -76.142112,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Medio Atrato",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27425",
+      "lat": 5.994935,
+      "lng": -76.783042,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Medio Baudó",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27430",
+      "lat": 5.192471,
+      "lng": -76.950891,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Unguía",
+      "departamento": "Chocó",
+      "cod_dane_mpio": "27800",
+      "lat": 8.04406,
+      "lng": -77.092538,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Agrado",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41013",
+      "lat": 2.25987,
+      "lng": -75.772022,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Aipe",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41016",
+      "lat": 3.223996,
+      "lng": -75.239017,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Algeciras",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41020",
+      "lat": 2.521674,
+      "lng": -75.315389,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Baraya",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41078",
+      "lat": 3.152204,
+      "lng": -75.054843,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Colombia",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41206",
+      "lat": 3.376745,
+      "lng": -74.802815,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Elías",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41244",
+      "lat": 2.012854,
+      "lng": -75.938301,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Gigante",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41306",
+      "lat": 2.384031,
+      "lng": -75.547681,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Hobo",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41349",
+      "lat": 2.580812,
+      "lng": -75.447697,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Isnos",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41359",
+      "lat": 1.929467,
+      "lng": -76.217637,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Nátaga",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41483",
+      "lat": 2.5451,
+      "lng": -75.808756,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Oporapa",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41503",
+      "lat": 2.025088,
+      "lng": -75.995165,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Paicol",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41518",
+      "lat": 2.449651,
+      "lng": -75.773158,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Palermo",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41524",
+      "lat": 2.889649,
+      "lng": -75.435296,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pital",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41548",
+      "lat": 2.266618,
+      "lng": -75.804544,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Saladoblanco",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41660",
+      "lat": 1.9934,
+      "lng": -76.044747,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa María",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41676",
+      "lat": 2.939603,
+      "lng": -75.586223,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Suaza",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41770",
+      "lat": 1.976051,
+      "lng": -75.79525,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Tarqui",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41791",
+      "lat": 2.111325,
+      "lng": -75.823976,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Teruel",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41801",
+      "lat": 2.740968,
+      "lng": -75.567034,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Timaná",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41807",
+      "lat": 1.974539,
+      "lng": -75.932167,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Villavieja",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41872",
+      "lat": 3.218822,
+      "lng": -75.217174,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Yaguará",
+      "departamento": "Huila",
+      "cod_dane_mpio": "41885",
+      "lat": 2.664694,
+      "lng": -75.518023,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Molino",
+      "departamento": "La Guajira",
+      "cod_dane_mpio": "44110",
+      "lat": 10.653505,
+      "lng": -72.92673,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Urumita",
+      "departamento": "La Guajira",
+      "cod_dane_mpio": "44855",
+      "lat": 10.560169,
+      "lng": -73.012507,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cubarral",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50223",
+      "lat": 3.793653,
+      "lng": -73.837999,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cumaral",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50226",
+      "lat": 4.270042,
+      "lng": -73.487052,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Dorado",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50270",
+      "lat": 3.739984,
+      "lng": -73.835264,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Mapiripán",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50325",
+      "lat": 2.896617,
+      "lng": -72.135509,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Macarena",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50350",
+      "lat": 2.177143,
+      "lng": -73.78661,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Puerto Rico",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50590",
+      "lat": 2.939621,
+      "lng": -73.206314,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Carlos de Guaroa",
+      "departamento": "Meta",
+      "cod_dane_mpio": "50680",
+      "lat": 3.71065,
+      "lng": -73.242253,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Aldana",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52022",
+      "lat": 0.882381,
+      "lng": -77.700564,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Belén",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52083",
+      "lat": 1.595681,
+      "lng": -77.015619,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Contadero",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52210",
+      "lat": 0.910458,
+      "lng": -77.549409,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Peñol",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52254",
+      "lat": 1.453567,
+      "lng": -77.438522,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Funes",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52287",
+      "lat": 1.001159,
+      "lng": -77.448913,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Iles",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52352",
+      "lat": 0.96952,
+      "lng": -77.521227,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Llanada",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52385",
+      "lat": 1.472892,
+      "lng": -77.58091,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Leiva",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52405",
+      "lat": 1.934453,
+      "lng": -77.306135,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Los Andes",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52418",
+      "lat": 1.494587,
+      "lng": -77.521303,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Mosquera",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52473",
+      "lat": 2.507139,
+      "lng": -78.452992,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Nariño",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52480",
+      "lat": 1.288979,
+      "lng": -77.357972,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ospina",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52506",
+      "lat": 1.058433,
+      "lng": -77.566082,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Providencia",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52565",
+      "lat": 1.237814,
+      "lng": -77.596794,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Bernardo",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52685",
+      "lat": 1.513762,
+      "lng": -77.0475,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Pedro de Cartago",
+      "departamento": "Nariño",
+      "cod_dane_mpio": "52694",
+      "lat": 1.551572,
+      "lng": -77.11941,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Herrán",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54347",
+      "lat": 7.506541,
+      "lng": -72.483519,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Toledo",
+      "departamento": "Norte de Santander",
+      "cod_dane_mpio": "54820",
+      "lat": 7.307692,
+      "lng": -72.481915,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Buenavista",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63111",
+      "lat": 4.360029,
+      "lng": -75.739572,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Córdoba",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63212",
+      "lat": 4.392485,
+      "lng": -75.687866,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Génova",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63302",
+      "lat": 4.206641,
+      "lng": -75.790402,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pijao",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63548",
+      "lat": 4.335036,
+      "lng": -75.703329,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Salento",
+      "departamento": "Quindío",
+      "cod_dane_mpio": "63690",
+      "lat": 4.637157,
+      "lng": -75.570844,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Balboa",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66075",
+      "lat": 4.949096,
+      "lng": -75.958663,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Belén de Umbría",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66088",
+      "lat": 5.200793,
+      "lng": -75.868334,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guática",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66318",
+      "lat": 5.315367,
+      "lng": -75.799005,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Celia",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66383",
+      "lat": 5.002787,
+      "lng": -76.0032,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Marsella",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66440",
+      "lat": 4.935771,
+      "lng": -75.73879,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santuario",
+      "departamento": "Risaralda",
+      "cod_dane_mpio": "66687",
+      "lat": 5.074911,
+      "lng": -75.964628,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Aguada",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68013",
+      "lat": 6.162355,
+      "lng": -73.523132,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Albania",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68020",
+      "lat": 5.759166,
+      "lng": -73.91336,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Bolívar",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68101",
+      "lat": 5.988953,
+      "lng": -73.771346,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cabrera",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68121",
+      "lat": 6.592118,
+      "lng": -73.246475,
+      "ips_total": 1
+    },
+    {
+      "municipio": "California",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68132",
+      "lat": 7.347989,
+      "lng": -72.946491,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Capitanejo",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68147",
+      "lat": 6.527394,
+      "lng": -72.695427,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Cepitá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68160",
+      "lat": 6.753518,
+      "lng": -72.973536,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Charta",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68169",
+      "lat": 7.28082,
+      "lng": -72.968798,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Chima",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68176",
+      "lat": 6.344348,
+      "lng": -73.373656,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Chipatá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68179",
+      "lat": 6.062521,
+      "lng": -73.637111,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Concepción",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68207",
+      "lat": 6.768908,
+      "lng": -72.694567,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Confines",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68209",
+      "lat": 6.357327,
+      "lng": -73.240554,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Curití",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68229",
+      "lat": 6.605099,
+      "lng": -73.069383,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Guacamayo",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68245",
+      "lat": 6.245111,
+      "lng": -73.496908,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Peñón",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68250",
+      "lat": 6.05537,
+      "lng": -73.815532,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Encino",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68264",
+      "lat": 6.137429,
+      "lng": -73.098749,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Enciso",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68266",
+      "lat": 6.668034,
+      "lng": -72.699647,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Florián",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68271",
+      "lat": 5.804659,
+      "lng": -73.97143,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Galán",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68296",
+      "lat": 6.638423,
+      "lng": -73.287769,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guaca",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68318",
+      "lat": 6.876563,
+      "lng": -72.856322,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guadalupe",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68320",
+      "lat": 6.245847,
+      "lng": -73.419292,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guapotá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68322",
+      "lat": 6.308635,
+      "lng": -73.320732,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Guavatá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68324",
+      "lat": 5.954348,
+      "lng": -73.700906,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Güepsa",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68327",
+      "lat": 6.025013,
+      "lng": -73.575146,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Belleza",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68377",
+      "lat": 5.85925,
+      "lng": -73.965494,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Landázuri",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68385",
+      "lat": 6.218812,
+      "lng": -73.811359,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Paz",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68397",
+      "lat": 6.178509,
+      "lng": -73.58959,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Macaravita",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68425",
+      "lat": 6.50658,
+      "lng": -72.593105,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Matanza",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68444",
+      "lat": 7.323175,
+      "lng": -73.015566,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Mogotes",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68464",
+      "lat": 6.475246,
+      "lng": -72.969807,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Molagavita",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68468",
+      "lat": 6.67432,
+      "lng": -72.809175,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ocamonte",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68498",
+      "lat": 6.339988,
+      "lng": -73.122563,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Onzaga",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68502",
+      "lat": 6.344104,
+      "lng": -72.816766,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Palmar",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68522",
+      "lat": 6.537789,
+      "lng": -73.29109,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Páramo",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68533",
+      "lat": 6.416811,
+      "lng": -73.17022,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Pinchote",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68549",
+      "lat": 6.531552,
+      "lng": -73.174209,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Puerto Parra",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68573",
+      "lat": 6.650785,
+      "lng": -74.056129,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Andrés",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68669",
+      "lat": 6.811511,
+      "lng": -72.848864,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Benito",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68673",
+      "lat": 6.126656,
+      "lng": -73.50907,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Joaquín",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68682",
+      "lat": 6.427548,
+      "lng": -72.867638,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Miguel",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68686",
+      "lat": 6.575315,
+      "lng": -72.644123,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa Bárbara",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68705",
+      "lat": 6.990996,
+      "lng": -72.907445,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa Helena del Opón",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68720",
+      "lat": 6.339565,
+      "lng": -73.616716,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Suratá",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68780",
+      "lat": 7.36658,
+      "lng": -72.984232,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Valle de San José",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68855",
+      "lat": 6.448028,
+      "lng": -73.143507,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Vetas",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68867",
+      "lat": 7.30981,
+      "lng": -72.871041,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Villanueva",
+      "departamento": "Santander",
+      "cod_dane_mpio": "68872",
+      "lat": 6.670078,
+      "lng": -73.174307,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Caimito",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70124",
+      "lat": 8.789324,
+      "lng": -75.117141,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Coloso",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70204",
+      "lat": 9.494192,
+      "lng": -75.353256,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Roble",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70233",
+      "lat": 9.100647,
+      "lng": -75.198378,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Unión",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70400",
+      "lat": 8.853975,
+      "lng": -75.276056,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Palmito",
+      "departamento": "Sucre",
+      "cod_dane_mpio": "70523",
+      "lat": 9.333157,
+      "lng": -75.541264,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Alpujarra",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73024",
+      "lat": 3.391548,
+      "lng": -74.9329,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Alvarado",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73026",
+      "lat": 4.567356,
+      "lng": -74.953418,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ambalema",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73030",
+      "lat": 4.782682,
+      "lng": -74.764429,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Anzoátegui",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73043",
+      "lat": 4.631756,
+      "lng": -75.093772,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Armero",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73055",
+      "lat": 5.030744,
+      "lng": -74.884438,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Carmen de Apicalá",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73148",
+      "lat": 4.152334,
+      "lng": -74.717633,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Coello",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73200",
+      "lat": 4.287276,
+      "lng": -74.898464,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Falan",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73270",
+      "lat": 5.123104,
+      "lng": -74.953007,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Flandes",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73275",
+      "lat": 4.276373,
+      "lng": -74.818763,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Fresno",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73283",
+      "lat": 5.153576,
+      "lng": -75.035722,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Murillo",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73461",
+      "lat": 4.874341,
+      "lng": -75.171022,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Natagaima",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73483",
+      "lat": 3.624324,
+      "lng": -75.093182,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ortega",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73504",
+      "lat": 3.934916,
+      "lng": -75.222601,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Palocabildo",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73520",
+      "lat": 5.120918,
+      "lng": -75.022167,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Prado",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73563",
+      "lat": 3.750939,
+      "lng": -74.927447,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Roncesvalles",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73622",
+      "lat": 4.011567,
+      "lng": -75.605959,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Saldaña",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73671",
+      "lat": 3.929815,
+      "lng": -75.016852,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Santa Isabel",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73686",
+      "lat": 4.713606,
+      "lng": -75.097934,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Suárez",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73770",
+      "lat": 4.048891,
+      "lng": -74.831885,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Valle de San Juan",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73854",
+      "lat": 4.197494,
+      "lng": -75.115669,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Villahermosa",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73870",
+      "lat": 5.030452,
+      "lng": -75.117729,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Villarrica",
+      "departamento": "Tolima",
+      "cod_dane_mpio": "73873",
+      "lat": 3.936902,
+      "lng": -74.600285,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Alcalá",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76020",
+      "lat": 4.674994,
+      "lng": -75.779792,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ansermanuevo",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76041",
+      "lat": 4.794984,
+      "lng": -75.992003,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Argelia",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76054",
+      "lat": 4.726945,
+      "lng": -76.119905,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Calima",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76126",
+      "lat": 3.933664,
+      "lng": -76.484132,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Águila",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76243",
+      "lat": 4.906062,
+      "lng": -76.042779,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Cairo",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76246",
+      "lat": 4.760874,
+      "lng": -76.221611,
+      "ips_total": 1
+    },
+    {
+      "municipio": "El Dovio",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76250",
+      "lat": 4.510452,
+      "lng": -76.237084,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Cumbre",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76377",
+      "lat": 3.649268,
+      "lng": -76.56805,
+      "ips_total": 1
+    },
+    {
+      "municipio": "La Victoria",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76403",
+      "lat": 4.523603,
+      "lng": -76.036529,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Obando",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76497",
+      "lat": 4.575712,
+      "lng": -75.974709,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Pedro",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76670",
+      "lat": 3.995073,
+      "lng": -76.228692,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Toro",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76823",
+      "lat": 4.608085,
+      "lng": -76.076859,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Trujillo",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76828",
+      "lat": 4.212037,
+      "lng": -76.318818,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Ulloa",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76845",
+      "lat": 4.703623,
+      "lng": -75.737808,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Versalles",
+      "departamento": "Valle del Cauca",
+      "cod_dane_mpio": "76863",
+      "lat": 4.575019,
+      "lng": -76.199203,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Fortul",
+      "departamento": "Arauca",
+      "cod_dane_mpio": "81300",
+      "lat": 6.796695,
+      "lng": -71.76877,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Trinidad",
+      "departamento": "Casanare",
+      "cod_dane_mpio": "85430",
+      "lat": 5.412178,
+      "lng": -71.662812,
+      "ips_total": 1
+    },
+    {
+      "municipio": "Puerto Guzmán",
+      "departamento": "Putumayo",
+      "cod_dane_mpio": "86571",
+      "lat": 0.962854,
+      "lng": -76.407663,
+      "ips_total": 1
+    },
+    {
+      "municipio": "San Francisco",
+      "departamento": "Putumayo",
+      "cod_dane_mpio": "86755",
+      "lat": 1.174194,
+      "lng": -76.879283,
+      "ips_total": 1
     }
   ]
 }

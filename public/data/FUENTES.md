@@ -88,3 +88,48 @@ Regenerar: `python3 scripts/build-ips-puntos.py` (requiere internet; consulta So
 - Todos los JSON son válidos (verificado con `json.load`).
 - Las claves de departamento son strings de 2 dígitos con cero a la izquierda (`"05"`, no `5`; `"08"`, no `8`).
 - El único componente *estimado/embebido* (no consultado en runtime) es la **población DANE 2023**, que son cifras oficiales públicas del DANE, no estimaciones propias.
+
+---
+
+## 5. `ips-publicas-puntos.json` — **REAL (red pública por municipio, geocodificada con centroides DANE)**
+
+La **RED PÚBLICA de salud** —donde se atiende la población vulnerable— por **municipio**, como **puntos** para el Atlas. Es el complemento "público" de `ips-puntos.json`.
+
+- **Conteo de red pública:** Registro Especial de Prestadores de Servicios de Salud (**REPS**) — MinSalud, datos.gov.co (Socrata) **resource `c36g-9fc2`**. Criterio de red pública:
+  - `naturalezajuridica='Pública'` **AND** `claseprestador='Instituciones Prestadoras de Servicios de Salud - IPS'`.
+  - Se **excluye** naturaleza `Mixta` y `Privada`, y los prestadores públicos que **no** son IPS (`Objeto Social Diferente`, `Transporte Especial`), porque no son donde se presta la atención.
+  - Consulta (públicas): `?$select=municipio_prestador,municipioprestadordesc,departamentoprestadordesc,count(*)&$where=naturalezajuridica='Pública' AND claseprestador='Instituciones Prestadoras de Servicios de Salud - IPS'&$group=municipio_prestador,municipioprestadordesc,departamentoprestadordesc`
+  - **`ese`** = subconjunto con `ese='SI'` (Empresa Social del Estado); misma consulta con `AND ese='SI'`.
+- **Cifras nacionales verificadas (corte mar-2026):** `naturalezajuridica`: Privada=72.905, **Pública=3.845**, Mixta=71. De las públicas, **3.664 son IPS** (las otras 181 son no-IPS). De esas IPS públicas, **3.485 son ESE** (`ese='SI'`) y 179 son públicas no-ESE. Todas las 3.485 ESE son `naturalezajuridica='Pública'` y clase IPS.
+- **Coordenadas:** **centroides municipales oficiales** de datos.gov.co (Socrata) **resource `gdxc-w37w`** (*"Municipios de Colombia"*, **1.122 municipios** con `cod_mpio`, `latitud`, `longitud`); lat/lng con **coma decimal** (es-CO) normalizada a punto. Join REPS↔centroide por `cod_mpio` (5 dígitos). **No se inventa ninguna coordenada.**
+- **Cobertura:** **857 municipios** tienen red pública IPS en el REPS, **todos** con centroide oficial (0 excluidos). Concentran las **3.664 IPS públicas** (100 %) y las **3.485 ESE**. No se aplica CAP (la red pública nacional es liviana).
+- **Tamaño:** ~169 KB (< 400 KB). **857** puntos.
+
+Estructura: `{ fuente, url_reps, url_centroides, fecha_corte, criterio, nota, total_municipios, total_ips_publicas, total_ese, total_ips_publicas_nacional, total_ese_nacional, puntos: [ { municipio, departamento, cod_dane_mpio, lat, lng, ips_publicas, ese }, ... ] }`
+
+Regenerar: `python3 scripts/build-ips-publicas.py` (requiere internet; consulta Socrata). Script independiente de `build-ips-puntos.py`.
+
+> **Importante:** `lat`/`lng` son el **centroide del municipio**, NO la ubicación exacta de cada sede (el REPS nacional no trae lat/lng por sede). El punto representa "este municipio tiene N IPS públicas (de las cuales M son ESE)".
+
+**Estado: REAL** (conteo REPS naturaleza pública + centroides DANE oficiales).
+
+---
+
+## 6. `ciudades.json` — **REAL (etiquetas de ciudades, geocodificadas con centroides DANE)**
+
+Principales ciudades de Colombia como **puntos con nombre**, para rotular el mapa dark del Atlas.
+
+- **Contenido:** las **32 capitales departamentales + Bogotá D.C.** + todo municipio con **población > 100.000 hab (2023)**. Total: **76 ciudades** (32 capitales municipales; Cundinamarca no tiene capital municipal propia — su capital de facto es Bogotá D.C., depto 11, ya incluida).
+- **Coordenadas (geocodificación por municipio):** **centroides municipales oficiales** de datos.gov.co (Socrata) **resource `gdxc-w37w`** (*"Municipios de Colombia"*, **1.122 municipios** con `cod_mpio`, `latitud`, `longitud`). lat/lng vienen con **coma decimal** (es-CO) y se normalizan a punto. Join por `cod_mpio` (5 dígitos). **No se inventa ninguna coordenada**: los municipios sin centroide oficial se excluirían (en esta corrida, 0 excluidos).
+  - URL: `https://www.datos.gov.co/resource/gdxc-w37w.json`
+- **Población:** proyecciones de **población municipal DANE 2018-2035** (base CNPV 2018), **año 2023** — cifras oficiales públicas del DANE, embebidas en `scripts/build-ciudades.py` con clave `cod_mpio` (5 dígitos). Cada `cod_mpio` fue verificado 1:1 contra el nombre del municipio en `gdxc-w37w` durante el build.
+- **Umbral:** se incluye todo municipio > 100.000 hab; las capitales se incluyen **todas** aunque algunas tengan menos (p. ej. Mocoa, Leticia, San Andrés, Mitú, Inírida, Puerto Carreño).
+- **Tamaño:** ~17 KB. **76** ciudades.
+
+Estructura: `{ fuente, url_centroides, fuente_poblacion, fecha_corte, nota, total_ciudades, total_capitales, ciudades: [ { nombre, departamento, cod_dane_mpio, lat, lng, poblacion, es_capital }, ... ] }` (ordenado por población desc).
+
+Regenerar: `python3 scripts/build-ciudades.py` (requiere internet; consulta Socrata `gdxc-w37w`, reusa snapshot `/tmp/ips_centroides.json` si existe).
+
+> **Importante:** `lat`/`lng` son el **centroide del municipio**, coordenada oficial DANE, no una ubicación inventada ni el punto exacto de un hito urbano.
+
+**Estado: REAL** (población oficial DANE 2023 + centroides DANE oficiales).

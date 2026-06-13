@@ -12,6 +12,7 @@ import { AtlasKpis } from "./atlas-kpis";
 import { AtlasLeyenda } from "./atlas-leyenda";
 import { AtlasPanelDesktop, AtlasPanelMovil } from "./atlas-panel";
 import { type MetricaAtlas, statsPorCodigo } from "./atlas-data";
+import { useT } from "@/lib/i18n";
 
 // MapLibre necesita el navegador: carga sólo en cliente.
 const AtlasMapa = dynamic(() => import("./atlas-mapa"), {
@@ -20,6 +21,7 @@ const AtlasMapa = dynamic(() => import("./atlas-mapa"), {
 });
 
 export function AtlasShell() {
+  const t = useT("atlas");
   const [metrica, setMetrica] = useState<MetricaAtlas>("tasaPor10k");
   const [seleccionado, setSeleccionado] = useState<string | null>(null);
   const [sheetAbierto, setSheetAbierto] = useState(false);
@@ -85,12 +87,9 @@ export function AtlasShell() {
                 </span>
               </div>
               <p className="font-heading text-base font-medium text-[#E6EDF3]">
-                Explora el mapa
+                {t("hint.title")}
               </p>
-              <p className="text-sm text-[#8B949E]">
-                Haz clic en un departamento para ver sus estadísticas de tutelas
-                en salud y abrir un caso.
-              </p>
+              <p className="text-sm text-[#8B949E]">{t("hint.text")}</p>
             </div>
           )}
         </div>

@@ -15,6 +15,7 @@ import {
   Zap,
 } from "lucide-react";
 import { useCasoStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 import type { Caso, EventoCaso } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
@@ -37,6 +38,7 @@ function nuevoEvento(parcial: Omit<EventoCaso, "id" | "fecha">): EventoCaso {
 const espera = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function DemandadoPage() {
+  const t = useT("demandado");
   const casos = useCasoStore((s) => s.casos);
   const updateCaso = useCasoStore((s) => s.updateCaso);
   const addEvento = useCasoStore((s) => s.addEvento);
@@ -70,15 +72,20 @@ export default function DemandadoPage() {
         tipo: "estado",
         estado: "RESUELTO_EPS",
         actor: "eps",
-        titulo: "EPS autoriza el servicio (acuerdo sin juez)",
-        detalle: `El agente-EPS estimó ${analisis.prob}% de amparo en tutela. La EPS cede y autoriza ${caso.servicioNegado}.`,
+        titulo: t("actions.authorizeEventTitle"),
+        detalle: t("actions.authorizeEventDetail", {
+          prob: analisis.prob,
+          servicio: caso.servicioNegado,
+        }),
       }),
     );
     setResueltosSesion((n) => n + 1);
     if (totalEntrantes === null) setTotalEntrantes(enNegociacion.length);
     setDialogoAbierto(false);
-    toast.success("Servicio autorizado", {
-      description: `${caso.demandante.nombre}: caso resuelto sin acudir al juez.`,
+    toast.success(t("actions.authorizeToast"), {
+      description: t("actions.authorizeToastDesc", {
+        nombre: caso.demandante.nombre,
+      }),
     });
   }
 
@@ -90,15 +97,14 @@ export default function DemandadoPage() {
         tipo: "estado",
         estado: "ESCALADO_TUTELA",
         actor: "eps",
-        titulo: "EPS mantiene la negación — habilitada la tutela",
-        detalle:
-          "La EPS sostuvo su posición. El demandante queda habilitado para escalar a acción de tutela ante juez.",
+        titulo: t("actions.keepEventTitle"),
+        detalle: t("actions.keepEventDetail"),
       }),
     );
     if (totalEntrantes === null) setTotalEntrantes(enNegociacion.length);
     setDialogoAbierto(false);
-    toast.warning("Negación mantenida", {
-      description: `${caso.demandante.nombre} podrá escalar a tutela.`,
+    toast.warning(t("actions.keepToast"), {
+      description: t("actions.keepToastDesc", { nombre: caso.demandante.nombre }),
     });
   }
 
@@ -110,15 +116,15 @@ export default function DemandadoPage() {
       (c) => nivelRiesgoEPS(estimarProbabilidadAmparo(c)).recomendacion === "ceder",
     );
     if (obvios.length === 0) {
-      toast.info("Sin casos obvios", {
-        description: "No hay reclamaciones de riesgo alto para resolver en lote.",
+      toast.info(t("auto.noneTitle"), {
+        description: t("auto.noneDesc"),
       });
       return;
     }
     setAutoActivo(true);
     if (totalEntrantes === null) setTotalEntrantes(enNegociacion.length);
-    toast("Negociación automática iniciada", {
-      description: `El agente-EPS evaluará ${obvios.length} caso(s) de alto riesgo.`,
+    toast(t("auto.startedTitle"), {
+      description: t("auto.startedDesc", { count: obvios.length }),
     });
 
     for (const caso of obvios) {
@@ -132,21 +138,24 @@ export default function DemandadoPage() {
           tipo: "ia",
           estado: "RESUELTO_EPS",
           actor: "eps",
-          titulo: "Acuerdo automático del agente-EPS",
-          detalle: `Probabilidad de amparo ${prob}%. La EPS autoriza ${caso.servicioNegado} sin litigio.`,
+          titulo: t("auto.eventTitle"),
+          detalle: t("auto.eventDetail", {
+            prob,
+            servicio: caso.servicioNegado,
+          }),
         }),
       );
       setResueltosSesion((n) => n + 1);
-      toast.success(`Resuelto: ${caso.demandante.nombre}`, {
-        description: `${prob}% de amparo — autorizado sin juez.`,
+      toast.success(t("auto.resolvedToast", { nombre: caso.demandante.nombre }), {
+        description: t("auto.resolvedToastDesc", { prob }),
       });
       await espera(450);
     }
 
     setProcesandoId(null);
     setAutoActivo(false);
-    toast.success("Negociación automática completa", {
-      description: `${obvios.length} caso(s) descongestionado(s).`,
+    toast.success(t("auto.completeTitle"), {
+      description: t("auto.completeDesc", { count: obvios.length }),
     });
   }
 
@@ -158,19 +167,17 @@ export default function DemandadoPage() {
           <div className="flex items-center gap-2 text-brand-strong">
             <Building2 className="size-5" />
             <span className="text-xs font-semibold uppercase tracking-wide">
-              Portal del demandado · EPS
+              {t("page.kicker")}
             </span>
           </div>
           <h1 className="mt-1 font-heading text-3xl font-bold tracking-tight">
-            Bandeja de reclamaciones
+            {t("page.title")}
           </h1>
           <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-            Resuelva disputas de salud antes del juez. El agente-EPS calcula el
-            costo/riesgo de negar y recomienda ceder cuando la tutela se perdería.
+            {t("page.subtitle")}
           </p>
           <p className="mt-1.5 max-w-2xl text-xs font-medium text-brand-strong">
-            Amparo es la cuarta parte: asiste con análisis consistentes por
-            jurisprudencia. La decisión de autorizar o sostener es suya.
+            {t("page.fourthParty")}
           </p>
         </div>
 
@@ -184,7 +191,7 @@ export default function DemandadoPage() {
           ) : (
             <Zap className="size-4" />
           )}
-          {autoActivo ? "Negociando…" : "Negociación automática"}
+          {autoActivo ? t("auto.running") : t("auto.idle")}
         </Button>
       </header>
 
@@ -202,7 +209,7 @@ export default function DemandadoPage() {
           <div className="mb-3 flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-heading text-lg font-semibold">
               <Sparkles className="size-4 text-primary" />
-              En negociación
+              {t("queue.heading")}
               <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
                 {enNegociacion.length}
               </span>
@@ -218,11 +225,11 @@ export default function DemandadoPage() {
           <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               <CheckCircle2 className="size-3.5 text-success" />
-              Autorizar = resolver sin juez
+              {t("queue.legendAuthorize")}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <ShieldX className="size-3.5 text-warning" />
-              Mantener negación = habilitar tutela
+              {t("queue.legendKeep")}
             </span>
           </div>
         </section>
@@ -231,7 +238,7 @@ export default function DemandadoPage() {
           <SegundoCerebro
             rol="demandado"
             casoId={seleccionado?.id}
-            titulo="Asesor de la EPS"
+            titulo={t("advisor.title")}
           />
         </aside>
       </div>
