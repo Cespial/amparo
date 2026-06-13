@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { BotonVoz } from "@/components/boton-voz";
 import type { RolUsuario } from "@/lib/types";
 
 interface Mensaje {
@@ -143,18 +144,30 @@ export function SegundoCerebro({ rol, casoId, titulo }: SegundoCerebroProps) {
             </p>
           ) : (
             <div className="flex flex-col gap-3">
-              {mensajes.map((m) => (
-                <div
-                  key={m.id}
-                  className={
-                    m.rol === "usuario"
-                      ? "ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3 py-2 text-sm text-primary-foreground"
-                      : "mr-auto max-w-[85%] rounded-2xl rounded-bl-sm bg-card px-3 py-2 text-sm shadow-sm"
-                  }
-                >
-                  {m.texto}
-                </div>
-              ))}
+              {mensajes.map((m) =>
+                m.rol === "usuario" ? (
+                  <div
+                    key={m.id}
+                    className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3 py-2 text-sm text-primary-foreground"
+                  >
+                    {m.texto}
+                  </div>
+                ) : (
+                  <div key={m.id} className="mr-auto max-w-[85%]">
+                    <div className="rounded-2xl rounded-bl-sm bg-card px-3 py-2 text-sm shadow-sm">
+                      {m.texto}
+                    </div>
+                    {m.texto.trim() && (
+                      <BotonVoz
+                        texto={m.texto}
+                        size="sm"
+                        conTexto={false}
+                        className="mt-1 text-muted-foreground"
+                      />
+                    )}
+                  </div>
+                ),
+              )}
             </div>
           )}
         </ScrollArea>

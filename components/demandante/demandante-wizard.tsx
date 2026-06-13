@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -20,6 +20,7 @@ import {
   Sparkles,
   Stethoscope,
   Volume2,
+  VolumeX,
   Wand2,
   XCircle,
 } from "lucide-react";
@@ -63,12 +64,9 @@ import type {
 import { DemandanteStepper, type PasoDef } from "./demandante-stepper";
 import { DemandanteGauge } from "./demandante-gauge";
 import { DemandanteMarkdown } from "./demandante-markdown";
-import {
-  useDictado,
-  hablar,
-  detenerVoz,
-  vozSoportada,
-} from "./use-dictado";
+import { useDictado } from "./use-dictado";
+import { hablar, detenerVoz } from "@/lib/voz";
+import { BotonVoz } from "@/components/boton-voz";
 
 // --- Tipos de las respuestas de API consumidas (subconjunto) ---
 
@@ -161,6 +159,12 @@ const ICONO_CRITERIO = {
   falla: { Icon: XCircle, color: "text-danger", bg: "bg-danger/10", label: "No cumple" },
 } as const;
 
+const VEREDICTO_TITULO: Record<TriajeResultado["veredicto"], string> = {
+  admisible: "Tu caso es admisible",
+  admisible_con_reservas: "Admisible, con algunas reservas",
+  inadmisible: "Por ahora, el caso no procedería",
+};
+
 const NOMBRE_CRITERIO: Record<keyof TriajeResultado["criterios"], string> = {
   derechoFundamental: "Derecho fundamental afectado",
   legitimacion: "Legitimación para actuar",
@@ -206,9 +210,33 @@ export function DemandanteWizard({
   // Cargas
   const [cargando, setCargando] = useState<null | string>(null);
 
+  // Modo voz: si está activo, Amparo lee en voz alta el primer mensaje de cada paso.
+  const [modoVoz, setModoVoz] = useState(false);
+
   const dictado = useDictado((t) =>
     setRelato((prev) => (prev ? `${prev} ${t}` : t)),
   );
+
+  // Lee `texto` en voz alta solo si el modo voz está activo. Frases cortas.
+  const leerSiModoVoz = useCallback(
+    (texto: string) => {
+      if (!modoVoz) return;
+      const limpio = texto.replace(/\s+/g, " ").trim();
+      if (limpio) void hablar(limpio);
+    },
+    [modoVoz],
+  );
+
+  // Al activar/desactivar el modo voz, corta cualquier lectura en curso.
+  function alternarModoVoz() {
+    setModoVoz((v) => {
+      if (v) detenerVoz();
+      return !v;
+    });
+  }
+
+  // Al desmontar, corta cualquier voz en curso.
+  useEffect(() => detenerVoz, []);
 
   // ---- Helpers ----
 
@@ -357,6 +385,7 @@ export function DemandanteWizard({
         detalle: `Veredicto: ${data.veredicto.replace(/_/g, " ")}.`,
       }));
       setPaso(3);
+      leerSiModoVoz(`${VEREDICTO_TITULO[data.veredicto]}. ${data.recomendacion}`);
     } catch {
       toast.error("No se pudo evaluar la admisibilidad", {
         description: "Inténtalo de nuevo en un momento.",
@@ -385,6 +414,9 @@ export function DemandanteWizard({
         detalle: `Probabilidad estimada de amparo: ${data.probabilidadAmparo}%.`,
       }));
       setPaso(4);
+      leerSiModoVoz(
+        `Tu pronóstico: la probabilidad estimada de que prospere el amparo es del ${data.probabilidadAmparo} por ciento. ${data.reglaAplicable}`,
+      );
     } catch {
       toast.error("No se pudo calcular el pronóstico");
     } finally {
@@ -446,6 +478,11 @@ export function DemandanteWizard({
       seleccionarCaso(caso.id);
       onCasoActivo?.(caso.id);
       setPaso(5);
+      leerSiModoVoz(
+        via === "tutela"
+          ? "Tu tutela está lista. Revísala, descárgala o llévala al juzgado de reparto."
+          : "Tu reclamación está lista. Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela.",
+      );
     } catch {
       toast.error("No se pudo generar el documento", {
         description: "Inténtalo de nuevo en un momento.",
@@ -489,8 +526,31 @@ export function DemandanteWizard({
   return (
     <div className="space-y-6">
       <Card className="surface-card border-0">
-        <CardHeader className="pb-4">
+        <CardHeader className="gap-3 pb-4">
           <DemandanteStepper pasos={PASOS} actual={paso} />
+          <div className="flex items-center justify-end">
+            <Button
+              type="button"
+              variant={modoVoz ? "default" : "outline"}
+              size="sm"
+              onClick={alternarModoVoz}
+              aria-pressed={modoVoz}
+              aria-label={
+                modoVoz
+                  ? "Desactivar modo voz: Amparo dejará de leer en voz alta"
+                  : "Activar modo voz: Amparo leerá en voz alta cada paso"
+              }
+              title="Amparo te lee cada paso en voz alta"
+              className="gap-1.5"
+            >
+              {modoVoz ? (
+                <Volume2 className="size-4" aria-hidden />
+              ) : (
+                <VolumeX className="size-4" aria-hidden />
+              )}
+              Modo voz {modoVoz ? "activo" : "apagado"}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="pt-2">
           {/* ---------- PASO 1 ---------- */}
@@ -771,13 +831,20 @@ export function DemandanteWizard({
           {/* ---------- PASO 4 ---------- */}
           {paso === 4 && prediccion && (
             <section className="space-y-5">
-              <div>
-                <h2 className="font-serif text-2xl font-bold text-navy">
-                  Tu pronóstico
-                </h2>
-                <p className="mt-1 text-muted-foreground">
-                  Estimación basada en casos reales de la Corte Constitucional.
-                </p>
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h2 className="font-serif text-2xl font-bold text-navy">
+                    Tu pronóstico
+                  </h2>
+                  <p className="mt-1 text-muted-foreground">
+                    Estimación basada en casos reales de la Corte Constitucional.
+                  </p>
+                </div>
+                <BotonVoz
+                  texto={`Tu pronóstico. La probabilidad estimada de que prospere el amparo es del ${prediccion.probabilidadAmparo} por ciento. ${prediccion.reglaAplicable}. ${prediccion.razonamiento}`}
+                  conTexto={false}
+                  className="shrink-0"
+                />
               </div>
 
               <div className="grid gap-5 md:grid-cols-[auto_1fr] md:items-center">
@@ -877,12 +944,23 @@ export function DemandanteWizard({
           {paso === 5 && documento && (
             <section className="space-y-5">
               <div className="rounded-2xl border border-success/30 bg-success/5 p-4">
-                <p className="flex items-center gap-2 font-serif text-lg font-semibold text-success">
-                  <CheckCircle2 className="size-5" />
-                  {tipoDoc === "tutela"
-                    ? "Tu tutela está lista"
-                    : "Tu reclamación está lista"}
-                </p>
+                <div className="flex items-start justify-between gap-2">
+                  <p className="flex items-center gap-2 font-serif text-lg font-semibold text-success">
+                    <CheckCircle2 className="size-5" />
+                    {tipoDoc === "tutela"
+                      ? "Tu tutela está lista"
+                      : "Tu reclamación está lista"}
+                  </p>
+                  <BotonVoz
+                    texto={
+                      tipoDoc === "tutela"
+                        ? "Tu tutela está lista. Revísala, descárgala o llévala al juzgado de reparto."
+                        : "Tu reclamación está lista. Envíala a tu EPS. Si no responde a tiempo, podrás escalar a tutela."
+                    }
+                    conTexto={false}
+                    className="-mr-1 -mt-1 shrink-0 text-success"
+                  />
+                </div>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {tipoDoc === "tutela"
                     ? "Revísala, descárgala o llévala al juzgado de reparto."
@@ -953,16 +1031,7 @@ export function DemandanteWizard({
                     {tipoDoc === "tutela" ? "Acción de tutela" : "Reclamación a la EPS"}
                   </CardTitle>
                   <div className="flex gap-2">
-                    {vozSoportada() && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => hablar(documento)}
-                        className="gap-1.5"
-                      >
-                        <Volume2 className="size-4" /> Leer
-                      </Button>
-                    )}
+                    <BotonVoz texto={documento} variant="outline" size="sm" />
                     <Button
                       variant="outline"
                       size="sm"
@@ -1050,25 +1119,30 @@ function VeredictoBanner({ triaje }: { triaje: TriajeResultado }) {
     admisible: {
       Icon: CheckCircle2,
       cls: "border-success/30 bg-success/5 text-success",
-      titulo: "Tu caso es admisible",
     },
     admisible_con_reservas: {
       Icon: CircleAlert,
       cls: "border-warning/30 bg-warning/5 text-warning",
-      titulo: "Admisible, con algunas reservas",
     },
     inadmisible: {
       Icon: XCircle,
       cls: "border-danger/30 bg-danger/5 text-danger",
-      titulo: "Por ahora, el caso no procedería",
     },
   } as const;
   const m = map[triaje.veredicto];
+  const titulo = VEREDICTO_TITULO[triaje.veredicto];
   return (
     <div className={cn("rounded-2xl border p-4", m.cls)}>
-      <p className="flex items-center gap-2 font-serif text-lg font-semibold">
-        <m.Icon className="size-5" /> {m.titulo}
-      </p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="flex items-center gap-2 font-serif text-lg font-semibold">
+          <m.Icon className="size-5" /> {titulo}
+        </p>
+        <BotonVoz
+          texto={`${titulo}. ${triaje.recomendacion}`}
+          conTexto={false}
+          className="-mr-1 -mt-1 shrink-0"
+        />
+      </div>
       <p className="mt-1 text-sm text-foreground/80">{triaje.recomendacion}</p>
       <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
         <Stethoscope className="size-3.5" />
