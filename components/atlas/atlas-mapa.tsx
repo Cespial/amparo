@@ -32,19 +32,8 @@ interface AtlasMapaProps {
   onSeleccionar: (codigo: string | null) => void;
 }
 
-/** Estilo MapLibre mínimo, fondo lavanda claro, sin tiles externos. */
-const estiloBase = {
-  version: 8 as const,
-  sources: {},
-  layers: [
-    {
-      id: "fondo",
-      type: "background" as const,
-      paint: { "background-color": "#F4F5FC" },
-    },
-  ],
-  glyphs: undefined,
-};
+/** Basemap dark vectorial (estética Tensor / OpenFreeMap). */
+const ESTILO_DARK = "https://tiles.openfreemap.org/styles/dark";
 
 export function AtlasMapa({
   metrica,
@@ -132,7 +121,7 @@ export function AtlasMapa({
       <Map
         ref={mapRef}
         initialViewState={{ longitude: -73.5, latitude: 4.6, zoom: 4.1 }}
-        mapStyle={estiloBase}
+        mapStyle={ESTILO_DARK}
         attributionControl={false}
         dragRotate={false}
         touchPitch={false}
@@ -159,7 +148,7 @@ export function AtlasMapa({
                   "case",
                   ["==", ["get", "__codigo"], seleccionado ?? "__none__"],
                   0.95,
-                  0.82,
+                  0.74,
                 ] as never,
               }}
             />
@@ -167,8 +156,8 @@ export function AtlasMapa({
               id="deptos-line"
               type="line"
               paint={{
-                "line-color": "#FFFFFF",
-                "line-width": 0.8,
+                "line-color": "rgba(230,237,243,0.28)",
+                "line-width": 0.6,
               }}
             />
             <Layer
@@ -180,7 +169,7 @@ export function AtlasMapa({
                 seleccionado ?? "__none__",
               ]}
               paint={{
-                "line-color": "#1E2340",
+                "line-color": "#E6EDF3",
                 "line-width": 2.4,
               }}
             />
@@ -190,7 +179,7 @@ export function AtlasMapa({
 
       {hover && (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg bg-navy px-2.5 py-1 text-xs font-medium text-navy-foreground shadow-lg"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg border border-white/10 bg-[#161B22]/95 px-2.5 py-1 text-xs font-medium text-[#E6EDF3] shadow-lg backdrop-blur"
           style={{ left: hover.x, top: hover.y }}
         >
           {hover.nombre}

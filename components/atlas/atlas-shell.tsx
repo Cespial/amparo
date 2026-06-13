@@ -16,9 +16,7 @@ import { type MetricaAtlas, statsPorCodigo } from "./atlas-data";
 // MapLibre necesita el navegador: carga sólo en cliente.
 const AtlasMapa = dynamic(() => import("./atlas-mapa"), {
   ssr: false,
-  loading: () => (
-    <Skeleton className="h-full w-full rounded-2xl bg-secondary/70" />
-  ),
+  loading: () => <Skeleton className="h-full w-full rounded-2xl bg-[#161B22]" />,
 });
 
 export function AtlasShell() {
@@ -54,7 +52,7 @@ export function AtlasShell() {
       {/* Mapa + lateral. En móvil una sola columna; en desktop 2fr/1fr. */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex flex-col gap-3">
-          <div className="surface-card relative h-[58vh] min-h-[360px] overflow-hidden p-0 lg:h-[640px]">
+          <div className="surface-card relative h-[58vh] min-h-[360px] overflow-hidden border-0 bg-[#0D1117] p-0 ring-1 ring-white/10 lg:h-[640px]">
             <AtlasMapa
               metrica={metrica}
               seleccionado={seleccionado}

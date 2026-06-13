@@ -91,18 +91,20 @@ export const METRICAS: Record<
 };
 
 /**
- * Rampa de color secuencial lavanda → rojo ladrillo institucional.
+ * Rampa Tensor: teal (menor presión) → rojo crítico (mayor presión).
+ * Sobre basemap oscuro, los valores altos (más tutelas) resaltan en rojo.
  */
 export const RAMPA: string[] = [
-  "#E6E9FA",
-  "#F3D9CF",
-  "#E6A99A",
-  "#D87B69",
-  "#CE3A28",
-  "#8E2018",
+  "#1B6B6D", // teal Tensor — menor
+  "#1d91c0",
+  "#41b6c4",
+  "#a8ddb5",
+  "#fdae61",
+  "#f46d43",
+  "#d73027", // rojo crítico — mayor
 ];
 
-export const COLOR_SIN_DATO = "#EDEFF8";
+export const COLOR_SIN_DATO = "#2A2F3A";
 
 /** Devuelve [min, max] de una métrica sobre los datos reales. */
 export function rangoMetrica(metrica: MetricaAtlas): [number, number] {
