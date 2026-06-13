@@ -66,8 +66,8 @@ interface Eje {
   clave: string;
   etiqueta: { es: string; en: string };
   valor: ValorDe;
-  /** Formatea el valor para la tabla. */
-  fmt: (v: number) => string;
+  /** Formatea el valor para la tabla, según el idioma activo. */
+  fmt: (v: number, lang: "es" | "en") => string;
 }
 
 const PCT = (v: number) => `${v.toFixed(0)}%`;
@@ -77,31 +77,31 @@ const EJES: Eje[] = [
     clave: "tasaPor10k",
     etiqueta: { es: "Tasa / 10k hab.", en: "Rate / 10k pop." },
     valor: (e) => e.tasaPor10k,
-    fmt: (v) => fmt(v),
+    fmt: (v, lang) => fmt(v, lang),
   },
   {
     clave: "totalTutelas",
     etiqueta: { es: "Total tutelas", en: "Total tutelas" },
     valor: (e) => e.totalTutelas,
-    fmt: (v) => fmt(v),
+    fmt: (v, lang) => fmt(v, lang),
   },
   {
     clave: "ipsTotal",
     etiqueta: { es: "IPS totales", en: "Total IPS" },
     valor: (e) => e.ipsTotal,
-    fmt: (v) => fmt(v),
+    fmt: (v, lang) => fmt(v, lang),
   },
   {
     clave: "pctRedPublica",
     etiqueta: { es: "% red pública", en: "% public IPS" },
     valor: (e) => (e.ipsTotal ? (e.ipsPublicas / e.ipsTotal) * 100 : 0),
-    fmt: PCT,
+    fmt: (v) => PCT(v),
   },
   {
     clave: "prestadoresTotal",
     etiqueta: { es: "Prestadores", en: "Providers" },
     valor: (e) => e.prestadoresTotal,
-    fmt: (v) => fmt(v),
+    fmt: (v, lang) => fmt(v, lang),
   },
 ];
 
@@ -430,7 +430,9 @@ function TablaComparativa({
             const vb = eje.valor(stB);
             const d = va - vb;
             const dTxt =
-              d === 0 ? c.igual : `${d > 0 ? "+" : "−"}${eje.fmt(Math.abs(d))}`;
+              d === 0
+                ? c.igual
+                : `${d > 0 ? "+" : "−"}${eje.fmt(Math.abs(d), lang)}`;
             return (
               <tr
                 key={eje.clave}
@@ -443,10 +445,10 @@ function TablaComparativa({
                   {eje.etiqueta[lang]}
                 </th>
                 <td className="text-right font-mono tabular-nums text-xs text-foreground">
-                  {eje.fmt(va)}
+                  {eje.fmt(va, lang)}
                 </td>
                 <td className="text-right font-mono tabular-nums text-xs text-foreground">
-                  {eje.fmt(vb)}
+                  {eje.fmt(vb, lang)}
                 </td>
                 <td
                   className="text-right font-mono tabular-nums text-xs font-semibold"

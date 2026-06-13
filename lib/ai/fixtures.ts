@@ -23,6 +23,14 @@ export function esHeroe(casoId: string | undefined): boolean {
   return casoId === heroeId;
 }
 
+/**
+ * Id del segundo caso semilla (Carlos Jaramillo, Pembrolizumab) que se usa como
+ * caso inicial en la "Mediation room" de /demandado. También cuenta con fixtures
+ * de mediación EN/ES de alta calidad para que la demo sea DETERMINISTA y NO filtre
+ * español en modo inglés. Se define aquí (no en seed) para respetar el alcance.
+ */
+export const jaramilloId = "caso-jaramillo-002";
+
 /** Timeout (ms) para degradar al fixture en el caso héroe. */
 export const TIMEOUT_DEMO_MS = 12_000;
 
@@ -404,5 +412,61 @@ export const MEDIACION_HEROE_EN: Mediacion = {
     "If the EPS breaches any term, the patient fully retains the tutela route with no need to exhaust any further process.",
   ],
   fundamentos: SENTENCIAS_HEROE,
+  estado: "propuesta",
+};
+
+// --- Mediación Jaramillo (caso-jaramillo-002): Pembrolizumab oncológico ---
+//
+// Caso semilla de la "Mediation room" de /demandado: Carlos Jaramillo Vélez
+// (54 años, sujeto de especial protección), carcinoma pulmonar no microcítico
+// avanzado (C34.9), Pembrolizumab de alto costo NO financiado con la UPC, negado
+// por Nueva EPS pese a la prescripción del oncólogo por Mipres. Estas fixtures
+// hacen la mediación DETERMINISTA en ES y EN (evita que el LLM en vivo filtre
+// español en modo inglés). Citan SOLO sentencias del corpus (SENTENCIAS_HEROE).
+
+/** Sentencias del corpus que respaldan la mediación Jaramillo (alta calidad). */
+const SENTENCIAS_JARAMILLO: SentenciaRef[] = [T760, T195, T016];
+
+export const MEDIACION_JARAMILLO: Mediacion = {
+  posicionDemandante:
+    "Como paciente, Carlos Jaramillo Vélez necesita el suministro inmediato e ininterrumpido del Pembrolizumab que su oncólogo tratante le prescribió por Mipres para tratar un carcinoma pulmonar no microcítico avanzado. Su posición es legítima: se trata de una enfermedad de urgencia vital, el tratamiento oncológico no admite interrupciones sin comprometer su vida y su mínimo vital, y la continuidad terapéutica es determinante para el pronóstico. Cada día de demora reduce su oportunidad de respuesta clínica y agrava el riesgo.",
+  posicionEPS:
+    "Nueva EPS tiene una posición legítima respecto del proceso de autorización de una tecnología de alto costo NO financiada con la UPC: requiere verificar la prescripción por Mipres, surtir el trámite de recobro/giro ante la ADRES para que el medicamento no financiado se cubra con cargo a la fuente correcta, validar la pertinencia oncológica y garantizar la trazabilidad del suministro. Su preocupación no es negar el derecho, sino encauzar el cómo y el cuándo dentro de un trámite ordenado y financieramente sostenible.",
+  consensoPropuesto:
+    "Ambas partes coinciden en que el tratamiento debe garantizarse: la diferencia es de proceso y financiación, no de fondo. El consenso propuesto da al paciente el medicamento que requiere Y atiende el proceso de la EPS: Nueva EPS autoriza el Pembrolizumab prescrito por Mipres y asegura su entrega inmediata e ininterrumpida a través de un prestador concreto de su red, gestionando en paralelo el recobro ante la ADRES por tratarse de tecnología no financiada con la UPC, sin trasladar esa gestión administrativa al paciente; a cambio, la disputa se resuelve sin escalar a tutela, descongestionando la vía judicial. Es un acuerdo que ambas partes pueden calificar como justo: el paciente obtiene continuidad y certeza terapéutica; la EPS conserva su proceso de autorización y recobro ordenado.",
+  fundamento:
+    "El consenso se funda en el derecho fundamental a la salud como derecho autónomo (T-760/2008): la EPS debe garantizar el acceso oportuno, eficaz y de calidad a los servicios prescritos por el médico tratante, y el hecho de que una tecnología no esté financiada con la UPC no exonera a la EPS de garantizar su suministro, gestionando el recobro ante la ADRES. El criterio del oncólogo tratante prevalece sobre las objeciones administrativas o de cobertura (T-195/2021). Tratándose de un paciente oncológico de urgencia vital y sujeto de especial protección, opera una protección reforzada que torna inadmisible la interrupción o dilación injustificada del tratamiento (T-016/2007). El acuerdo respeta a la vez la oportunidad debida al paciente y un trámite de autorización y recobro ordenado por parte de la EPS, sin que ninguno sacrifique su posición legítima.",
+  terminos: [
+    "Nueva EPS autoriza el Pembrolizumab prescrito por el oncólogo tratante a través de Mipres dentro de un plazo máximo de cuarenta y ocho (48) horas, dada la urgencia vital.",
+    "Entrega inmediata e ininterrumpida del medicamento con un prestador concreto de la red habilitada, identificado en el acta, con calendario de los ciclos siguientes.",
+    "La EPS gestiona el recobro ante la ADRES por tratarse de tecnología no financiada con la UPC, sin trasladar ese trámite administrativo ni costo alguno al paciente.",
+    "Atención integral del tratamiento oncológico: valoraciones, exámenes de control, manejo de efectos adversos e insumos asociados, con cargo a la fuente que corresponda.",
+    "Plan de seguimiento con un punto de contacto único en la EPS y reporte de avance a Amparo como cuarta parte, asegurando la continuidad entre ciclos.",
+    "Por su parte, el paciente acepta suspender la acción de tutela mientras la EPS cumpla los plazos y la continuidad acordados, dando al trámite la oportunidad de resolverse sin litigio.",
+    "Si la EPS incumple cualquier término o interrumpe el suministro, el paciente conserva intacta la vía de tutela sin necesidad de agotar trámite adicional.",
+  ],
+  fundamentos: SENTENCIAS_JARAMILLO,
+  estado: "propuesta",
+};
+
+export const MEDIACION_JARAMILLO_EN: Mediacion = {
+  posicionDemandante:
+    "As the patient, Carlos Jaramillo Vélez needs the immediate, uninterrupted supply of the Pembrolizumab his treating oncologist prescribed through Mipres to treat advanced non-small-cell lung carcinoma. His position is legitimate: this is a life-threatening condition, oncological treatment cannot be interrupted without endangering his life and his minimum vital subsistence, and therapeutic continuity is decisive for his prognosis. Every day of delay reduces his chance of clinical response and worsens the risk.",
+  posicionEPS:
+    "Nueva EPS has a legitimate position regarding the authorization process for a high-cost technology NOT financed by the UPC capitation: it must verify the Mipres prescription, carry out the reimbursement/disbursement procedure before ADRES so the non-financed medication is covered from the correct source, validate oncological appropriateness and ensure traceability of the supply. Its concern is not to deny the right, but to channel the how and the when within an orderly and financially sustainable process.",
+  consensoPropuesto:
+    "Both parties agree the treatment must be guaranteed: the disagreement is about process and financing, not substance. The proposed consensus gives the patient the medication he needs AND honors the EPS's process: Nueva EPS authorizes the Pembrolizumab prescribed through Mipres and secures its immediate, uninterrupted delivery through a specific in-network provider, handling the ADRES reimbursement in parallel because this is a technology not financed by the UPC, without shifting that administrative burden onto the patient; in return, the dispute is resolved without escalating to a tutela, decongesting the courts. It is an agreement both parties can call fair: the patient gains therapeutic continuity and certainty; the EPS keeps its orderly authorization and reimbursement process.",
+  fundamento:
+    "The consensus rests on the fundamental right to health as an autonomous right (T-760/2008): the EPS must guarantee timely, effective and quality access to services prescribed by the treating physician, and the fact that a technology is not financed by the UPC does not relieve the EPS of guaranteeing its supply while it pursues the ADRES reimbursement. The treating oncologist's judgment prevails over administrative or coverage objections (T-195/2021). For an oncology patient with a life-threatening condition and special protection, reinforced protection applies, making any unjustified interruption or delay of treatment inadmissible (T-016/2007). The agreement honors both the patient's due timeliness and the EPS's orderly authorization and reimbursement process, without either side sacrificing its legitimate position.",
+  terminos: [
+    "Nueva EPS authorizes the Pembrolizumab prescribed by the treating oncologist through Mipres within a maximum of forty-eight (48) hours, given the life-threatening urgency.",
+    "Immediate, uninterrupted delivery of the medication through a specific in-network provider, named in the agreement record, with a schedule for the following cycles.",
+    "The EPS handles the reimbursement before ADRES, since this is a technology not financed by the UPC capitation, without shifting that administrative procedure or any cost onto the patient.",
+    "Integral care of the oncological treatment: assessments, follow-up tests, management of adverse effects and related supplies, charged to the appropriate source.",
+    "A follow-up plan with a single point of contact at the EPS and progress reporting to Amparo as the fourth party, ensuring continuity between cycles.",
+    "For his part, the patient agrees to hold the tutela action while the EPS meets the agreed deadlines and continuity, giving the process the chance to resolve without litigation.",
+    "If the EPS breaches any term or interrupts the supply, the patient fully retains the tutela route with no need to exhaust any further process.",
+  ],
+  fundamentos: SENTENCIAS_JARAMILLO,
   estado: "propuesta",
 };

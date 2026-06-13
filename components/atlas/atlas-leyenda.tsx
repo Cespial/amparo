@@ -102,7 +102,7 @@ export function AtlasLeyenda({
           <span className="text-[#0f6b6d]">{t("legend.lower")}</span>
           {cortes.map((c, i) => (
             <span key={i}>
-              {fmt(c)}
+              {fmt(c, lang)}
               {sufijo}
             </span>
           ))}

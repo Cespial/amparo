@@ -17,7 +17,8 @@ import {
   ShieldX,
 } from "lucide-react";
 import type { Caso, SentenciaRef } from "@/lib/types";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
+import { tCaso } from "@/lib/seed-en";
 import {
   Dialog,
   DialogContent,
@@ -66,6 +67,7 @@ export function DemandadoAgente({
 }: DemandadoAgenteProps) {
   const t = useT("demandado");
   const tm = useT("mediacion");
+  const { lang } = useLang();
   const [analizando, setAnalizando] = useState(false);
   const [analisis, setAnalisis] = useState<AnalisisEPS | null>(null);
 
@@ -144,7 +146,7 @@ export function DemandadoAgente({
             <span className="font-mono text-xs">{caso.radicado}</span>
           </DialogDescription>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
-            <Badge variant="secondary">{caso.servicioNegado}</Badge>
+            <Badge variant="secondary">{tCaso(caso.servicioNegado, lang)}</Badge>
             <span
               className={`rounded-full px-2 py-0.5 text-xs font-medium ${u.clase}`}
             >
@@ -167,7 +169,7 @@ export function DemandadoAgente({
               <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {t("agent.facts")}
               </h3>
-              <p className="mt-1 text-sm leading-relaxed">{caso.hechos}</p>
+              <p className="mt-1 text-sm leading-relaxed">{tCaso(caso.hechos, lang)}</p>
             </section>
 
             {/* Derecho de petición: a quién le corresponde y el reloj corriendo. */}

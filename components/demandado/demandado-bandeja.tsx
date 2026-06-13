@@ -5,7 +5,8 @@
 
 import { AlertTriangle, ChevronRight, Inbox } from "lucide-react";
 import type { Caso } from "@/lib/types";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
+import { tCaso } from "@/lib/seed-en";
 import { Badge } from "@/components/ui/badge";
 import { PeticionReloj } from "@/components/demandante/peticion-reloj";
 import {
@@ -62,6 +63,7 @@ export function DemandadoBandeja({
   procesandoId,
 }: DemandadoBandejaProps) {
   const t = useT("demandado");
+  const { lang } = useLang();
 
   if (casos.length === 0) {
     return (
@@ -111,7 +113,7 @@ export function DemandadoBandeja({
                   </span>
                 </div>
                 <p className="line-clamp-2 text-sm text-muted-foreground">
-                  {caso.servicioNegado}
+                  {tCaso(caso.servicioNegado, lang)}
                 </p>
                 {caso.peticion && (
                   <PeticionReloj peticion={caso.peticion} compacto />
@@ -165,10 +167,12 @@ export function DemandadoBandeja({
                     </p>
                   </TableCell>
                   <TableCell className="max-w-[18rem]">
-                    <p className="truncate text-sm">{caso.servicioNegado}</p>
+                    <p className="truncate text-sm">
+                      {tCaso(caso.servicioNegado, lang)}
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       {caso.esPBS ? "PBS" : "NO-PBS"} ·{" "}
-                      {caso.diagnostico.split("(")[0].trim()}
+                      {tCaso(caso.diagnostico, lang).split("(")[0].trim()}
                     </p>
                     {caso.peticion && (
                       <PeticionReloj

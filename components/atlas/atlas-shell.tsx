@@ -79,7 +79,7 @@ export function AtlasShell() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex min-w-0 max-w-full flex-col gap-4 overflow-x-hidden">
       <AtlasKpis resueltosSinJuez={resueltosSinJuez} />
 
       {/* Barra de acciones: comparador A vs B (izq.) + compartir/descargar (der.).
@@ -89,9 +89,11 @@ export function AtlasShell() {
         <AtlasAcciones metrica={metrica} seleccionado={seleccionado} />
       </div>
 
-      {/* Mapa + lateral. En móvil una sola columna; en desktop 2fr/1fr. */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
-        <div className="flex flex-col gap-3">
+      {/* Mapa + lateral. En móvil una sola columna; en desktop 2fr/1fr.
+          `min-w-0` en la grilla y en la columna del mapa evita que el canvas
+          del mapa (o una etiqueta larga) desborde horizontalmente en móvil. */}
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="flex min-w-0 flex-col gap-3">
           {/* Marco claro (surface-card) con un mapa DARK enmarcado por dentro. */}
           <div className="surface-card relative h-[58vh] min-h-[360px] overflow-hidden p-0 lg:h-[640px]">
             <AtlasMapa

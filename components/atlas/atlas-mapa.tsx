@@ -31,6 +31,7 @@ import {
   statsPorCodigo,
   expresionColor,
   rangoMetrica,
+  fmt,
 } from "./atlas-data";
 import { indexarGeoDeptos } from "./atlas-geo";
 import { AtlasBuscador, type DestinoBusqueda } from "./atlas-buscador";
@@ -418,7 +419,7 @@ export function AtlasMapa({
       const pub = Number(fRed.properties?.ips_publicas ?? 0);
       setHover({
         nombre: String(fRed.properties?.municipio ?? ""),
-        sub: `${ese.toLocaleString("es-CO")} ESE / ${pub.toLocaleString("es-CO")} públicas`,
+        sub: `${fmt(ese, lang)} ESE / ${fmt(pub, lang)} públicas`,
         x: e.point.x,
         y: e.point.y,
       });
@@ -430,7 +431,7 @@ export function AtlasMapa({
       const ips = Number(fIps.properties?.ips_total ?? 0);
       setHover({
         nombre: String(fIps.properties?.municipio ?? ""),
-        sub: `${ips.toLocaleString("es-CO")} IPS · ${fIps.properties?.departamento ?? ""}`,
+        sub: `${fmt(ips, lang)} IPS · ${fIps.properties?.departamento ?? ""}`,
         x: e.point.x,
         y: e.point.y,
       });

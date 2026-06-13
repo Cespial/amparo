@@ -54,7 +54,8 @@ import {
 import { cn } from "@/lib/utils";
 import type { Caso, EventoCaso, SentenciaRef } from "@/lib/types";
 import { useCasoStore } from "@/lib/store";
-import { useT, type TFunction } from "@/lib/i18n";
+import { useT, useLang, type TFunction } from "@/lib/i18n";
+import { tCaso } from "@/lib/seed-en";
 import { progresoDeEstado } from "@/lib/progreso";
 import type { TriajeResultado, EstadoCriterio } from "@/lib/ai/triaje";
 import type { PrediccionResultado } from "@/lib/ai/predictor";
@@ -83,6 +84,7 @@ const CRITERIO_I18N: Record<string, string> = {
 
 export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
   const t = useT("juez");
+  const { lang } = useLang();
   const updateCaso = useCasoStore((s) => s.updateCaso);
   const addEvento = useCasoStore((s) => s.addEvento);
 
@@ -324,8 +326,8 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                   label={t("detail.deniedService")}
                 >
                   {t("detail.deniedServiceValue", {
-                    servicio: caso.servicioNegado,
-                    diagnostico: caso.diagnostico,
+                    servicio: tCaso(caso.servicioNegado, lang),
+                    diagnostico: tCaso(caso.diagnostico, lang),
                     pbs: caso.esPBS ? t("detail.inPbs") : t("detail.notPbs"),
                   })}
                 </Dato>

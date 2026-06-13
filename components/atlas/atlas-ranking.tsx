@@ -14,7 +14,7 @@ import {
   fmt,
   RAMPA,
 } from "./atlas-data";
-import { useLang } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
 
 const COPIA = {
   es: {
@@ -54,6 +54,7 @@ export function AtlasRanking({
   onSeleccionar,
 }: AtlasRankingProps) {
   const { lang } = useLang();
+  const t = useT("atlas");
   const c = COPIA[lang];
 
   const filas = useMemo(
@@ -98,9 +99,12 @@ export function AtlasRanking({
         <h3 className="font-heading text-sm font-semibold text-foreground">
           {c.titulo}
         </h3>
-        <span className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-          {/* Reutiliza la etiqueta de la métrica del diccionario atlas vía atlas-data. */}
-          {METRICAS[metrica].etiqueta}
+        <span
+          aria-label={t("ranking.columnLabel")}
+          className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground"
+        >
+          {/* Rótulo de la columna del ranking: la métrica activa, traducida. */}
+          {t(`metrics.${metrica}.label`)}
         </span>
       </div>
 
@@ -134,7 +138,7 @@ export function AtlasRanking({
                       {f.nombre}
                     </span>
                     <span className="shrink-0 font-mono tabular-nums text-[11px] text-muted-foreground">
-                      {fmt(f.valor)}
+                      {fmt(f.valor, lang)}
                       {sufijo}
                     </span>
                   </span>
@@ -175,8 +179,8 @@ export function AtlasRanking({
         />
 
         <div className="mt-1 flex justify-between font-mono tabular-nums text-[10px] text-muted-foreground">
-          <span>{fmt(histo.min)}</span>
-          <span>{fmt(histo.max)}</span>
+          <span>{fmt(histo.min, lang)}</span>
+          <span>{fmt(histo.max, lang)}</span>
         </div>
 
         <p className="mt-1.5 text-[10px] leading-tight text-muted-foreground">

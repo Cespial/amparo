@@ -5,8 +5,9 @@
 import { ChevronRight, Gavel, Inbox } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { tCaso } from "@/lib/seed-en";
 import type { Caso } from "@/lib/types";
 import { EstadoBadge, UrgenciaBadge, PlazoBadge } from "./juez-badges";
 import {
@@ -25,6 +26,7 @@ interface Props {
 
 export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
   const t = useT("juez");
+  const { lang } = useLang();
   const ordenados = [...casos].sort(
     (a, b) => prioridadCaso(b) - prioridadCaso(a),
   );
@@ -91,7 +93,7 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
                     {caso.demandante.nombre}
                   </p>
                   <p className="truncate text-sm text-muted-foreground">
-                    {caso.servicioNegado} · {caso.demandado.nombre}
+                    {tCaso(caso.servicioNegado, lang)} · {caso.demandado.nombre}
                   </p>
                   <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                     {caso.radicado}

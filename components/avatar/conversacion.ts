@@ -99,10 +99,15 @@ export const ESTADO_INICIAL: EstadoConversacion = {
   errorMsg: null,
 };
 
+// IDs DETERMINISTAS/secuenciales (m1, m2, …). Sin Date.now() ni ninguna
+// fuente no determinista: así nada que dependa del reloj entra en el árbol
+// renderizado y el HTML del server coincide con el del cliente (evita el
+// hydration mismatch / React #418). El saludo, además, se crea en un efecto
+// post-montaje (solo cliente), por lo que el estado inicial arranca vacío.
 let contador = 0;
 function nuevoId(): string {
   contador += 1;
-  return `m${contador}-${Date.now().toString(36)}`;
+  return `m${contador}`;
 }
 
 export function msg(autor: Autor, texto: string): Mensaje {

@@ -17,7 +17,7 @@ import {
   Info,
 } from "lucide-react";
 import { kpisNacionales, fmt } from "./atlas-data";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
 
 interface KpiItem {
   /** Clave del KPI en el namespace atlas (kpis.<key>.label/.note/.sourceAria). */
@@ -31,12 +31,13 @@ interface KpiItem {
 
 export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
   const t = useT("atlas");
+  const { lang } = useLang();
   const k = kpisNacionales();
 
   const items: KpiItem[] = [
     {
       clave: "tutelas",
-      valor: fmt(k.totalTutelasSalud),
+      valor: fmt(k.totalTutelasSalud, lang),
       Icono: FileText,
       tono: "text-[var(--info)]",
       ilustrativo: false,
@@ -50,14 +51,14 @@ export function AtlasKpis({ resueltosSinJuez }: { resueltosSinJuez: number }) {
     },
     {
       clave: "ips",
-      valor: fmt(k.ipsNacional),
+      valor: fmt(k.ipsNacional, lang),
       Icono: Hospital,
       tono: "text-[var(--warning)]",
       ilustrativo: false,
     },
     {
       clave: "resolved",
-      valor: fmt(resueltosSinJuez),
+      valor: fmt(resueltosSinJuez, lang),
       Icono: Handshake,
       tono: "text-brand",
       ilustrativo: false,

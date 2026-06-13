@@ -91,6 +91,12 @@ export const atlas = {
       text: "Haz clic en un departamento para ver sus estadísticas de tutelas en salud y abrir un caso.",
     },
 
+    // — Panel de ranking nacional —
+    // `columnLabel` rotula la columna del ranking con la métrica activa.
+    ranking: {
+      columnLabel: "Métrica",
+    },
+
     // — Panel de detalle de un departamento —
     panel: {
       kicker: "Departamento",
@@ -190,6 +196,12 @@ export const atlas = {
     hint: {
       title: "Explore the map",
       text: "Click any department to see its health-tutela figures and open a case.",
+    },
+
+    // — National ranking panel —
+    // `columnLabel` labels the ranking column with the active metric.
+    ranking: {
+      columnLabel: "Metric",
     },
 
     // — Department detail panel —

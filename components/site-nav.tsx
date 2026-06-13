@@ -97,7 +97,11 @@ function RolSelector() {
         aria-label={t("rol.aria")}
         className="w-[150px] border-white/20 bg-white/10 text-white"
       >
-        <SelectValue placeholder={t("rol.placeholder")} />
+        <SelectValue placeholder={t("rol.placeholder")}>
+          {(value) =>
+            value ? t(`rol.${value as string}`) : t("rol.placeholder")
+          }
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="atlas">{t("rol.atlas")}</SelectItem>

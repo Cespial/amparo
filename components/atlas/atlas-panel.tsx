@@ -24,7 +24,7 @@ import {
   X,
 } from "lucide-react";
 import { statsPorCodigo, fmt } from "./atlas-data";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
 
 interface AtlasPanelContenidoProps {
   codigo: string;
@@ -38,6 +38,7 @@ function PanelContenido({
   onCerrar,
 }: AtlasPanelContenidoProps) {
   const t = useT("atlas");
+  const { lang } = useLang();
   const st = statsPorCodigo.get(codigo);
   if (!st) return null;
 
@@ -71,13 +72,13 @@ function PanelContenido({
           Icono={Scale}
           tono="text-[var(--info)]"
           etiqueta={t("panel.tutelas")}
-          valor={fmt(st.totalTutelas)}
+          valor={fmt(st.totalTutelas, lang)}
         />
         <Metric
           Icono={TrendingUp}
           tono="text-[var(--warning)]"
           etiqueta={t("panel.rate")}
-          valor={fmt(st.tasaPor10k)}
+          valor={fmt(st.tasaPor10k, lang)}
         />
       </div>
 
@@ -88,7 +89,7 @@ function PanelContenido({
             {t("panel.ipsHealth")}
           </span>
           <span className="font-mono tabular-nums text-lg font-semibold text-foreground">
-            {fmt(st.ipsTotal)}
+            {fmt(st.ipsTotal, lang)}
           </span>
         </div>
         <div className="flex h-2 overflow-hidden rounded-full bg-muted ring-1 ring-foreground/10">
@@ -107,11 +108,11 @@ function PanelContenido({
         </div>
         <div className="mt-2 flex justify-between font-mono tabular-nums text-xs text-muted-foreground">
           <span>
-            <span className="text-[var(--success)]">{fmt(st.ipsPublicas)}</span>{" "}
+            <span className="text-[var(--success)]">{fmt(st.ipsPublicas, lang)}</span>{" "}
             {t("panel.ipsPublic")}
           </span>
           <span>
-            <span className="text-[var(--info)]">{fmt(st.ipsPrivadas)}</span>{" "}
+            <span className="text-[var(--info)]">{fmt(st.ipsPrivadas, lang)}</span>{" "}
             {t("panel.ipsPrivate")}
           </span>
         </div>

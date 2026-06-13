@@ -133,9 +133,13 @@ export function umbralesLeyenda(metrica: MetricaAtlas): number[] {
   );
 }
 
-/** Formatea números grandes con separador de miles (es-CO). */
-export function fmt(n: number): string {
-  return Math.round(n).toLocaleString("es-CO");
+/**
+ * Formatea números grandes con separador de miles según el idioma activo.
+ * `es` → es-CO (197.737) · `en` → en-US (197,737). Default `es` para
+ * preservar el comportamiento previo en llamadas sin idioma.
+ */
+export function fmt(n: number, lang: "es" | "en" = "es"): string {
+  return Math.round(n).toLocaleString(lang === "en" ? "en-US" : "es-CO");
 }
 
 /**

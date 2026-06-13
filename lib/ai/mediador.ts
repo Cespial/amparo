@@ -27,8 +27,11 @@ import type { Caso, Mediacion, SentenciaRef } from "../types";
 import {
   conRespaldo,
   esHeroe,
+  jaramilloId,
   MEDIACION_HEROE,
   MEDIACION_HEROE_EN,
+  MEDIACION_JARAMILLO,
+  MEDIACION_JARAMILLO_EN,
 } from "./fixtures";
 
 /** Idioma de la propuesta de mediación. */
@@ -89,7 +92,9 @@ Mediation rules:
 2. Propose a concrete CONSENSUS that gives the patient the service they need AND honors the EPS's process: authorization within a defined deadline, a specific provider, a fixed date, a post-operative follow-up plan. The agreement must be RECIPROCAL: include a concrete commitment from the patient too (e.g. holding the tutela action while the EPS meets the agreed deadlines), so the consensus does not fall on the EPS alone. Let neither party sacrifice its legitimate position.
 3. Ground the consensus in the fundamental right to health and cite ONLY judgments from the RETRIEVED PRECEDENT (by their id, e.g. T-760/2008). It is strictly FORBIDDEN to invent or cite judgments not on that list.
 4. Respectful tone, first person plural ("we propose"), procedurally fair, accessible.
-Return only the schema fields. Write all free-text fields in natural English.`;
+
+LANGUAGE — ABSOLUTE REQUIREMENT: You MUST write EVERY free-text field (posicionDemandante, posicionEPS, consensoPropuesto, fundamento) and EVERY item in "terminos" in natural, fluent ENGLISH. This is non-negotiable, even though the case file, the party names and the retrieved precedent are in Spanish. Do NOT copy, echo or leave ANY text in Spanish. Translate the substance into English; keep ONLY proper nouns that have no English form — judgment ids (e.g. T-760/2008), party names (e.g. "Nueva EPS", "EPS Sura", "Carlos Jaramillo"), and Colombian-specific institutional acronyms (EPS, UPC, PBS, ADRES, Mipres, tutela). Use the section header "TERMS OF THE AGREEMENT" mindset: every term must read as English. If any field would contain a Spanish sentence, rewrite it in English before returning.
+Return only the schema fields.`;
 
 /** Ficha compacta del caso para el prompt del mediador. */
 function fichaCaso(caso: Caso): string {
@@ -160,8 +165,17 @@ export async function generarMediacion(
     };
   };
 
+  // Casos con fixture de mediación de alta calidad EN/ES → demo DETERMINISTA.
+  // Blindan el render de la "Mediation room" para que NUNCA filtre español en
+  // modo inglés ni quede en blanco si la API falla o tarda.
   if (esHeroe(caso.id)) {
     return conRespaldo(op, lang === "en" ? MEDIACION_HEROE_EN : MEDIACION_HEROE);
+  }
+  if (caso.id === jaramilloId) {
+    return conRespaldo(
+      op,
+      lang === "en" ? MEDIACION_JARAMILLO_EN : MEDIACION_JARAMILLO,
+    );
   }
   return op();
 }
