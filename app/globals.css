@@ -49,6 +49,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
@@ -65,32 +66,33 @@
 :root {
   --radius: 0.875rem;
 
-  /* Fondo lavanda/periwinkle muy suave + tarjetas blancas */
-  --background: #f4f5fc;
-  --foreground: #1e2340;
+  /* Fondo lavanda/periwinkle muy suave + tarjetas blancas (paleta AAA/DDRC) */
+  --background: #eef0fc;
+  --foreground: #1b1f38;
   --card: #ffffff;
-  --card-foreground: #1e2340;
+  --card-foreground: #1b1f38;
   --popover: #ffffff;
-  --popover-foreground: #1e2340;
+  --popover-foreground: #1b1f38;
 
-  /* Primario (CTA): rojo ladrillo institucional */
-  --primary: #b83227;
+  /* Primario (CTA): rojo ladrillo institucional AAA (#D83C2B muestreado) */
+  --primary: #ce3a28;
   --primary-foreground: #ffffff;
+  --primary-hover: #b5311f;
 
-  --secondary: #eef0fb;
-  --secondary-foreground: #1e2340;
-  --muted: #eef0fb;
-  --muted-foreground: #5b6079;
-  --accent: #e6e9fa;
-  --accent-foreground: #1e2340;
+  --secondary: #e9ebfb;
+  --secondary-foreground: #1b1f38;
+  --muted: #eceefb;
+  --muted-foreground: #595f7c;
+  --accent: #e3e5fa;
+  --accent-foreground: #1b1f38;
 
   --destructive: #b91c1c;
-  --border: #e0e3f2;
-  --input: #d8dcef;
-  --ring: #b83227;
+  --border: #e2e4f3;
+  --input: #d6daee;
+  --ring: #ce3a28;
 
-  /* Header navy / slate oscuro */
-  --navy: #1e2340;
+  /* Header navy / slate oscuro (deep indigo-navy AAA) */
+  --navy: #20243f;
   --navy-foreground: #f4f5fc;
 
   /* Semánticos */
@@ -104,20 +106,20 @@
   --info-foreground: #ffffff;
 
   /* Charts (paleta institucional) */
-  --chart-1: #b83227;
-  --chart-2: #1e2340;
+  --chart-1: #ce3a28;
+  --chart-2: #20243f;
   --chart-3: #1d4ed8;
   --chart-4: #15803d;
   --chart-5: #b45309;
 
   --sidebar: #ffffff;
-  --sidebar-foreground: #1e2340;
-  --sidebar-primary: #b83227;
+  --sidebar-foreground: #1b1f38;
+  --sidebar-primary: #ce3a28;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eef0fb;
-  --sidebar-accent-foreground: #1e2340;
-  --sidebar-border: #e0e3f2;
-  --sidebar-ring: #b83227;
+  --sidebar-accent: #eceefb;
+  --sidebar-accent-foreground: #1b1f38;
+  --sidebar-border: #e2e4f3;
+  --sidebar-ring: #ce3a28;
 }
 
 .dark {
@@ -180,8 +182,14 @@
   }
   body {
     color: var(--foreground);
-    /* Degradado lavanda/periwinkle muy suave */
-    background: linear-gradient(160deg, #eef0fb 0%, #f7f8fe 60%, #f4f5fc 100%);
+    /* Atmósfera lavanda/periwinkle: un halo radial sutil sobre un degradado limpio */
+    background:
+      radial-gradient(
+        1200px 520px at 50% -8%,
+        rgba(206, 209, 250, 0.55) 0%,
+        rgba(206, 209, 250, 0) 70%
+      ),
+      linear-gradient(168deg, #e9ebfb 0%, #f3f4fd 52%, #f6f7fe 100%);
     background-attachment: fixed;
     min-height: 100vh;
   }
@@ -189,6 +197,7 @@
   h2,
   h3 {
     font-family: var(--font-serif), var(--font-sans), serif;
+    letter-spacing: -0.012em;
   }
   /* Foco visible AA */
   :focus-visible {
@@ -203,12 +212,38 @@
   }
 }
 
-/* Utilidad de superficie de tarjeta con sombra sutil */
+/* Utilidad de superficie de tarjeta con sombra sutil y nítida (estilo AAA) */
 .surface-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius-2xl);
   box-shadow:
-    0 1px 2px rgba(30, 35, 64, 0.04),
-    0 8px 24px -12px rgba(30, 35, 64, 0.12);
+    0 1px 1px rgba(27, 31, 56, 0.03),
+    0 2px 6px -2px rgba(27, 31, 56, 0.06),
+    0 18px 40px -24px rgba(27, 31, 56, 0.18);
+}
+
+/* Panel oscuro (impacto / dark sections) con degradado navy refinado */
+.surface-navy {
+  background: linear-gradient(155deg, #262b4c 0%, #20243f 60%, #191d34 100%);
+  color: var(--navy-foreground);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 24px 50px -28px rgba(16, 19, 36, 0.55);
+}
+
+/* Línea fina divisoria */
+.hairline {
+  border-color: var(--border);
+}
+
+/* Realce de marca para el acento rojo en texto */
+.text-brand {
+  color: var(--primary);
+}
+
+/* Botón primario con hover institucional */
+[data-slot="button"].bg-primary:hover,
+.btn-primary:hover {
+  background-color: var(--primary-hover);
 }
