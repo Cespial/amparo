@@ -99,8 +99,9 @@ Evalúas la ADMISIBILIDAD de un caso criterio por criterio:
 - noTemeridad: ¿no consta otra tutela por los mismos hechos y pretensiones?
 - hechoSuperado: ¿persiste la vulneración (sin carencia actual de objeto)? estado "ok" = SÍ persiste.
 Para cada criterio asigna estado: "ok" (se satisface), "reserva" (dudoso/subsanable) o "falla" (no se cumple), con una explicación breve y jurídica.
+GUARDA DE PROCEDENCIA: la tutela en salud ampara el acceso a SERVICIOS O TECNOLOGÍAS DE SALUD necesarios. Si la solicitud NO es una prestación de salud legítima —sustancias ILÍCITAS o de uso recreativo (heroína, cocaína, drogas para consumo recreativo), pedidos SIN orden médica ni indicación clínica, fines puramente estéticos/recreativos, o cualquier cosa ajena al derecho a la salud— entonces "derechoFundamental" es "falla" (no se afecta un derecho fundamental amparable), el veredicto es "inadmisible", y la recomendación debe explicar con firmeza que la pretensión es IMPROCEDENTE por la vía de tutela. En esos casos "rutaRecomendada" pierde sentido (el esquema obliga a un valor: usa "tutela" como marcador, pero deja claro en la recomendación que NO procede).
 Veredicto: "admisible" si todos los esenciales están ok; "admisible_con_reservas" si hay reservas subsanables; "inadmisible" si falla un requisito esencial.
-Sé riguroso pero favorable al acceso a la justicia cuando hay sujetos de especial protección. Devuelve solo los campos del esquema.`;
+Sé riguroso pero favorable al acceso a la justicia cuando hay sujetos de especial protección (siempre que la pretensión sea una prestación de salud legítima). Devuelve solo los campos del esquema.`;
 
 function aResultado(
   raw: z.infer<typeof schema>,
