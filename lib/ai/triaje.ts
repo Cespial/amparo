@@ -130,14 +130,16 @@ function aResultado(
 
 /** Construye el contexto textual del caso para el prompt. */
 function contextoCaso(caso: Caso): string {
+  const dte = caso.demandante;
+  const ddo = caso.demandado;
   return [
     `Servicio negado: ${caso.servicioNegado} (${caso.tipoServicio})`,
-    `Diagnóstico: ${caso.diagnostico}`,
-    `Accionante: ${caso.demandante.nombre}, ${caso.demandante.edad} años, régimen ${caso.demandante.regimen}` +
-      (caso.demandante.sujetoEspecialProteccion
+    `Diagnóstico: ${caso.diagnostico || "sin diagnóstico"}`,
+    `Accionante: ${dte?.nombre ?? "el accionante"}, ${dte?.edad ?? "?"} años, régimen ${dte?.regimen ?? "no indicado"}` +
+      (dte?.sujetoEspecialProteccion
         ? " — SUJETO DE ESPECIAL PROTECCIÓN"
         : ""),
-    `Accionada: ${caso.demandado.nombre} (${caso.demandado.tipo})`,
+    `Accionada: ${ddo?.nombre ?? caso.eps ?? "la EPS"}${ddo?.tipo ? ` (${ddo.tipo})` : ""}`,
     `Urgencia: ${caso.urgencia}. ¿Incluido en PBS?: ${caso.esPBS ? "sí" : "no"}`,
     `Derechos invocados: ${caso.derechosInvocados.join(", ")}`,
     `Hechos: ${caso.hechos}`,

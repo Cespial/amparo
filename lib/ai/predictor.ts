@@ -99,12 +99,19 @@ export async function predecirCasoDetallado(
     const citadas = (object.sentenciasCitadas ?? [])
       .map((id) => porId.get(id))
       .filter((s): s is SentenciaRef => Boolean(s));
-    // Si el modelo no citó ninguna válida, usar las 2 mejores recuperadas.
+    const prob = parseProb(object.probabilidadAmparo);
+    // Improcedente / sin sustento (prob ínfima): NO citar precedentes (serían
+    // engañosos). Si el modelo citó válidas, usarlas; si no y es procedente,
+    // respaldar con las 2 mejores recuperadas.
     const sentenciasCitadas =
-      citadas.length > 0 ? citadas : recuperadas.slice(0, 2);
+      prob <= 5
+        ? []
+        : citadas.length > 0
+          ? citadas
+          : recuperadas.slice(0, 2);
 
     return {
-      probabilidadAmparo: parseProb(object.probabilidadAmparo),
+      probabilidadAmparo: prob,
       sentenciasCitadas,
       reglaAplicable: object.reglaAplicable,
       razonamiento: object.razonamiento,
