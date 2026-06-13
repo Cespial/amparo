@@ -407,7 +407,7 @@ export function DemandanteWizard({
       const res = await fetch("/api/estructurar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ relato: texto, casoId: idParaApi }),
+        body: JSON.stringify({ relato: texto, casoId: idParaApi, lang }),
       });
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as EstructuracionOutput;
@@ -511,7 +511,9 @@ export function DemandanteWizard({
       const res = await fetch("/api/triaje", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(esHeroe ? { casoId: heroeId } : { caso }),
+        body: JSON.stringify(
+          esHeroe ? { casoId: heroeId, lang } : { caso, lang },
+        ),
       });
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as TriajeResultado;
@@ -551,7 +553,9 @@ export function DemandanteWizard({
       const res = await fetch("/api/predecir", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(esHeroe ? { casoId: heroeId } : { caso }),
+        body: JSON.stringify(
+          esHeroe ? { casoId: heroeId, lang } : { caso, lang },
+        ),
       });
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as PrediccionResultado;

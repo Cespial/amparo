@@ -90,7 +90,10 @@ const CONFIANZA_MAP: Record<string, number> = {
   muy_alta: 0.93,
 };
 
-const SYSTEM = `Eres un asesor jurídico experto en acción de tutela en salud en Colombia (art. 86 C.P., Decreto 2591 de 1991, línea jurisprudencial de la Corte Constitucional).
+/** Idioma de la respuesta del triaje. */
+export type LangTriaje = "es" | "en";
+
+const SYSTEM_BASE = `Eres un asesor jurídico experto en acción de tutela en salud en Colombia (art. 86 C.P., Decreto 2591 de 1991, línea jurisprudencial de la Corte Constitucional).
 Evalúas la ADMISIBILIDAD de un caso criterio por criterio:
 - derechoFundamental: ¿se afecta un derecho fundamental (salud autónomo, vida, vida digna, etc.)?
 - legitimacion: ¿el accionante es titular o actúa válidamente (agencia oficiosa, representación de menor)?
@@ -102,6 +105,14 @@ Para cada criterio asigna estado: "ok" (se satisface), "reserva" (dudoso/subsana
 GUARDA DE PROCEDENCIA: la tutela en salud ampara el acceso a SERVICIOS O TECNOLOGÍAS DE SALUD necesarios. Si la solicitud NO es una prestación de salud legítima —sustancias ILÍCITAS o de uso recreativo (heroína, cocaína, drogas para consumo recreativo), pedidos SIN orden médica ni indicación clínica, fines puramente estéticos/recreativos, o cualquier cosa ajena al derecho a la salud— entonces "derechoFundamental" es "falla" (no se afecta un derecho fundamental amparable), el veredicto es "inadmisible", y la recomendación debe explicar con firmeza que la pretensión es IMPROCEDENTE por la vía de tutela. En esos casos "rutaRecomendada" pierde sentido (el esquema obliga a un valor: usa "tutela" como marcador, pero deja claro en la recomendación que NO procede).
 Veredicto: "admisible" si todos los esenciales están ok; "admisible_con_reservas" si hay reservas subsanables; "inadmisible" si falla un requisito esencial.
 Sé riguroso pero favorable al acceso a la justicia cuando hay sujetos de especial protección (siempre que la pretensión sea una prestación de salud legítima). Devuelve solo los campos del esquema.`;
+
+const IDIOMA_ES = `\n\nIDIOMA — REQUISITO ABSOLUTO: Responde SIEMPRE en ESPAÑOL (el idioma del usuario). Términos jurídicos y nombres propios (tutela, EPS, PBS, UPC, ADRES, Mipres, T-760/2008, Corte Constitucional, Supersalud, Defensoría) se mantienen tal cual.`;
+
+const IDIOMA_EN = `\n\nLANGUAGE — ABSOLUTE REQUIREMENT: Respond ALWAYS in ENGLISH (the user's language). Write EVERY free-text field —every "explicacion", the "recomendacion" and every item in "banderas"— in natural, fluent English, even though the case file and the retrieved precedent are in Spanish. Do NOT leave any text in Spanish. Keep ONLY proper nouns and legal terms that have no English form: judgment ids (e.g. T-760/2008), party names, the Corte Constitucional, and Colombian institutional terms (tutela, EPS, PBS, UPC, ADRES, Mipres, Supersalud, Defensoría). The enum fields (estado, veredicto, rutaRecomendada, confianza, derechosVulnerados) MUST keep their exact schema values.`;
+
+function systemPrompt(lang: LangTriaje): string {
+  return SYSTEM_BASE + (lang === "en" ? IDIOMA_EN : IDIOMA_ES);
+}
 
 function aResultado(
   raw: z.infer<typeof schema>,
@@ -151,7 +162,10 @@ function contextoCaso(caso: Caso): string {
  * Triaje de admisibilidad enriquecido (por criterios). Recupera fundamentos del
  * corpus y razona con Haiku. Demo-safe para el caso héroe.
  */
-export async function triarCasoDetallado(caso: Caso): Promise<TriajeResultado> {
+export async function triarCasoDetallado(
+  caso: Caso,
+  lang: LangTriaje = "es",
+): Promise<TriajeResultado> {
   const fundamentos = buscarSentencias(
     `${caso.servicioNegado} ${caso.diagnostico} ${caso.derechosInvocados.join(" ")} tutela admisibilidad procedencia`,
     4,
@@ -161,7 +175,7 @@ export async function triarCasoDetallado(caso: Caso): Promise<TriajeResultado> {
     const { object } = await generateObject({
       model: modeloRapido(),
       schema,
-      system: SYSTEM,
+      system: systemPrompt(lang),
       prompt:
         `Evalúa la admisibilidad de la siguiente acción de tutela en salud.\n\n` +
         `CASO:\n${contextoCaso(caso)}\n\n` +

@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { predecirCasoDetallado } from "@/lib/ai/predictor";
+import {
+  predecirCasoDetallado,
+  type LangPrediccion,
+} from "@/lib/ai/predictor";
 import { resolverCaso } from "@/lib/ai/resolver-caso";
 
 export const runtime = "nodejs";
@@ -7,7 +10,7 @@ export const maxDuration = 60;
 
 /**
  * POST /api/predecir
- * Request:  { caso: Caso }  ó  { casoId: string }
+ * Request:  { caso: Caso; lang?: "es" | "en" }  ó  { casoId: string; lang?: "es" | "en" }
  * Response: PrediccionResultado
  *   { probabilidadAmparo: number (0-100); sentenciasCitadas: SentenciaRef[];
  *     reglaAplicable: string; razonamiento: string }
@@ -22,7 +25,8 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const resultado = await predecirCasoDetallado(caso);
+    const lang: LangPrediccion = body?.lang === "en" ? "en" : "es";
+    const resultado = await predecirCasoDetallado(caso, lang);
     return NextResponse.json(resultado);
   } catch (e) {
     return NextResponse.json(

@@ -21,13 +21,13 @@ export const pitch = {
       prev: "Anterior",
       next: "Siguiente",
       toDemo: "Al demo",
-      prevLabel: "Slide anterior",
-      nextLabel: "Siguiente slide",
+      prevLabel: "Diapositiva anterior",
+      nextLabel: "Diapositiva siguiente",
       toDemoLabel: "Ir al demo",
-      slideOf: "Slide {index} de {total}",
-      progressLabel: "Progreso del deck: slide {index} de {total}",
-      dotsLabel: "Slides",
-      goToSlide: "Ir al slide {index}: {kicker}",
+      slideOf: "Diapositiva {index} de {total}",
+      progressLabel: "Progreso del deck: diapositiva {index} de {total}",
+      dotsLabel: "Diapositivas",
+      goToSlide: "Ir a la diapositiva {index}: {kicker}",
       keyboardHint: "← / → navegar · Inicio / Fin extremos · Esc salir",
     },
 
@@ -61,7 +61,7 @@ export const pitch = {
     // 2 · El problema
     problema: {
       eyebrow: "El problema",
-      headline: "Se demanda al Estado para recibir lo que ya es un derecho.",
+      headline: "Hay que ir a un juez para recibir lo que ya es un derecho.",
       body: "La salud es el principal motivo de tutela en Colombia. La mayoría se conceden: la persona pedía algo que la ley ya le garantizaba. Es un sistema que obliga a litigar para acceder a lo evidente.",
       statsTitle: "El problema, en números",
       stat1: {
@@ -310,7 +310,7 @@ export const pitch = {
     // 2 · The problem
     problema: {
       eyebrow: "The problem",
-      headline: "People sue the State to get what is already theirs by right.",
+      headline: "People go to court to get what is already theirs by right.",
       body: "Health is the leading reason for filing a tutela in Colombia. Most are granted: the person was asking for something the law already guaranteed them. It's a system that forces people to litigate for the obvious.",
       statsTitle: "The problem, in numbers",
       stat1: {

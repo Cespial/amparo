@@ -76,30 +76,60 @@ export function plazoFallo(caso: Caso): PlazoLegal | undefined {
   );
 }
 
-/** Formatea fecha ISO en formato corto colombiano. */
-const FMT = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-});
-export function fechaCorta(iso: string): string {
+/**
+ * Locale BCP-47 para formateo de fechas según el idioma activo de la UI.
+ * Conserva la convención colombiana (orden día-mes-año) pero usa nombres de
+ * mes y conectores en inglés cuando la UI está en EN.
+ */
+type Lang = "es" | "en";
+function localeFecha(lang: Lang): string {
+  return lang === "en" ? "en-CO" : "es-CO";
+}
+
+// Formatters cacheados por locale (Intl.DateTimeFormat es costoso de construir).
+const FMT_CORTA: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat("es-CO", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }),
+  en: new Intl.DateTimeFormat("en-CO", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }),
+};
+
+/** Formatea fecha ISO en formato corto, localizado según el idioma activo. */
+export function fechaCorta(iso: string, lang: Lang = "es"): string {
   try {
-    return FMT.format(new Date(iso));
+    return FMT_CORTA[lang].format(new Date(iso));
   } catch {
     return iso;
   }
 }
 
-const FMT_LARGO = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "long",
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit",
-});
-export function fechaLarga(iso: string): string {
+const FMT_LARGA: Record<Lang, Intl.DateTimeFormat> = {
+  es: new Intl.DateTimeFormat("es-CO", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+  en: new Intl.DateTimeFormat("en-CO", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }),
+};
+
+/** Formatea fecha ISO en formato largo (con hora), localizado por idioma. */
+export function fechaLarga(iso: string, lang: Lang = "es"): string {
   try {
-    return FMT_LARGO.format(new Date(iso));
+    return FMT_LARGA[lang].format(new Date(iso));
   } catch {
     return iso;
   }

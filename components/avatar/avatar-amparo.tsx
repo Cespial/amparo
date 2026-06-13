@@ -30,6 +30,7 @@ import {
   useState,
 } from "react";
 import { cn } from "@/lib/utils";
+import { useLang } from "@/lib/i18n";
 
 export type EstadoAvatar = "inactivo" | "hablando" | "pensando" | "escuchando";
 
@@ -81,6 +82,7 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
     { estado, size = 180, className, onHablandoChange },
     ref,
   ) {
+    const { lang } = useLang();
     // Nivel de amplitud 0..1 (driver de la animación). Se mantiene en un ref
     // y se refleja a estado React solo en cada frame, suavizado.
     const [nivel, setNivel] = useState(0);
@@ -419,11 +421,17 @@ export const AvatarAmparo = forwardRef<AvatarAmparoHandle, AvatarAmparoProps>(
         role="img"
         aria-label={
           hablando
-            ? "Amparo está hablando"
+            ? lang === "en"
+              ? "Amparo is speaking"
+              : "Amparo está hablando"
             : pensando
-              ? "Amparo está pensando"
+              ? lang === "en"
+                ? "Amparo is thinking"
+                : "Amparo está pensando"
               : escuchando
-                ? "Amparo está escuchando"
+                ? lang === "en"
+                  ? "Amparo is listening"
+                  : "Amparo está escuchando"
                 : "Amparo"
         }
       >

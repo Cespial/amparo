@@ -474,13 +474,13 @@ export function ImpactoClient() {
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               <Mic className="size-4" />
-              {lang === "es" ? "Probar el demo" : "Try the demo"}
+              {d.why.tryDemo}
             </Link>
             <Link
               href="/pitch"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border bg-white px-6 text-base font-semibold text-foreground transition-colors hover:bg-secondary"
             >
-              {lang === "es" ? "Ver el pitch" : "See the pitch"}
+              {d.why.seePitch}
               <ArrowRight className="size-4 text-brand" />
             </Link>
           </div>

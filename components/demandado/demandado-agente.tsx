@@ -84,7 +84,7 @@ export function DemandadoAgente({
         const res = await fetch("/api/predecir", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ casoId: caso.id }),
+          body: JSON.stringify({ casoId: caso.id, lang }),
         });
         if (res.ok) {
           const data = await res.json();
@@ -120,7 +120,7 @@ export function DemandadoAgente({
     return () => {
       activo = false;
     };
-  }, [caso, abierto, t]);
+  }, [caso, abierto, t, lang]);
 
   if (!caso) return null;
 

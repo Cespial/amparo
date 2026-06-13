@@ -6,7 +6,7 @@ export const maxDuration = 60;
 
 /**
  * POST /api/estructurar
- * Request:  { relato: string; casoId?: string }
+ * Request:  { relato: string; casoId?: string; lang?: "es" | "en" }
  * Response: EstructuracionOutput (Partial<Caso> + { eps?, paciente? })
  */
 export async function POST(req: Request) {
@@ -19,7 +19,12 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const resultado = await estructurarCaso({ relato, casoId: body?.casoId });
+    const lang = body?.lang === "en" ? "en" : "es";
+    const resultado = await estructurarCaso({
+      relato,
+      casoId: body?.casoId,
+      lang,
+    });
     return NextResponse.json(resultado);
   } catch (e) {
     return NextResponse.json(

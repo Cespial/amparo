@@ -11,11 +11,16 @@ import { modeloRapido } from "./client";
 import type { Caso, DerechoFundamental, TipoServicio, Urgencia } from "../types";
 import { conRespaldo, esHeroe, ESTRUCTURACION_HEROE } from "./fixtures";
 
+/** Idioma de la salida de estructuración. */
+export type LangEstructuracion = "es" | "en";
+
 /** Entrada de estructuración (texto libre del usuario o transcripción de voz). */
 export interface EstructuracionInput {
   relato: string;
   /** Id del caso (para blindaje demo-safe del héroe). Opcional. */
   casoId?: string;
+  /** Idioma de la salida ("es" por defecto, o "en"). */
+  lang?: LangEstructuracion;
 }
 
 /** Salida parcial estructurada de un caso, con campos auxiliares de intake. */
@@ -90,13 +95,20 @@ const schema = z.object({
     .describe("Nombre del paciente. Cadena vacía si no se menciona."),
 });
 
-const SYSTEM = `Eres el módulo de intake de Amparo, una plataforma de resolución de disputas de salud en Colombia.
+const SYSTEM_BASE = `Eres el módulo de intake de Amparo, una plataforma de resolución de disputas de salud en Colombia.
 A partir del relato libre (o transcripción de voz) de un paciente, extraes de forma fiel y estructurada los campos de un caso de tutela en salud.
 Reglas:
 - No inventes diagnósticos, servicios ni entidades que no estén implicados en el relato; si algo no aparece, deja la cadena lo más fiel posible o vacía cuando corresponda.
 - "urgencia" = vital si hay riesgo inminente para la vida; alta si hay deterioro grave/progresivo; media si afecta la salud sin riesgo inmediato; baja en lo demás.
-- Redacta "hechos" y "pretension" en español formal, claro y en tercera/primera persona coherente.
 - Devuelve solo los campos del esquema.`;
+
+const IDIOMA_ES = `\n- IDIOMA — REQUISITO ABSOLUTO: Redacta TODOS los campos de texto libre (servicioNegado, diagnostico, hechos, pretension) en ESPAÑOL formal, claro y en tercera/primera persona coherente. Términos jurídicos y nombres propios (tutela, EPS, PBS, T-760/2008) se mantienen tal cual.`;
+
+const IDIOMA_EN = `\n- LANGUAGE — ABSOLUTE REQUIREMENT: Write ALL free-text fields (servicioNegado, diagnostico, hechos, pretension) in natural, fluent ENGLISH, even if the patient's account is in Spanish. Do NOT leave any of those fields in Spanish. Keep ONLY proper nouns and Colombian institutional terms that have no English form (tutela, EPS, PBS, UPC, ADRES, Mipres, T-760/2008), and the patient/EPS proper names exactly as given. The enum fields (tipoServicio, urgencia, derechosInvocados) MUST keep their exact schema values.`;
+
+function systemPrompt(lang: LangEstructuracion): string {
+  return SYSTEM_BASE + (lang === "en" ? IDIOMA_EN : IDIOMA_ES);
+}
 
 /** Coacciona/limpia la salida del modelo a la forma de dominio. */
 function sanear(raw: z.infer<typeof schema>): EstructuracionOutput {
@@ -125,11 +137,12 @@ function sanear(raw: z.infer<typeof schema>): EstructuracionOutput {
 export async function estructurarCaso(
   input: EstructuracionInput,
 ): Promise<EstructuracionOutput> {
+  const lang: LangEstructuracion = input.lang === "en" ? "en" : "es";
   const op = async (): Promise<EstructuracionOutput> => {
     const { object } = await generateObject({
       model: modeloRapido(),
       schema,
-      system: SYSTEM,
+      system: systemPrompt(lang),
       prompt: `Relato del paciente:\n\n"""${input.relato}"""`,
     });
     return sanear(object);

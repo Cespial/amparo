@@ -71,9 +71,30 @@ export const juez = {
     },
 
     // — Cronograma (juez-cronograma.tsx) —
+    // milestone/basis: espejos localizados de PlazoLegal.etiqueta/fundamento
+    // (lib/plazos.ts), resueltos por hito para evitar texto hardcodeado en ES.
     schedule: {
       businessDays: "{dias} días hábiles",
       calendarDays: "{dias} días calendario",
+      milestone: {
+        fallo_primera_instancia: "Fallo de primera instancia",
+        impugnacion: "Término para impugnar",
+        fallo_segunda_instancia: "Fallo de segunda instancia",
+        cumplimiento_orden: "Cumplimiento de la orden (salud)",
+        eventual_revision: "Eventual selección y revisión (Corte Const.)",
+      },
+      basis: {
+        fallo_primera_instancia:
+          "Art. 29 Decreto 2591 de 1991 (10 días hábiles)",
+        impugnacion:
+          "Art. 31 Decreto 2591 de 1991 (3 días siguientes a la notificación)",
+        fallo_segunda_instancia:
+          "Art. 32 Decreto 2591 de 1991 (20 días siguientes a la recepción)",
+        cumplimiento_orden:
+          "Arts. 23 y 27 Decreto 2591 de 1991 (cumplimiento perentorio, 48 horas)",
+        eventual_revision:
+          "Art. 33 Decreto 2591 de 1991 (remisión a la Corte Constitucional)",
+      },
     },
 
     // — Panel de estudio / detalle (juez-detalle.tsx) —
@@ -272,9 +293,32 @@ export const juez = {
     },
 
     // — Schedule —
+    // milestone/basis: localized mirrors of PlazoLegal.etiqueta/fundamento
+    // (lib/plazos.ts), resolved by milestone key. Decree/article citations are
+    // domain terms and stay in Spanish; the surrounding prose is translated.
     schedule: {
       businessDays: "{dias} business days",
       calendarDays: "{dias} calendar days",
+      milestone: {
+        fallo_primera_instancia: "First-instance ruling",
+        impugnacion: "Window to appeal",
+        fallo_segunda_instancia: "Second-instance ruling",
+        cumplimiento_orden: "Compliance with the order (health)",
+        eventual_revision:
+          "Possible selection and review (Constitutional Court)",
+      },
+      basis: {
+        fallo_primera_instancia:
+          "Art. 29, Decree 2591 of 1991 (10 business days)",
+        impugnacion:
+          "Art. 31, Decree 2591 of 1991 (within 3 days of notice)",
+        fallo_segunda_instancia:
+          "Art. 32, Decree 2591 of 1991 (within 20 days of receipt)",
+        cumplimiento_orden:
+          "Arts. 23 and 27, Decree 2591 of 1991 (peremptory compliance, 48 hours)",
+        eventual_revision:
+          "Art. 33, Decree 2591 of 1991 (referral to the Constitutional Court)",
+      },
     },
 
     // — Study / detail panel —

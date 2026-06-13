@@ -118,6 +118,8 @@ type Dict = {
     usTitle: string;
     usBody: string;
     moat: string[];
+    tryDemo: string;
+    seePitch: string;
   };
   footer: {
     sourcesTitle: string;
@@ -261,6 +263,8 @@ const es: Dict = {
       "Bilingüe es/en, accesible y por voz",
       "Humano en el loop en lo sensible",
     ],
+    tryDemo: "Probar el demo",
+    seePitch: "Ver el pitch",
   },
   footer: {
     sourcesTitle: "Fuentes",
@@ -409,6 +413,8 @@ const en: Dict = {
       "Bilingual es/en, accessible and by voice",
       "Human in the loop on sensitive matters",
     ],
+    tryDemo: "Try the demo",
+    seePitch: "See the pitch",
   },
   footer: {
     sourcesTitle: "Sources",

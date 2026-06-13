@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { triarCasoDetallado } from "@/lib/ai/triaje";
+import { triarCasoDetallado, type LangTriaje } from "@/lib/ai/triaje";
 import { resolverCaso } from "@/lib/ai/resolver-caso";
 
 export const runtime = "nodejs";
@@ -7,7 +7,7 @@ export const maxDuration = 60;
 
 /**
  * POST /api/triaje
- * Request:  { caso: Caso }  ó  { casoId: string }
+ * Request:  { caso: Caso; lang?: "es" | "en" }  ó  { casoId: string; lang?: "es" | "en" }
  * Response: TriajeResultado (veredicto + criterios + fundamentos + ...)
  */
 export async function POST(req: Request) {
@@ -20,7 +20,8 @@ export async function POST(req: Request) {
         { status: 400 },
       );
     }
-    const resultado = await triarCasoDetallado(caso);
+    const lang: LangTriaje = body?.lang === "en" ? "en" : "es";
+    const resultado = await triarCasoDetallado(caso, lang);
     return NextResponse.json(resultado);
   } catch (e) {
     return NextResponse.json(

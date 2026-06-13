@@ -45,7 +45,10 @@ const schema = z.object({
     .describe("Razonamiento jurídico que sustenta la probabilidad estimada."),
 });
 
-const SYSTEM = `Eres un analista jurídico predictivo experto en tutela en salud en Colombia.
+/** Idioma de la respuesta de la predicción. */
+export type LangPrediccion = "es" | "en";
+
+const SYSTEM_BASE = `Eres un analista jurídico predictivo experto en tutela en salud en Colombia.
 Estimas la probabilidad de que un juez AMPARE el derecho (falle a favor del accionante), con base en los hechos del caso y EXCLUSIVAMENTE en el precedente recuperado que se te entrega.
 REGLA INVIOLABLE: solo puedes citar sentencias cuyo id aparezca en la lista "PRECEDENTE RECUPERADO". Está terminantemente PROHIBIDO inventar o citar sentencias que no estén en esa lista.
 
@@ -53,6 +56,14 @@ GUARDA DE PROCEDENCIA (evalúala SIEMPRE primero): la tutela en salud protege el
 
 Si SÍ es una prestación de salud legítima, calibra: alta (85-95) cuando hay prescripción del médico tratante, sujeto de especial protección y precedente reiterado; media (55-80) cuando hay matices; baja (<50) cuando el requisito de fundamentalidad o procedencia es débil.
 Devuelve solo los campos del esquema.`;
+
+const IDIOMA_ES = `\n\nIDIOMA — REQUISITO ABSOLUTO: Responde SIEMPRE en ESPAÑOL (el idioma del usuario). Términos jurídicos y nombres propios (tutela, EPS, PBS, UPC, ADRES, Mipres, T-760/2008, Corte Constitucional, Supersalud, Defensoría) se mantienen tal cual.`;
+
+const IDIOMA_EN = `\n\nLANGUAGE — ABSOLUTE REQUIREMENT: Respond ALWAYS in ENGLISH (the user's language). Write EVERY free-text field ("reglaAplicable" and "razonamiento") in natural, fluent English, even though the case file and the retrieved precedent are in Spanish. Do NOT leave any text in Spanish. Keep ONLY proper nouns and legal terms that have no English form: judgment ids (e.g. T-760/2008), party names, the Corte Constitucional, and Colombian institutional terms (tutela, EPS, PBS, UPC, ADRES, Mipres, Supersalud, Defensoría).`;
+
+function systemPrompt(lang: LangPrediccion): string {
+  return SYSTEM_BASE + (lang === "en" ? IDIOMA_EN : IDIOMA_ES);
+}
 
 function parseProb(s: string): number {
   const n = Number(String(s).replace(/[^0-9.]/g, ""));
@@ -66,6 +77,7 @@ function parseProb(s: string): number {
  */
 export async function predecirCasoDetallado(
   caso: Caso,
+  lang: LangPrediccion = "es",
 ): Promise<PrediccionResultado> {
   const recuperadas = buscarSentencias(
     `${caso.servicioNegado} ${caso.tipoServicio} ${caso.diagnostico} ${caso.derechosInvocados.join(" ")}`,
@@ -77,7 +89,7 @@ export async function predecirCasoDetallado(
     const { object } = await generateObject({
       model: modeloRazona(),
       schema,
-      system: SYSTEM,
+      system: systemPrompt(lang),
       prompt:
         `Estima la probabilidad de amparo del siguiente caso.\n\n` +
         `CASO:\n` +

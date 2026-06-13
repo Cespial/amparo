@@ -125,12 +125,12 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
         fetch("/api/triaje", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ casoId }),
+          body: JSON.stringify({ casoId, lang }),
         }),
         fetch("/api/predecir", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ casoId }),
+          body: JSON.stringify({ casoId, lang }),
         }),
       ]);
       if (tRes.ok) setTriaje(await tRes.json());

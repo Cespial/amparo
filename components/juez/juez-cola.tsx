@@ -110,7 +110,7 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
                     {plazo && (
                       <span className="hidden text-[11px] text-muted-foreground sm:inline">
                         {t("queue.rulingDate", {
-                          fecha: fechaCorta(plazo.fechaLimite),
+                          fecha: fechaCorta(plazo.fechaLimite, lang),
                         })}
                       </span>
                     )}

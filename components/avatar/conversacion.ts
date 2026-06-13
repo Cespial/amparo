@@ -68,13 +68,15 @@ export type CampoConfirmable = "eps" | "servicioNegado" | "diagnostico";
 
 export interface PasoConfirmacion {
   campo: CampoConfirmable;
-  etiqueta: string;
 }
 
+// Orden de los campos que el usuario confirma. Las ETIQUETAS visibles se
+// resuelven vía i18n en la UI (t(`confirm.label.${campo}`)); aquí solo se fija
+// la secuencia, sin texto hardcodeado.
 export const PASOS_CONFIRMACION: PasoConfirmacion[] = [
-  { campo: "eps", etiqueta: "tu EPS" },
-  { campo: "servicioNegado", etiqueta: "el servicio que te negaron" },
-  { campo: "diagnostico", etiqueta: "tu diagnóstico" },
+  { campo: "eps" },
+  { campo: "servicioNegado" },
+  { campo: "diagnostico" },
 ];
 
 export interface EstadoConversacion {

@@ -257,6 +257,29 @@ export const TRAD_EN: Record<string, string> = {
   "Ordenar el cuidador domiciliario y el plan integral de terapias para el menor.":
     "To order the home caregiver and the comprehensive therapy plan for the minor.",
 
+  // ── sentencia.tema (case-law topic labels, shown in precedent cards) ──────
+  "Reconocimiento de la salud como derecho fundamental autónomo":
+    "Recognition of health as a stand-alone fundamental right",
+  "Principio de integralidad en salud":
+    "Principle of comprehensive healthcare",
+  "Continuidad / no interrupción del tratamiento":
+    "Continuity / non-interruption of treatment",
+  "Cirugías y procedimientos negados o demorados":
+    "Denied or delayed surgeries and procedures",
+  "Medicamentos NO-POS / NO-PBS y de alto costo":
+    "Drugs outside the benefits plan and high-cost drugs",
+  "Exámenes diagnósticos demorados": "Delayed diagnostic tests",
+  "Transporte, viáticos y acompañante para acceder al servicio":
+    "Transport, travel allowance and a companion to access care",
+  "Atención de urgencias": "Emergency care",
+  "Enfermedades catastróficas / ruinosas":
+    "Catastrophic / ruinous illnesses",
+  "Salud de niños, niñas y adolescentes (interés superior)":
+    "Health of children and adolescents (best interests of the child)",
+  "Salud mental": "Mental health",
+  "Tratamientos o medicamentos en el exterior":
+    "Treatments or medications abroad",
+
   // ── derechosInvocados (fundamental rights invoked) ───────────────────────
   salud: "health",
   vida: "life",

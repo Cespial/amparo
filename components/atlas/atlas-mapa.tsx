@@ -126,6 +126,7 @@ const COPIA = {
     basemapSat: "Satélite",
     basemapAria: "Alternar basemap oscuro / satélite",
     relieve: "Relieve por magnitud",
+    publicas: "públicas",
   },
   en: {
     vista2d: "2D",
@@ -135,6 +136,7 @@ const COPIA = {
     basemapSat: "Satellite",
     basemapAria: "Toggle dark / satellite basemap",
     relieve: "Relief by magnitude",
+    publicas: "public",
   },
 } as const;
 
@@ -419,7 +421,7 @@ export function AtlasMapa({
       const pub = Number(fRed.properties?.ips_publicas ?? 0);
       setHover({
         nombre: String(fRed.properties?.municipio ?? ""),
-        sub: `${fmt(ese, lang)} ESE / ${fmt(pub, lang)} públicas`,
+        sub: `${fmt(ese, lang)} ESE / ${fmt(pub, lang)} ${tc.publicas}`,
         x: e.point.x,
         y: e.point.y,
       });

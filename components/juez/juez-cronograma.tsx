@@ -3,7 +3,7 @@
 "use client";
 
 import { CalendarClock, CheckCircle2, Circle } from "lucide-react";
-import { useT } from "@/lib/i18n";
+import { useT, useLang } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { PlazoLegal } from "@/lib/types";
 import { PlazoBadge } from "./juez-badges";
@@ -11,6 +11,7 @@ import { diasRestantes, fechaCorta, semaforoPlazo } from "./juez-utils";
 
 export function Cronograma({ plazos }: { plazos: PlazoLegal[] }) {
   const t = useT("juez");
+  const { lang } = useLang();
   return (
     <ol className="relative space-y-4 pl-6">
       {/* Línea vertical */}
@@ -50,7 +51,7 @@ export function Cronograma({ plazos }: { plazos: PlazoLegal[] }) {
             </div>
             <p className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
               <CalendarClock className="size-3.5" />
-              {fechaCorta(p.fechaLimite)} ·{" "}
+              {fechaCorta(p.fechaLimite, lang)} ·{" "}
               {p.habiles
                 ? t("schedule.businessDays", { dias: p.dias })
                 : t("schedule.calendarDays", { dias: p.dias })}

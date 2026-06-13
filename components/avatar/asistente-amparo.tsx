@@ -232,10 +232,17 @@ export function AsistenteAmparo() {
   }, []);
 
   // Saludo inicial automático (una sola vez).
+  // El guard `iniciadoRef` se fija DENTRO del callback del timer (no al
+  // programarlo): bajo React StrictMode el efecto corre mount → cleanup →
+  // remount; si fijáramos el guard de forma síncrona, el cleanup limpiaría el
+  // timer pero el remount caería en el early-return y el saludo nunca se
+  // ejecutaría. Así, el cleanup cancela el timer pendiente sin dejar el guard
+  // "armado", y el remount puede reprogramarlo.
   useEffect(() => {
     if (iniciadoRef.current) return;
-    iniciadoRef.current = true;
     const timer = window.setTimeout(() => {
+      if (iniciadoRef.current) return;
+      iniciadoRef.current = true;
       void (async () => {
         // Pasamos a "relato" ANTES de hablar para que, en manos libres, el
         // micrófono se auto-arme al terminar el saludo. El input sigue
@@ -285,12 +292,12 @@ export function AsistenteAmparo() {
       const res = await fetch("/api/estructurar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ relato }),
+        body: JSON.stringify({ relato, lang }),
       });
       if (!res.ok) return null;
       return (await res.json()) as EstructuracionOutput;
     },
-    [],
+    [lang],
   );
 
   const llamarTriaje = useCallback(
@@ -299,12 +306,12 @@ export function AsistenteAmparo() {
       const res = await fetch("/api/triaje", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ caso }),
+        body: JSON.stringify({ caso, lang }),
       });
       if (!res.ok) return null;
       return (await res.json()) as TriajeResultado;
     },
-    [],
+    [lang],
   );
 
   const llamarPredecir = useCallback(
@@ -315,12 +322,12 @@ export function AsistenteAmparo() {
       const res = await fetch("/api/predecir", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ caso }),
+        body: JSON.stringify({ caso, lang }),
       });
       if (!res.ok) return null;
       return (await res.json()) as PrediccionResultado;
     },
-    [],
+    [lang],
   );
 
   // --- Orquestación de fases ---
@@ -407,13 +414,17 @@ export function AsistenteAmparo() {
       const paso = estado.pasoConfirmacion;
       const { campo } = PASOS_CONFIRMACION[paso];
       const limpio = texto.trim();
-      const afirmativo =
-        /^(s[ií]|correcto|exacto|así es|asi es|claro|ok|vale|de acuerdo|perfecto|listo)\b/i.test(
-          limpio,
-        );
-      const negativo = /^(no|incorrecto|está mal|esta mal|para nada)\b/i.test(
-        limpio,
-      );
+      // NLU mínima de sí/no, dependiente del idioma activo de la conversación.
+      const afirmativo = (
+        lang === "en"
+          ? /^(yes|yeah|yep|yup|correct|exactly|that's right|thats right|right|sure|ok|okay|fine|perfect|done|all good)\b/i
+          : /^(s[ií]|correcto|exacto|así es|asi es|claro|ok|vale|de acuerdo|perfecto|listo)\b/i
+      ).test(limpio);
+      const negativo = (
+        lang === "en"
+          ? /^(no|nope|incorrect|wrong|that's wrong|thats wrong|not at all)\b/i
+          : /^(no|incorrecto|está mal|esta mal|para nada)\b/i
+      ).test(limpio);
 
       let datosActuales = estado.datos;
 
@@ -439,6 +450,7 @@ export function AsistenteAmparo() {
       amparoDice,
       estado.datos,
       estado.pasoConfirmacion,
+      lang,
       preguntarSiguienteConfirmacion,
       t,
     ],
