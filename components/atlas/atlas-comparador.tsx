@@ -45,17 +45,17 @@ const COPIA = {
     abrir: "Compare",
     titulo: "Compare departments",
     descripcion:
-      "Compare two departments across five dimensions of health pressure and supply. Useful for reading territorial inequity.",
+      "Compare two departments across five dimensions of health-care demand and capacity — a clear way to see territorial inequity.",
     deptoA: "Department A",
     deptoB: "Department B",
     eje: "Dimension",
     columnaA: "A",
     columnaB: "B",
     diferencia: "Difference (A − B)",
-    nota: "2023 values. The radar normalizes each axis to the national maximum (1.0 = the country's highest department on that dimension). The data is also in the table.",
+    nota: "2023 figures. The radar scales each axis to the national maximum (1.0 = the highest department in the country on that dimension). All figures are also listed in the table.",
     radarAria:
-      "Comparative radar: each vertex is a dimension normalized to the national maximum.",
-    mejorPista: "The radar is illustrative; exact values are in the table.",
+      "Comparative radar: each vertex is a dimension scaled to the national maximum.",
+    mejorPista: "The radar is illustrative; the exact figures are in the table.",
     igual: "—",
   },
 } as const;
@@ -81,7 +81,7 @@ const EJES: Eje[] = [
   },
   {
     clave: "totalTutelas",
-    etiqueta: { es: "Total tutelas", en: "Total writs" },
+    etiqueta: { es: "Total tutelas", en: "Total tutelas" },
     valor: (e) => e.totalTutelas,
     fmt: (v) => fmt(v),
   },
@@ -93,7 +93,7 @@ const EJES: Eje[] = [
   },
   {
     clave: "pctRedPublica",
-    etiqueta: { es: "% red pública", en: "% public network" },
+    etiqueta: { es: "% red pública", en: "% public IPS" },
     valor: (e) => (e.ipsTotal ? (e.ipsPublicas / e.ipsTotal) * 100 : 0),
     fmt: PCT,
   },

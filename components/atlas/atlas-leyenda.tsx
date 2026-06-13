@@ -41,7 +41,7 @@ const COPIA = {
   en: {
     redPublica: "Public network",
     redPublicaOn:
-      "Each dot is a state-owned health enterprise (ESE); its size grows with the number of public IPS (REPS).",
+      "Each dot is a public health enterprise (Empresa Social del Estado, ESE); the larger the dot, the more public IPS it has (REPS).",
     redPublicaOff: "Public health network layer (ESE) by municipality.",
   },
 } as const;

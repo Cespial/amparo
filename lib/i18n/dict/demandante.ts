@@ -250,6 +250,9 @@ export const demandante = {
       // {radicado} se interpola.
       tutelaDetalle: "Radicado {radicado}.",
       casoRecibido: "Caso recibido en Amparo",
+      anexosTitulo: "Documentos anexados",
+      // {n} = cantidad, {docs} = nombres de archivos.
+      anexosDetalle: "Se anexaron {n} documento(s) como prueba: {docs}.",
     },
 
     // Navegación entre pasos.
@@ -510,6 +513,9 @@ export const demandante = {
       tutelaTitulo: "Tutela filed",
       tutelaDetalle: "Case number {radicado}.",
       casoRecibido: "Case received at Amparo",
+      anexosTitulo: "Documents attached",
+      // {n} = count, {docs} = file names.
+      anexosDetalle: "{n} document(s) attached as evidence: {docs}.",
     },
 
     nav: {

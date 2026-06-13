@@ -52,7 +52,7 @@ const COPIA = {
     limpiar: "Limpiar búsqueda",
   },
   en: {
-    placeholder: "Search your department or municipality",
+    placeholder: "Find your department or municipality",
     depto: "Department",
     ciudad: "Municipality",
     limpiar: "Clear search",

@@ -214,7 +214,7 @@ export const juez = {
     dashboard: {
       title: "Judge's chambers",
       subtitle:
-        "Prioritized tutela (constitutional injunction) queue, AI-assisted review of admissibility and prediction, and a draft ruling grounded in precedent.",
+        "A prioritized tutela (constitutional injunction) queue, AI-assisted admissibility review and outcome prediction, and a draft ruling grounded in precedent.",
       lastWord:
         "Amparo proposes, with criteria kept consistent by case law; the last word is yours. You sign the ruling.",
       inDocket: "{count} on the docket",
@@ -317,7 +317,7 @@ export const juez = {
       verdictInadmissible: "Inadmissible",
 
       predictionTitle: "Relief prediction",
-      predictionCaption: "likelihood of granting the right",
+      predictionCaption: "likelihood of upholding the right",
       applicableRule: "Applicable rule",
       citedPrecedent: "Cited precedent",
 
@@ -353,7 +353,7 @@ export const juez = {
       signEventTitle: "Ruling signed by the chambers",
       signEventGranted:
         "The fundamental rights invoked are GRANTED and the health service is ordered.",
-      signEventGeneric: "Judgment issued by the court.",
+      signEventGeneric: "Ruling issued by the court.",
       signedToast: "Ruling signed and served.",
     },
 
@@ -369,7 +369,7 @@ export const juez = {
       epsTitle: "What the EPS responds",
       rightOfPetition: "Right of petition {radicado}",
       responsible: "Responsible: {dependencia}",
-      dueOn: "Due {fecha} · {dias} {tipo} days",
+      dueOn: "Due on {fecha} · {dias} {tipo} days",
       daysBusiness: "business",
       daysCalendar: "calendar",
 

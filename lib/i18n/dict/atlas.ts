@@ -114,39 +114,39 @@ export const atlas = {
   en: {
     // — Page metadata (SEO) —
     meta: {
-      title: "Atlas of health-care tutelas",
+      title: "Atlas of health tutelas",
       description:
-        "Map of Colombia showing the scale of health-care tutelas (constitutional injunctions) by department.",
+        "A map of Colombia showing the scale of health tutelas (constitutional injunctions) by department.",
     },
 
     // — Header / hook headline (Act I of the pitch) —
     hero: {
       eyebrow: "The map of the problem",
-      title: "Colombia files one health-care tutela every 3 minutes.",
+      title: "Colombia files a health tutela — a constitutional injunction — every 3 minutes.",
       bodyLead: "",
-      emphGranted: "80% of health-care tutelas are won",
-      bodyMid: "… because they were asking for something that",
-      emphRight: "was already their right.",
-      bodyEnd: "Amparo resolves it before a judge ever has to order it.",
+      emphGranted: "80% of health tutelas are won",
+      bodyMid: "… because they were claiming something that",
+      emphRight: "was already theirs by right.",
+      bodyEnd: "Amparo settles it before a judge ever has to order it.",
     },
 
     // — Footer with sources —
     footer: {
       before:
-        "Real 2023 data: health-care tutelas by department (Constitutional Court, datos.gov.co; national total validated to 99.99% against the Ombudsman's Office) and IPS (REPS / Ministry of Health). Cartography: ",
+        "Verified 2023 data: health tutelas by department (Constitutional Court, datos.gov.co; national total validated to 99.99% against the Ombudsman's Office) and IPS (REPS / Ministry of Health). Base map: ",
       after: " (33 departments, DANE codes).",
     },
 
     // — National KPIs —
     kpis: {
       tutelas: {
-        label: "Health-care tutelas (2023)",
-        note: "Real data: Constitutional Court (datos.gov.co), validated against the Ombudsman's Office 2023.",
-        sourceAria: "Source: Health-care tutelas (2023)",
+        label: "Health tutelas (2023)",
+        note: "Verified data: Constitutional Court (datos.gov.co), cross-checked against the Ombudsman's Office (2023).",
+        sourceAria: "Source: Health tutelas (2023)",
       },
       granted: {
         label: "% granted",
-        note: "The vast majority are granted: the judge confirms a right that already existed (Ombudsman's Office).",
+        note: "The vast majority are granted: the judge upholds a right that already existed (Ombudsman's Office).",
         sourceAria: "Source: % granted",
       },
       ips: {
@@ -156,7 +156,7 @@ export const atlas = {
       },
       resolved: {
         label: "Resolved without a judge",
-        note: "Cases resolved through negotiation with the EPS, without reaching a court.",
+        note: "Cases settled through negotiation with the EPS (health insurer), before ever reaching a court.",
         sourceAria: "Source: Resolved without a judge",
       },
     },
@@ -165,11 +165,11 @@ export const atlas = {
     metrics: {
       tasaPor10k: {
         label: "Rate per 10,000 pop.",
-        description: "Health-care tutelas per 10,000 inhabitants (2023)",
+        description: "Health tutelas per 10,000 inhabitants (2023)",
       },
       totalTutelas: {
         label: "Total tutelas",
-        description: "Health-care tutelas filed in 2023",
+        description: "Health tutelas filed in 2023",
       },
       ipsTotal: {
         label: "Health-care IPS",
@@ -180,16 +180,16 @@ export const atlas = {
       lower: "lower",
       higher: "higher",
       toggleIps: "Show IPS",
-      ipsOn: "Each dot is a municipality; its size grows with the number of IPS (REPS). Hover to see the detail.",
+      ipsOn: "Each dot is a municipality; the larger the dot, the more IPS it has (REPS). Hover for details.",
       ipsOff: "IPS layer by municipality (DANE centroids + REPS count).",
       source:
-        "Real 2023 data: health-care tutelas (Constitutional Court, datos.gov.co; validated against the Ombudsman's Office) and IPS (REPS / Ministry of Health). DANE municipal centroids.",
+        "Verified 2023 data: health tutelas (Constitutional Court, datos.gov.co; cross-checked against the Ombudsman's Office) and IPS (REPS / Ministry of Health). DANE municipal centroids.",
     },
 
     // — Interaction hint (empty desktop panel) —
     hint: {
       title: "Explore the map",
-      text: "Click a department to see its health-care tutela statistics and open a case.",
+      text: "Click any department to see its health-tutela figures and open a case.",
     },
 
     // — Department detail panel —
@@ -198,17 +198,17 @@ export const atlas = {
       closeAria: "Close panel",
       sheetFallbackTitle: "Department",
       sheetDescription:
-        "Real health-care tutela statistics by department (2023, Constitutional Court) and IPS (REPS).",
-      tutelas: "Health-care tutelas (2023)",
+        "Verified health-tutela figures by department (2023, Constitutional Court) and IPS (REPS).",
+      tutelas: "Health tutelas (2023)",
       rate: "Rate per 10,000 pop.",
       ipsHealth: "Health-care IPS",
       ipsPublic: "public",
       ipsPrivate: "private",
-      casesInDemo: "Cases in the demo",
+      casesInDemo: "Cases in this demo",
       startCase: "Start a case here",
-      viewInCourt: "View cases in court",
+      viewInCourt: "View cases in chambers",
       source:
-        "Real 2023 data: Constitutional Court (tutelas) and REPS/Ministry of Health (IPS).",
+        "Verified 2023 data: Constitutional Court (tutelas) and REPS / Ministry of Health (IPS).",
     },
   },
 } as const;

@@ -41,9 +41,40 @@ function bloquePrecedente(caso: Caso): { sentencias: SentenciaRef[]; texto: stri
   return { sentencias, texto };
 }
 
+/** Etiqueta legible (español) del tipo de un anexo, para la sección PRUEBAS. */
+function etiquetaTipoAnexo(tipo: string): string {
+  const mapa: Record<string, string> = {
+    negacion_eps: "negación de la EPS",
+    orden_medica: "orden médica",
+    historia_clinica: "historia clínica",
+    cedula: "cédula de ciudadanía",
+    formula_medica: "fórmula médica",
+    carnet_eps: "carnet de afiliación a la EPS",
+    derecho_peticion: "derecho de petición",
+    otro: "documento",
+  };
+  return mapa[tipo] ?? "documento";
+}
+
+/**
+ * Bloque de PRUEBAS documentales a partir de los anexos leídos por Claude.
+ * Cada anexo aparece con su tipo, nombre y resumen para que el escrito los
+ * relacione como pruebas. Cadena vacía si el caso no tiene anexos.
+ */
+function bloqueAnexos(caso: Caso): string {
+  const anexos = caso.anexos ?? [];
+  if (anexos.length === 0) return "";
+  const lineas = anexos.map((a, i) => {
+    const tipo = etiquetaTipoAnexo(a.tipoDetectado);
+    const resumen = a.resumen ? ` — ${a.resumen}` : "";
+    return `${i + 1}. ${tipo} (${a.nombre})${resumen}`;
+  });
+  return lineas.join("\n");
+}
+
 /** Ficha del caso para el prompt. */
 function ficha(caso: Caso): string {
-  return [
+  const lineas = [
     `Radicado: ${formatearRadicado(caso.radicado)}`,
     `Accionante: ${caso.demandante.nombre}, ${caso.demandante.edad} años, doc. ${caso.demandante.documento ?? "N/D"}, ${caso.demandante.ciudad} (${caso.demandante.departamento}), régimen ${caso.demandante.regimen}` +
       (caso.demandante.sujetoEspecialProteccion
@@ -56,7 +87,14 @@ function ficha(caso: Caso): string {
     `Derechos invocados: ${caso.derechosInvocados.join(", ")}`,
     `Hechos: ${caso.hechos}`,
     `Pretensión: ${caso.pretension}`,
-  ].join("\n");
+  ];
+  const anexos = bloqueAnexos(caso);
+  if (anexos) {
+    lineas.push(
+      `Pruebas documentales aportadas (anexos leídos del expediente; relaciónalos en la sección de PRUEBAS, no inventes otros):\n${anexos}`,
+    );
+  }
+  return lineas.join("\n");
 }
 
 const ANTI_ALUCINACION =

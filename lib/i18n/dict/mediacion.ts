@@ -96,7 +96,7 @@ export const mediacion = {
     room: {
       title: "Mediation room",
       subtitle:
-        "Instead of win/lose, we propose a consensus agreement between the patient and the EPS, reasoned and grounded in the right to health, that both parties can accept.",
+        "Instead of win/lose, we propose a consensus agreement between the patient and the EPS that both can accept—reasoned and grounded in the right to health.",
       eyebrow: "The fourth party",
       fourthParty: "Amparo, the fourth party",
       generate: "Propose consensus",
@@ -111,7 +111,7 @@ export const mediacion = {
     habermas: {
       title: "Inspired by the Habermas Machine",
       body:
-        "Google DeepMind showed (Science, 2024) that an AI can mediate divisive issues and build a consensus that the parties —minorities included— rate as fairer. Amparo does the same between the patient and the EPS.",
+        "Google DeepMind showed (Science, 2024) that an AI can mediate divisive issues and build a consensus that the parties—minorities included—rate as fairer. Amparo does the same between the patient and the EPS.",
       badge: "AI-assisted mediation",
     },
 
@@ -139,7 +139,7 @@ export const mediacion = {
       accept: "Accept",
       acceptPatient: "The patient accepts",
       acceptEps: "The EPS accepts",
-      reject: "Don't accept",
+      reject: "Decline",
       acceptedByPatient: "Accepted by the patient",
       acceptedByEps: "Accepted by the EPS",
       pendingPatient: "Pending: patient",

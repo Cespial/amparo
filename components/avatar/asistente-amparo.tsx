@@ -112,6 +112,8 @@ const COPIA = {
     toggleOff: "Manos libres desactivado",
     stHablando: "Amparo habla…",
     stEscuchando: "Escuchando…",
+    stGrabando: "Grabando…",
+    stTranscribiendo: "Transcribiendo…",
     stPensando: "Pensando…",
     stListo: "Tu turno",
     micDenied:
@@ -127,6 +129,8 @@ const COPIA = {
     toggleOff: "Hands-free off",
     stHablando: "Amparo is speaking…",
     stEscuchando: "Listening…",
+    stGrabando: "Recording…",
+    stTranscribiendo: "Transcribing…",
     stPensando: "Thinking…",
     stListo: "Your turn",
     micDenied:
@@ -140,6 +144,19 @@ const COPIA = {
 /** Fases en las que Amparo espera input del usuario (relato / confirmación). */
 function faseAdmiteInput(fase: EstadoConversacion["fase"]): boolean {
   return fase === "relato" || fase === "confirmar" || fase === "error";
+}
+
+/**
+ * ¿Hay SpeechRecognition del navegador? Sirve para decidir si vale la pena
+ * conmutar al fallback cuando la transcripción en la nube falla.
+ */
+function getCtorDisponible(): boolean {
+  if (typeof window === "undefined") return false;
+  const w = window as unknown as {
+    SpeechRecognition?: unknown;
+    webkitSpeechRecognition?: unknown;
+  };
+  return !!(w.SpeechRecognition ?? w.webkitSpeechRecognition);
 }
 
 /** Debounce de silencio antes de auto-enviar la respuesta hablada (ms). */
@@ -177,6 +194,14 @@ export function AsistenteAmparo() {
   const silencioRef = useRef<number | null>(null);
   // Reintentos consecutivos por "no-speech" (evita reabrir el micro sin fin).
   const reintentosRef = useRef(0);
+  // Fallos consecutivos de la transcripción en la nube. Tras 2, forzamos el
+  // SpeechRecognition del navegador para no dejar al usuario sin voz.
+  const fallosNubeRef = useRef(0);
+  const [forzarNavegador, setForzarNavegador] = useState(false);
+  const forzarNavegadorRef = useRef(forzarNavegador);
+  useEffect(() => {
+    forzarNavegadorRef.current = forzarNavegador;
+  }, [forzarNavegador]);
 
   useEffect(() => {
     modoConversacionRef.current = modoConversacion;
@@ -246,7 +271,8 @@ export function AsistenteAmparo() {
     ? "hablando"
     : dictado.escuchando
       ? "escuchando"
-      : estado.fase === "estructurando" ||
+      : dictado.transcribiendo ||
+          estado.fase === "estructurando" ||
           estado.fase === "triando" ||
           estado.fase === "prediciendo"
         ? "pensando"
@@ -483,6 +509,8 @@ export function AsistenteAmparo() {
     avatarRef.current?.detener();
     dictado.iniciar({
       lang: lang === "en" ? "en-US" : "es-CO",
+      // Tras fallos repetidos de la nube, usa el dictado del navegador.
+      preferirNavegador: forzarNavegadorRef.current,
       onHabla: () => {
         // El usuario retomó la palabra: cancela un auto-envío en cola para no
         // cortarlo a mitad de frase, y resetea el contador de reintentos.
@@ -490,7 +518,9 @@ export function AsistenteAmparo() {
         cancelarSilencio();
       },
       onTexto: (txt) => {
+        // Texto OK: limpia contadores de error (la nube respondió bien).
         reintentosRef.current = 0;
+        fallosNubeRef.current = 0;
         setBorrador((prev) => (prev ? `${prev} ${txt}` : txt));
       },
       onFin: () => {
@@ -518,6 +548,32 @@ export function AsistenteAmparo() {
         }
         if (code === "not-supported") {
           setAvisoVoz(c.micUnsupported);
+          return;
+        }
+        // Fallo de la transcripción en la nube (o del motor de nube al armar).
+        // A los 2 fallos consecutivos, conmutamos al SpeechRecognition del
+        // navegador y reintentamos UNA vez con ese motor. Antes de eso,
+        // reintentamos la nube sin texto pendiente.
+        if (code === "transcribe-failed" || code === "nube-failed") {
+          fallosNubeRef.current += 1;
+          if (
+            fallosNubeRef.current >= 2 &&
+            !forzarNavegadorRef.current &&
+            getCtorDisponible()
+          ) {
+            setForzarNavegador(true);
+            forzarNavegadorRef.current = true; // efecto inmediato para el re-arme
+          }
+          if (
+            modoConversacionRef.current &&
+            faseAdmiteInput(faseRef.current) &&
+            !borradorRef.current.trim() &&
+            fallosNubeRef.current <= 3
+          ) {
+            autoEscucharRef.current();
+            return;
+          }
+          setAvisoVoz(c.micRetry);
           return;
         }
         // no-speech / audio-capture: reabre el micro hasta 2 veces si seguimos
@@ -588,11 +644,14 @@ export function AsistenteAmparo() {
       : t("input.placeholderRelato");
 
   // Estado conversacional accesible (aria-live) para el modo manos libres.
-  const statusConversacion =
-    estadoAvatar === "hablando"
+  // El STT nube distingue "grabando…" (mic abierto) de "transcribiendo…" (audio
+  // en la nube); ambos son sub-estados de "pensando/escuchando" en el avatar.
+  const statusConversacion = dictado.transcribiendo
+    ? c.stTranscribiendo
+    : estadoAvatar === "hablando"
       ? c.stHablando
       : estadoAvatar === "escuchando"
-        ? c.stEscuchando
+        ? c.stGrabando
         : estadoAvatar === "pensando"
           ? c.stPensando
           : c.stListo;
@@ -843,11 +902,15 @@ export function AsistenteAmparo() {
               <Volume2 className="size-3.5" aria-hidden="true" />
               {t("input.repeat")}
             </button>
-            {dictado.escuchando && (
+            {dictado.transcribiendo ? (
+              <span className="text-xs font-medium text-muted-foreground">
+                {c.stTranscribiendo}
+              </span>
+            ) : dictado.escuchando ? (
               <span className="text-xs font-medium text-success">
                 {t("input.listeningHint")}
               </span>
-            )}
+            ) : null}
           </div>
         </div>
       )}

@@ -171,7 +171,7 @@ export const demandado = {
     queue: {
       heading: "In negotiation",
       legendAuthorize: "Authorize = resolve without a judge",
-      legendKeep: "Hold the denial = enable a tutela",
+      legendKeep: "Hold the denial = clears the way for a tutela action",
     },
 
     // — Side copilot —
@@ -186,9 +186,9 @@ export const demandado = {
         "The EPS agent estimated a {prob}% likelihood of relief in a tutela. The EPS concedes and authorizes {servicio}.",
       authorizeToast: "Service authorized",
       authorizeToastDesc: "{nombre}: case resolved without going to a judge.",
-      keepEventTitle: "EPS upholds the denial — tutela now enabled",
+      keepEventTitle: "EPS upholds the denial — tutela action now open",
       keepEventDetail:
-        "The EPS held its position. The claimant is now entitled to escalate to a tutela before a judge.",
+        "The EPS held its position. The claimant is now free to escalate to a tutela action before a judge.",
       keepToast: "Denial upheld",
       keepToastDesc: "{nombre} may now escalate to a tutela.",
     },

@@ -301,17 +301,17 @@ export const pitch = {
       brand: "Amparo",
       titleLead: "The",
       titleEmphasis: "fourth party",
-      titleRest: "that decongests justice in health.",
+      titleRest: "that clears the healthcare-justice backlog.",
       subtitle:
-        "An online dispute resolution platform for Colombia's health tutelas (constitutional injunctions). It gives the person a voice, resolves before the judge, and gives the judge back the time for what truly matters.",
+        "An online dispute resolution platform for Colombia's health tutelas (constitutional injunctions). It gives people a voice, settles disputes before they reach a judge, and gives judges back their time for what truly matters.",
       tag: "amparo.help · ODR Hackathon 2026",
     },
 
     // 2 · The problem
     problema: {
       eyebrow: "The problem",
-      headline: "You sue the State to receive what is already a right.",
-      body: "Health is the leading reason for filing a tutela in Colombia. Most are granted: the person was asking for something the law already guaranteed them. It's a system that forces you to litigate to access the obvious.",
+      headline: "People sue the State to get what is already theirs by right.",
+      body: "Health is the leading reason for filing a tutela in Colombia. Most are granted: the person was asking for something the law already guaranteed them. It's a system that forces people to litigate for the obvious.",
       statsTitle: "The problem, in numbers",
       stat1: {
         figure: "197,737",
@@ -338,7 +338,7 @@ export const pitch = {
       cardTag: "And even so, she can tell her story.",
       eyebrow: "The person, not the case",
       headline: "Behind every tutela there's someone waiting.",
-      body: "Meet Amparo. We don't start with the case file: we start with the person. What matters most to anyone turning to the justice system is being able to tell what happened to them —in their own words.",
+      body: "Meet Amparo. We don't start with the case file: we start with the person. What matters most to anyone turning to the justice system is being able to tell what happened—in their own words.",
     },
 
     // 4 · How it works
@@ -369,7 +369,7 @@ export const pitch = {
       bullet1: {
         lead: "Amparo",
         strong: "speaks and listens",
-        rest: ": a conversational avatar for anyone who doesn't write easily or master legal language.",
+        rest: ": a conversational avatar for anyone who struggles to write or doesn't speak the language of the law.",
       },
       bullet2: {
         lead: "Being able to tell your story is the heart of",
@@ -387,11 +387,11 @@ export const pitch = {
     prediccion: {
       eyebrow: "No black box",
       headline: "A prediction that cites the law, not an oracle.",
-      body: "Every Amparo forecast is grounded in verifiable case law from the Constitutional Court. The person —and the judge— see exactly what it rests on. Neutrality you can audit.",
-      cardTag: "Cited basis",
+      body: "Every Amparo forecast is grounded in verifiable case law from the Constitutional Court. The person—and the judge—see exactly what it rests on. Neutrality you can audit.",
+      cardTag: "Cited authority",
       cardRuling: "T-760 of 2008",
       cardDesc:
-        "Landmark ruling that ordered the right to health be guaranteed. Amparo invokes it —and its related rulings— to support every forecast.",
+        "Landmark ruling that ordered the State to guarantee the right to health. Amparo invokes it—and its related rulings—to support every forecast.",
       probLabel: "Estimated probability",
       probValue: "High",
     },
@@ -422,9 +422,9 @@ export const pitch = {
       eyebrow: "Resolve before the fight",
       headline: "The best tutela is the one that never reaches the judge.",
       bullet1: {
-        lead: "Before the judge, Amparo generates a",
-        strong: "right-to-petition request",
-        rest: ": it identifies who's responsible and starts a deadline clock.",
+        lead: "Before any judge, Amparo files a",
+        strong: "right of petition",
+        rest: ": it pinpoints who is responsible and starts the clock on a statutory deadline.",
       },
       bullet2: {
         lead: "The EPS sees the real cost of denying and",
@@ -442,9 +442,9 @@ export const pitch = {
       eyebrow: "Human in the loop",
       headline: "The ruling is suggested. The last word is human.",
       bullet1: {
-        lead: "When it does need to reach the judge, it arrives",
+        lead: "When a case does need a judge, it arrives",
         strong: "polished and triaged",
-        rest: ": prioritized, with a reasoned ruling already drafted.",
+        rest: ": ranked by urgency, with a reasoned ruling already drafted.",
       },
       bullet2: {
         lead: "Amparo",
@@ -454,7 +454,7 @@ export const pitch = {
       bullet3: {
         lead: "Amparo doesn't replace the judge:",
         strong: "the judge signs",
-        rest: ". We give back the time for what truly needs it.",
+        rest: ". We give judges back their time for the cases that truly need it.",
       },
     },
 
@@ -463,7 +463,7 @@ export const pitch = {
       eyebrow: "Fairness · anti-arbitrariness",
       headline: "Same claim, same outcome.",
       bodyLead:
-        "What's arbitrary is unjust. By deciding on consistent case law, Amparo reduces disparity —and a human validates. Well designed, the digital can be",
+        "Arbitrariness is unfair. By deciding from consistent case law, Amparo narrows the gaps—and a human validates the result. Done right, digital justice can be",
       bodyStrong: "more",
       bodyRest: "just.",
       card1Title: "Michigan study",
@@ -487,7 +487,7 @@ export const pitch = {
         b2b: {
           tag: "B2B",
           title: "EPS",
-          text: "Fewer tutelas and penalties: resolving before the confrontation costs less.",
+          text: "Fewer tutelas and penalties: resolving before a dispute escalates costs less.",
         },
         b2c: {
           tag: "B2C",
@@ -501,8 +501,8 @@ export const pitch = {
     cierre: {
       headlineLead: "Amparo doesn't replace the judge. It's",
       headlineEmphasis: "the fourth party",
-      headlineRest: "that gives back the time.",
-      body: "And it gives people back real access to their right. Try it: talk to Amparo.",
+      headlineRest: "that gives judges their time back.",
+      body: "And it gives people back real access to their rights. Try it: talk to Amparo.",
       ctaDemo: "Try the demo",
       ctaAtlas: "See the atlas",
       url: "amparo.help",

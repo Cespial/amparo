@@ -16,6 +16,7 @@ import {
   Loader2,
   Mic,
   MicOff,
+  Paperclip,
   ScrollText,
   Sparkles,
   Stethoscope,
@@ -55,6 +56,7 @@ import { cronogramaTutela } from "@/lib/plazos";
 import { progresoDeEstado } from "@/lib/progreso";
 import { construirPeticion } from "@/lib/peticion";
 import type {
+  Anexo,
   Caso,
   EstadoCaso,
   EventoCaso,
@@ -72,6 +74,8 @@ import { PeticionReloj } from "./peticion-reloj";
 import { SentenciaChip } from "@/components/sentencia-chip";
 import { Expediente } from "@/components/transparencia/expediente";
 import { SalaMediacion } from "@/components/mediacion/sala-mediacion";
+import { ZonaCarga } from "@/components/anexos/zona-carga";
+import { PanelComplemento } from "@/components/anexos/panel-complemento";
 import { useDictado } from "./use-dictado";
 import { hablar, detenerVoz } from "@/lib/voz";
 import { BotonVoz } from "@/components/boton-voz";
@@ -173,6 +177,7 @@ export function DemandanteWizard({
   const { getCaso, updateCaso, addEvento, addCaso, seleccionarCaso } =
     useCasoStore();
   const t = useT("demandante");
+  const tAnexos = useT("anexos");
   const { lang } = useLang();
   const fechaLocale = lang === "en" ? "en-US" : "es-CO";
 
@@ -201,6 +206,14 @@ export function DemandanteWizard({
   const [estructura, setEstructura] = useState<EstructuracionOutput | null>(null);
   const [eps, setEps] = useState("");
   const [paciente, setPaciente] = useState("");
+
+  // Anexos (documentos del paciente) — opcional, enriquece el caso estructurado.
+  // `anexosLeidos`: lo que la zona de carga leyó con Claude (multimodal).
+  // `anexosAplicados`: los que el usuario CONFIRMÓ aplicar → entran al caso como
+  // pruebas y viajan a triaje/predicción/generación de la tutela.
+  const [anexosLeidos, setAnexosLeidos] = useState<Anexo[]>([]);
+  const [anexosAplicados, setAnexosAplicados] = useState<Anexo[]>([]);
+  const [documentoPaciente, setDocumentoPaciente] = useState<string>("");
 
   // Resultados IA
   const [triaje, setTriaje] = useState<TriajeResultado | null>(null);
@@ -303,6 +316,72 @@ export function DemandanteWizard({
     return caso;
   }
 
+  /**
+   * Construye un Caso PROVISIONAL desde el estado vivo del paso 2 (estructura +
+   * eps + paciente + documento). El panel de complemento lo usa para mostrar qué
+   * datos de los anexos rellenarían/corregirían el caso ANTES de aplicarlos.
+   * No se persiste; solo alimenta la previsualización del complemento.
+   */
+  function buildCasoProvisional(): Caso | null {
+    if (!estructura) return null;
+    const existente = getCaso(casoId);
+    const base: Caso = existente
+      ? { ...existente }
+      : construirCasoNuevo(estructura);
+    return {
+      ...base,
+      id: casoId,
+      servicioNegado: estructura.servicioNegado ?? base.servicioNegado,
+      diagnostico: estructura.diagnostico ?? base.diagnostico,
+      demandado: {
+        ...base.demandado,
+        nombre: eps || base.demandado.nombre,
+      },
+      demandante: {
+        ...base.demandante,
+        nombre: paciente || base.demandante.nombre,
+        ...(documentoPaciente
+          ? { documento: documentoPaciente }
+          : base.demandante.documento
+            ? { documento: base.demandante.documento }
+            : {}),
+      },
+      anexos: anexosAplicados,
+    };
+  }
+
+  /**
+   * Aplica el complemento confirmado por el usuario: vuelca los campos
+   * enriquecidos del caso de vuelta al estado del paso 2 (estructura + eps +
+   * paciente + documento) y guarda los anexos como pruebas del caso. Así los
+   * datos extraídos de los documentos fluyen al triaje, la predicción y la
+   * tutela generada. Nunca se aplica sin que el usuario haya confirmado.
+   */
+  function aplicarComplemento(casoEnriquecido: Caso) {
+    setEstructura((prev) =>
+      prev
+        ? {
+            ...prev,
+            servicioNegado: casoEnriquecido.servicioNegado,
+            diagnostico: casoEnriquecido.diagnostico,
+          }
+        : prev,
+    );
+    if (casoEnriquecido.demandado?.nombre) {
+      setEps(casoEnriquecido.demandado.nombre);
+    }
+    if (casoEnriquecido.demandante?.nombre) {
+      setPaciente(casoEnriquecido.demandante.nombre);
+    }
+    if (casoEnriquecido.demandante?.documento) {
+      setDocumentoPaciente(casoEnriquecido.demandante.documento);
+    }
+    setAnexosAplicados(casoEnriquecido.anexos ?? anexosLeidos);
+    toast.success(tAnexos("toast.title"), {
+      description: tAnexos("toast.desc"),
+    });
+  }
+
   // ---- Paso 1 -> 2: Estructurar ----
 
   async function estructurar() {
@@ -348,12 +427,38 @@ export function DemandanteWizard({
     }
   }
 
+  /**
+   * Adjunta los anexos aplicados al patch del caso (como pruebas) y registra un
+   * evento "documento" en el timeline si todavía no se había registrado. Devuelve
+   * el patch enriquecido. Idempotente: no duplica anexos ya presentes.
+   */
+  function conAnexos(targetId: string, patch: Partial<Caso>): Partial<Caso> {
+    if (anexosAplicados.length === 0) return patch;
+    const existente = getCaso(targetId);
+    const previos = existente?.anexos ?? [];
+    const idsPrevios = new Set(previos.map((a) => a.id));
+    const nuevos = anexosAplicados.filter((a) => !idsPrevios.has(a.id));
+    if (nuevos.length === 0) return patch;
+    // Evento de timeline (una sola vez por tanda de anexos nuevos).
+    addEvento(
+      targetId,
+      evento(targetId, "documento", t("evento.anexosTitulo"), undefined, {
+        actor: "demandante",
+        detalle: t("evento.anexosDetalle", {
+          n: nuevos.length,
+          docs: nuevos.map((a) => a.nombre).join(", "),
+        }),
+      }),
+    );
+    return { ...patch, anexos: [...previos, ...nuevos] };
+  }
+
   /** Reconstruye/persiste el caso en el store a partir de la estructura editada. */
   function persistirCaso(): Caso | undefined {
     if (esHeroe) {
       const existente = getCaso(heroeId);
       if (existente && estructura) {
-        const patch: Partial<Caso> = {
+        let patch: Partial<Caso> = {
           servicioNegado: estructura.servicioNegado ?? existente.servicioNegado,
           tipoServicio: estructura.tipoServicio ?? existente.tipoServicio,
           diagnostico: estructura.diagnostico ?? existente.diagnostico,
@@ -362,15 +467,36 @@ export function DemandanteWizard({
           urgencia: estructura.urgencia ?? existente.urgencia,
         };
         if (eps) patch.demandado = { ...existente.demandado, nombre: eps };
+        patch = conAnexos(heroeId, patch);
         updateCaso(heroeId, patch);
       }
       return getCaso(heroeId);
     }
     // Caso nuevo
     const existente = getCaso(casoId);
-    if (existente) return existente;
+    if (existente) {
+      const patch = conAnexos(casoId, {});
+      if (Object.keys(patch).length > 0) updateCaso(casoId, patch);
+      return getCaso(casoId);
+    }
     const nuevo = construirCasoNuevo(estructura ?? {});
     nuevo.id = casoId;
+    if (documentoPaciente) {
+      nuevo.demandante = { ...nuevo.demandante, documento: documentoPaciente };
+    }
+    if (anexosAplicados.length > 0) {
+      nuevo.anexos = [...anexosAplicados];
+      nuevo.timeline = [
+        ...nuevo.timeline,
+        evento(nuevo.id, "documento", t("evento.anexosTitulo"), undefined, {
+          actor: "demandante",
+          detalle: t("evento.anexosDetalle", {
+            n: anexosAplicados.length,
+            docs: anexosAplicados.map((a) => a.nombre).join(", "),
+          }),
+        }),
+      ];
+    }
     addCaso(nuevo);
     return nuevo;
   }
@@ -607,6 +733,9 @@ export function DemandanteWizard({
     setPeticion(null);
     setEps("");
     setPaciente("");
+    setAnexosLeidos([]);
+    setAnexosAplicados([]);
+    setDocumentoPaciente("");
     setEsHeroe(true);
     setCasoId(heroeId);
   }
@@ -848,6 +977,40 @@ export function DemandanteWizard({
                   ))}
                 </div>
               )}
+
+              {/* --- Adjunta tus documentos (opcional) — enriquece el caso --- */}
+              <Separator className="my-1" />
+              <section
+                aria-labelledby="anexos-heading"
+                className="space-y-4 rounded-2xl border bg-secondary/30 p-4"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Paperclip className="size-5" aria-hidden />
+                  </span>
+                  <div>
+                    <h3
+                      id="anexos-heading"
+                      className="font-serif text-lg font-semibold text-navy"
+                    >
+                      {tAnexos("step.title")}
+                    </h3>
+                    <p className="mt-0.5 text-sm text-muted-foreground">
+                      {tAnexos("step.subtitle")}
+                    </p>
+                  </div>
+                </div>
+
+                <ZonaCarga onAnexosListos={setAnexosLeidos} />
+
+                {anexosLeidos.length > 0 && (
+                  <PanelComplemento
+                    anexos={anexosLeidos}
+                    construirCaso={buildCasoProvisional}
+                    onAplicar={aplicarComplemento}
+                  />
+                )}
+              </section>
 
               <NavPasos
                 onAtras={() => setPaso(1)}

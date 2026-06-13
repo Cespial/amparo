@@ -60,6 +60,8 @@ const T760: SentenciaRef = {
   extracto:
     "El derecho a la salud es fundamental y comprende el acceso a los servicios que requiera la persona con necesidad. La falta de autorización oportuna de un servicio ordenado por el médico tratante vulnera ese derecho.",
   derechos: ["salud", "vida digna", "seguridad social"],
+  // Fuente oficial (corpus): hace la cita clicable también en el camino demo.
+  fuenteUrl: "https://www.corteconstitucional.gov.co/relatoria/2008/t-760-08.htm",
   score: 0.97,
 };
 
@@ -73,6 +75,9 @@ const T016: SentenciaRef = {
   extracto:
     "La negativa injustificada a prestar un servicio de salud compromete la dignidad humana y puede configurar un perjuicio irremediable.",
   derechos: ["salud", "vida digna"],
+  // Fuente oficial (corpus): hace la cita clicable también en el camino demo.
+  fuenteUrl:
+    "https://vlex.com.co/tags/sentencia-t-016-2007-corte-constitucional-229024",
   score: 0.9,
 };
 
@@ -90,6 +95,8 @@ const T195: SentenciaRef = {
   extracto:
     "La Corte amparó el acceso a lo prescrito por el médico tratante, reiterando la prevalencia de su criterio frente a las objeciones administrativas de la EPS.",
   derechos: ["salud", "vida digna"],
+  // Fuente oficial (corpus): hace la cita clicable también en el camino demo.
+  fuenteUrl: "https://www.corteconstitucional.gov.co/relatoria/2021/T-195-21.htm",
   score: 0.88,
 };
 

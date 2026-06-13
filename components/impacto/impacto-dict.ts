@@ -285,16 +285,16 @@ const en: Dict = {
     titleLead: "If Amparo scaled",
     titleEmphasis: "nationwide",
     subtitle:
-      "An honest projection of how much it would decongest health justice to resolve disputes before they reach the judge.",
+      "An honest projection of how much resolving disputes before they reach the judge would decongest health justice.",
     thesis:
-      "Every dispute we settle by agreement is a ruling the courts never have to write. Amparo decongests health justice by resolving before the judge —without taking away anyone's right to reach one.",
+      "Every dispute we settle by agreement is a ruling the courts never have to write. Amparo decongests health justice by resolving cases before the judge—without taking away anyone's right to reach one.",
     badgeEstimacion: "Projection · visible assumptions",
   },
   proj: {
     eyebrow: "The heart of the case",
     title: "Decongestion projection",
     intro:
-      "We start from real figures: in {anio}, {tutelas} health tutelas were filed in Colombia, each due within ≤{plazo} business days. Move the control to see how many we would resolve before the judge.",
+      "We start from real figures: in {anio}, {tutelas} health tutelas (constitutional injunctions) were filed in Colombia, each due within ≤{plazo} business days. Move the control to see how many we would resolve before the judge.",
     sliderLabel: "% of tutelas resolved before the judge with Amparo",
     sliderHint:
       "Range {min}%–{max}%. The default ({def}%) is conservative: it stays below the decongestion the pitch projects (~{demo}%).",
@@ -378,7 +378,7 @@ const en: Dict = {
         problem:
           "Fewer tutelas against them and fewer contempt actions: the EPS sees the real cost of denial and settles early the cases it would lose, with every agreement traceable.",
         pricing:
-          "SaaS per member/month (platform fee) + success fee per case resolved before the judge; volume-decreasing rate and a response SLA.",
+          "SaaS per member/month (platform fee) + a success fee for each case resolved before the judge; volume discounts and a response-time SLA.",
       },
       b2c: {
         tag: "B2C",
@@ -387,7 +387,7 @@ const en: Dict = {
         problem:
           "Free end-to-end access: tell the case by voice, understand whether the tutela holds, and seek agreement before litigating.",
         pricing:
-          "The process is always free (access is never charged). Optional premium: deadline tracking, alerts and human support —it never gates filing the tutela.",
+          "The process is always free (access is never charged). Optional premium: deadline tracking, alerts, and human support—it never gates the filing of a tutela.",
       },
     },
     donut: {
@@ -400,7 +400,7 @@ const en: Dict = {
     title: "Why now and why us",
     nowTitle: "Why now",
     nowBody:
-      "The courts are saturated: in 2023, health was nearly a third of every tutela filed in the country (197,737 of 633,475), and decongesting it is now urgent. The 10-business-day deadline is law; the system cannot keep up.",
+      "The courts are saturated: in 2023, health accounted for nearly a third of all tutelas filed in the country (197,737 of 633,475), and decongesting it is now urgent. The 10-business-day deadline is law; the system cannot keep up.",
     usTitle: "Why us",
     usBody:
       "Our moat is not a chatbot: it is real legal grounding on Colombian statute and case law, bilingual es/en operation, and a human in the loop on every sensitive decision.",
@@ -418,7 +418,7 @@ const en: Dict = {
       "Amparo pitch — reference PROJECTED early decongestion (~57%); a product projection, not a measurement.",
     ],
     disclaimer:
-      "The projections on this page are ESTIMATES built on the assumptions shown above. Parameters marked ASSUMPTION are defensible but not official figures; adjust them to see the sensitivity. No figure is presented as an official datum without its source.",
+      "The projections on this page are ESTIMATES built on the assumptions shown above. Parameters marked ASSUMPTION are defensible but not official figures; adjust them to see how sensitive the results are. No figure is presented as official without its source.",
   },
 };
 

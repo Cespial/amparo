@@ -21,7 +21,7 @@ import {
   type Lang,
 } from "./provider";
 
-// — Namespaces (10) —
+// — Namespaces (11) —
 import { common } from "./dict/common";
 import { nav } from "./dict/nav";
 import { landing } from "./dict/landing";
@@ -32,6 +32,7 @@ import { demandado } from "./dict/demandado";
 import { juez } from "./dict/juez";
 import { pitch } from "./dict/pitch";
 import { mediacion } from "./dict/mediacion";
+import { anexos } from "./dict/anexos";
 
 /** Registro central de diccionarios, indexado por namespace. */
 export const DICT = {
@@ -45,6 +46,7 @@ export const DICT = {
   juez,
   pitch,
   mediacion,
+  anexos,
 } as const;
 
 export type Namespace = keyof typeof DICT;

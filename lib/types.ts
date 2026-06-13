@@ -222,6 +222,51 @@ export interface PeticionFormal {
   estado: EstadoPeticion;
 }
 
+/**
+ * Tipo de documento anexo detectado por la lectura multimodal de Claude.
+ * Permite iconografía/filtrado y guía la fusión de datos en el caso.
+ */
+export type TipoAnexo =
+  | "negacion_eps"
+  | "orden_medica"
+  | "historia_clinica"
+  | "cedula"
+  | "formula_medica"
+  | "carnet_eps"
+  | "derecho_peticion"
+  | "otro";
+
+/**
+ * Documento anexo subido por el usuario (imagen o PDF), leído por Claude de
+ * forma multimodal (OCR + comprensión). El texto y los datos se EXTRAEN
+ * exclusivamente de lo que aparece en el documento (regla anti-alucinación).
+ */
+export interface Anexo {
+  /** Id interno único del anexo. */
+  id: string;
+  /** Nombre original del archivo, p.ej. "negacion_sura.pdf". */
+  nombre: string;
+  /** Media type IANA del archivo (p.ej. "image/png", "application/pdf"). */
+  mimeType: string;
+  /**
+   * Tipo de documento detectado. Es un TipoAnexo conocido cuando se reconoce,
+   * pero se tipa como string para tolerar categorías nuevas del modelo.
+   */
+  tipoDetectado: TipoAnexo | string;
+  /** Transcripción / OCR del documento (lo que dice el texto). */
+  textoExtraido: string;
+  /**
+   * Datos estructurados hallados EN el documento (servicioNegado, diagnostico,
+   * eps, medicoTratante, fechas, radicadoNegacion, paciente, etc.).
+   * Solo claves presentes en el documento; lo ausente queda undefined.
+   */
+  datosExtraidos: Record<string, string | undefined>;
+  /** Resumen de 1-2 frases del contenido del documento. */
+  resumen: string;
+  /** Fecha relevante del documento (ISO 8601 o tal como aparece). Opcional. */
+  fecha?: string;
+}
+
 /** Caso ODR completo. Entidad central del dominio. */
 export interface Caso {
   /** Id interno único (no judicial). */
@@ -270,6 +315,8 @@ export interface Caso {
   peticion?: PeticionFormal;
   /** Propuesta de mediación de consenso entre paciente y EPS (la cuarta parte). */
   mediacion?: Mediacion;
+  /** Documentos anexos (imágenes/PDF) leídos por Claude de forma multimodal. */
+  anexos?: Anexo[];
 }
 
 /** Estado de la propuesta de mediación construida por Amparo (la cuarta parte). */

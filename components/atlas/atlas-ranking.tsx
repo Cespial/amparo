@@ -33,8 +33,8 @@ const COPIA = {
     distribucion: "National distribution",
     puesto: "Rank",
     de: "of",
-    aqui: "selected falls here",
-    seleccionaPista: "Select a department to place it in the distribution.",
+    aqui: "lands here",
+    seleccionaPista: "Select a department to see where it lands in the distribution.",
     bandaEje: (a: string, b: string) => `${a} – ${b}`,
   },
 } as const;

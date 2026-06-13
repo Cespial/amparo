@@ -124,7 +124,7 @@ export const asistente = {
     meta: {
       title: "Assistant · Amparo",
       description:
-        "Talk to Amparo. She greets you, asks one question at a time, and builds your case for you — no legal jargon, for anyone.",
+        "Talk to Amparo. She greets you, asks one question at a time, and builds your case for you — no legal jargon, in plain language anyone can follow.",
     },
 
     page: {
@@ -156,8 +156,8 @@ export const asistente = {
 
     input: {
       placeholderRelato:
-        "Type what happened to you here… (or use the microphone)",
-      placeholderConfirmar: "Reply yes, or type the correction…",
+        "Type what happened here… (or use the microphone)",
+      placeholderConfirmar: "Reply yes, or type your correction…",
       ariaInput: "Your reply to Amparo",
       ariaSend: "Send reply",
       ariaMicStart: "Speak using the microphone",
@@ -168,16 +168,16 @@ export const asistente = {
 
     say: {
       greeting:
-        "Hi, I'm Amparo. I'm here to help you, calmly and in plain words. Tell me: what health service did your EPS deny you?",
-      organizing: "Thank you for telling me. Give me a moment, I'll organize it.",
+        "Hi, I'm Amparo. I'm here to help you, calmly and in plain language. Tell me: what health service did your EPS deny you?",
+      organizing: "Thank you for sharing that. Give me a moment to put it together.",
       organizeFailed:
-        "I couldn't organize your account. Could you tell me about it another way?",
-      noted: "Done, I've noted it down.",
-      gotEssentials: "Perfect, I have the essentials now. Let me review it.",
+        "I couldn't quite make sense of what you told me. Could you tell me again, in another way?",
+      noted: "Done — I've noted that down.",
+      gotEssentials: "Great, I have the essentials now. Let me take a look.",
       triageFailed:
-        "I ran into a problem assessing your case. Let's try again in a moment.",
+        "I ran into a problem reviewing your case. Let's try again in a moment.",
       closing:
-        "That's all I needed for now. Whenever you're ready, we'll continue with your full case file to prepare your tutela.",
+        "That's all I need for now. Whenever you're ready, we'll continue with your full case file to prepare your tutela.",
       askAgain: "No problem. So tell me, what is {etiqueta}?",
     },
 
@@ -193,29 +193,29 @@ export const asistente = {
       },
       servicioNegado: {
         withValue: "And what you were denied is: {valor}. Is that right?",
-        empty: "What service exactly did your EPS deny you?",
+        empty: "What exactly did your EPS deny you?",
       },
       diagnostico: {
-        withValue: "I noted your diagnosis as: {valor}. Shall I leave it like that?",
+        withValue: "I've noted your diagnosis as: {valor}. Should I leave it as is?",
         empty:
-          "If you have a diagnosis from your doctor, tell me. If not, you can leave it blank and we'll continue.",
+          "If you have a diagnosis from your doctor, let me know. If not, you can leave it blank and we'll carry on.",
       },
     },
 
     verdict: {
       inadmissible:
-        "I reviewed your case. With what you told me, I don't yet see a clear basis for a tutela. Don't worry: there are other paths, and I'll be with you all the same.",
+        "I've looked at your case. From what you've told me, I don't yet see clear grounds for a tutela. Don't worry: there are other options, and I'll be right here with you either way.",
       mayProceed:
-        "Your tutela could go through, with a couple of details to fine-tune.",
-      proceeds: "Good news: your tutela is viable.",
-      routeTutela: "The best option is to go with the tutela (constitutional injunction).",
+        "Your tutela could go through — there are just a couple of details to fine-tune.",
+      proceeds: "Good news: your tutela can move forward.",
+      routeTutela: "Your best option is to go with the tutela (constitutional injunction).",
       routeEps:
-        "It's best to first try to resolve it directly with your EPS.",
+        "It's best to first try resolving this directly with your EPS.",
     },
 
     prediction: {
-      base: "Your case has about a {pct} percent chance that a judge will protect your right.{ref}",
-      ref: " I'm relying on Judgment {sentencia}.",
+      base: "Your case has roughly a {pct} percent chance that a judge will uphold your right.{ref}",
+      ref: " I'm drawing on ruling {sentencia}.",
       year: " of {anio}",
     },
   },

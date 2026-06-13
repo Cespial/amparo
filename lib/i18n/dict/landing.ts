@@ -129,22 +129,22 @@ export const landing = {
 
   en: {
     meta: {
-      title: "Amparo — Justice in health, within everyone's reach",
+      title: "Amparo — Healthcare justice, within reach for everyone",
       description:
-        "Colombia's ODR platform for health tutelas (constitutional injunctions). Resolve what your EPS (health insurer) denied —fast, free, and backed by Constitutional Court case law.",
+        "Colombia's ODR platform for health tutelas (constitutional injunctions). Resolve what your EPS (health insurer) denied—fast, free, and backed by Constitutional Court case law.",
     },
 
     hero: {
       badge: "ODR · Health dispute resolution",
-      titleLead: "Justice in health,",
-      titleEmphasis: "within everyone's reach.",
+      titleLead: "Healthcare justice,",
+      titleEmphasis: "within reach for everyone.",
       bodyLead: "Amparo is",
       bodyEmphasis: "the fourth party",
       bodyRest:
-        ": it helps you resolve what your EPS (health insurer) denied —fast, free, and backed by Constitutional Court case law. No lawyers, no lines.",
+        ": we help you resolve what your EPS (health insurer) denied—fast, free, and backed by Constitutional Court case law. No lawyers, no waiting in line.",
       ctaTalk: "Talk to Amparo",
       ctaStart: "Start my case",
-      linkMap: "See the map of the problem",
+      linkMap: "Explore the problem map",
       trust: "Grounded in real rulings · The final decision is always human.",
       // Credibility seal (links to /metodologia).
       seal: {
@@ -188,7 +188,7 @@ export const landing = {
         },
         resolve: {
           title: "It gets resolved",
-          text: "Your EPS yields before reaching the judge, or the judge receives an already-reasoned ruling, ready to review and sign. You choose the path.",
+          text: "Your EPS gives in before it reaches a judge, or the judge receives a fully reasoned ruling, ready to review and sign. You choose the path.",
         },
       },
     },
@@ -196,7 +196,7 @@ export const landing = {
     why: {
       eyebrow: "Why Amparo",
       heading: "Real access to justice, not just to a form.",
-      lead: "Access isn't only being able to start the process: it's being able to use it and reach a fair outcome. Amparo is designed so that anyone can.",
+      lead: "Access isn't just being able to start the process: it's being able to follow it through and reach a fair outcome. We built Amparo so anyone can.",
       values: {
         voice: {
           title: "Your voice, first",
@@ -212,7 +212,7 @@ export const landing = {
         },
         human: {
           title: "The last word is human",
-          text: "Amparo doesn't replace the judge: it gives back the time for the cases that truly need it.",
+          text: "Amparo doesn't replace the judge: it frees up their time for the cases that truly need it.",
         },
       },
     },
@@ -220,7 +220,7 @@ export const landing = {
     explore: {
       eyebrow: "Explore the platform",
       heading: "One dispute, four perspectives.",
-      lead: "The same case moves through the claimant, the EPS, and the judge —with full transparency between the parties.",
+      lead: "The same case moves through the claimant, the EPS, and the judge—with full transparency between the parties.",
       enter: "Open",
       roles: {
         atlas: {

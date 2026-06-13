@@ -191,7 +191,7 @@ export const common = {
 
     // — Judgment chip (SentenciaChip, cross-cutting) —
     "judgmentChip.openAria":
-      "View Judgment {id} on the Constitutional Court website",
+      "View ruling {id} on the Constitutional Court website",
     "judgmentChip.officialSource": "Official source: Constitutional Court",
 
     // — Voice (BotonVoz, cross-cutting) —
@@ -221,14 +221,14 @@ export const common = {
     "present.keyboardHint": "Use ← / → to navigate · Esc to exit",
     "present.s1.title": "The problem",
     "present.s1.phrase":
-      "Colombia: 197,737 health tutelas in 2023; 80% are won because they were already a right.",
+      "Colombia: 197,737 health tutelas in 2023; 80% are won because the claim was a right all along.",
     "present.s2.title": "The person",
     "present.s2.phrase":
-      "Amparo, 68, tells her case —out loud— and the AI structures it.",
+      "Amparo, 68, tells her story—out loud—and the AI structures it into a case.",
     "present.s3.title": "The forecast",
     "present.s3.phrase": "A prediction cited in real case law: T-760/2008.",
     "present.s4.title": "Resolve without a judge",
-    "present.s4.phrase": "The EPS yields to the cost of denial. Decongestion.",
+    "present.s4.phrase": "The EPS backs down once denial costs more than compliance. Decongestion.",
     "present.s5.title": "The judge decides",
     "present.s5.phrase": "A suggested, reasoned ruling. The human signs.",
   },

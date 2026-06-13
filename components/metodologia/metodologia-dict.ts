@@ -328,7 +328,7 @@ const en: Dict = {
     eyebrow: "Transparency · How it's built",
     title: "Methodology & sources",
     subtitle:
-      "Amparo stands on verifiable public data and real case law. Here we open up every source, every validation, and every limit —no fine print.",
+      "Amparo stands on verifiable public data and real case law. Here we open up every source, every validation, and every limit—no fine print.",
     badge: "Official sources · verifiable links",
   },
   toc: {
@@ -377,32 +377,32 @@ const en: Dict = {
       court: "Constitutional Court",
       ombudsman: "Ombudsman's Office",
       matchLabel: "match",
-      note: "Two independent sources converging on the same reality: the base we project impact from is solid, not an assumption.",
+      note: "Two independent sources converging on the same reality: the basis for our impact projection is solid, not an assumption.",
     },
   },
   corpus: {
     eyebrow: "02 · The legal corpus",
     title: "Real case law, verified one by one",
     intro:
-      "Amparo reasons over a curated corpus of Constitutional Court health-rights judgments (Sentencias T). Each one was checked against the official court record: it exists, it says what we say it says, and it links to its source.",
-    countLabel: "Verified T-judgments",
+      "Amparo reasons over a curated corpus of Constitutional Court health-rights rulings (Sentencias T). Each one was checked against the official court record: it exists, it says what we say it says, and it links to its source.",
+    countLabel: "Verified T-rulings",
     countUnit: "in the corpus",
     verifiedTag: "Checked against the official court record",
     guardrail: {
       title: "The anti-hallucination guardrail",
-      body: "Amparo's golden rule: the system may only cite judgments that exist in the verified corpus. The model does not “recall” case law from its training or invent docket numbers; it retrieves from the corpus and cites what it retrieves.",
+      body: "Amparo's golden rule: the system may only cite rulings that exist in the verified corpus. The model does not “recall” case law from its training or invent docket numbers; it retrieves from the corpus and cites what it retrieves.",
       points: [
         "Every visible citation links to the Court's official record (a clickable source).",
-        "If a judgment is not in the verified corpus, the system does not cite it.",
+        "If a ruling is not in the verified corpus, the system does not cite it.",
         "The predictor argues from retrieved precedent, never from the model's memory.",
       ],
     },
     audit: {
       title: "When our own system caught a fake citation",
       lead: "The proof that the guardrail works came from the guardrail itself.",
-      body: "During curation, the system flagged a judgment that didn't survive the check against the official record: docket {cita} did not match the case law it claimed to support. Our own control caught it, and we removed it from the corpus. We'd rather have a smaller, certain corpus than a larger, doubtful one.",
+      body: "During curation, the system flagged a ruling that didn't survive the check against the official record: docket number {cita} did not match the case law it claimed to support. Our own safeguard caught it, and we removed it from the corpus. We'd rather have a smaller, certain corpus than a larger, doubtful one.",
       anchorIntro:
-        "This is what a citation that DOES pass the check looks like —it exists, it's verified, and it links to its official source:",
+        "This is what a citation that DOES pass the check looks like—it exists, it's verified, and it links to its official source:",
       kicker: "Citation removed by self-audit",
     },
   },
@@ -415,7 +415,7 @@ const en: Dict = {
       opus: {
         tag: "Reasoning",
         title: "Claude Opus reasons",
-        body: "The fine legal analysis —admissibility, forecast, justification— runs on the most capable model, always over precedent retrieved from the corpus.",
+        body: "The fine legal analysis—admissibility, forecast, justification—runs on the most capable model, always over precedent retrieved from the corpus.",
       },
       haiku: {
         tag: "Triage",
@@ -425,7 +425,7 @@ const en: Dict = {
       rag: {
         tag: "Retrieval",
         title: "RAG over the corpus",
-        body: "Before drafting, the system retrieves the relevant judgments from the verified corpus and reasons over them. The legal grounding is real, not decorative.",
+        body: "Before drafting, the system retrieves the relevant rulings from the verified corpus and reasons over them. The legal grounding is real, not decorative.",
       },
     },
     humanTitle: "The final decision is always human",
