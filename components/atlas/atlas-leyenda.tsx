@@ -15,9 +15,17 @@ import {
 interface AtlasLeyendaProps {
   metrica: MetricaAtlas;
   onMetrica: (m: MetricaAtlas) => void;
+  /** Capa de puntos de IPS por municipio. */
+  mostrarIps: boolean;
+  onToggleIps: (v: boolean) => void;
 }
 
-export function AtlasLeyenda({ metrica, onMetrica }: AtlasLeyendaProps) {
+export function AtlasLeyenda({
+  metrica,
+  onMetrica,
+  mostrarIps,
+  onToggleIps,
+}: AtlasLeyendaProps) {
   const cortes = umbralesLeyenda(metrica);
   const sufijo = METRICAS[metrica].sufijo;
 
@@ -57,18 +65,72 @@ export function AtlasLeyenda({ metrica, onMetrica }: AtlasLeyendaProps) {
           ))}
         </div>
         <div className="glow-num mt-1.5 flex justify-between text-[10px] text-[#8B949E]">
-          <span className="text-[#1B6B6D]">menor</span>
+          <span className="text-[#2BD9C0]">menor</span>
           {cortes.map((c, i) => (
             <span key={i}>
               {fmt(c)}
               {sufijo}
             </span>
           ))}
-          <span className="text-[#d73027]">mayor</span>
+          <span className="text-[#f06a5e]">mayor</span>
         </div>
       </div>
-      <p className="text-[10px] leading-tight text-[#8B949E]/70">
-        Datos ilustrativos por departamento. No constituyen estadística oficial.
+      {/* Toggle de la capa de puntos de IPS por municipio. */}
+      <div className="border-t border-[#30363D] pt-2.5">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={mostrarIps}
+          onClick={() => onToggleIps(!mostrarIps)}
+          className="flex w-full items-center justify-between gap-2 text-left"
+        >
+          <span className="flex items-center gap-2">
+            <span
+              aria-hidden
+              className={
+                mostrarIps
+                  ? "size-2.5 rounded-full bg-[#2BD9C0] shadow-[0_0_8px_1px_rgba(43,217,192,0.8)]"
+                  : "size-2.5 rounded-full border border-[#30363D] bg-[#0D1117]"
+              }
+            />
+            <span
+              className={
+                mostrarIps
+                  ? "text-xs font-medium text-[#E6EDF3]"
+                  : "text-xs font-medium text-[#8B949E]"
+              }
+            >
+              Mostrar IPS
+            </span>
+          </span>
+          {/* Track del switch. */}
+          <span
+            className={
+              mostrarIps
+                ? "relative h-4 w-7 rounded-full bg-[#1B6B6D] shadow-[0_0_10px_-1px_rgba(27,107,109,0.8)] transition-colors"
+                : "relative h-4 w-7 rounded-full bg-[#30363D] transition-colors"
+            }
+          >
+            <span
+              className={
+                mostrarIps
+                  ? "absolute top-0.5 left-0.5 size-3 translate-x-3 rounded-full bg-white transition-transform"
+                  : "absolute top-0.5 left-0.5 size-3 rounded-full bg-[#8B949E] transition-transform"
+              }
+            />
+          </span>
+        </button>
+        <p className="mt-1.5 text-[10px] leading-tight text-[#8B949E]">
+          {mostrarIps
+            ? "Cada punto es un municipio; su tamaño crece con el nº de IPS (REPS). Pasa el cursor para ver el detalle."
+            : "Capa de IPS por municipio (centroides DANE + conteo REPS)."}
+        </p>
+      </div>
+
+      <p className="text-[10px] leading-tight text-[#8B949E]">
+        Datos reales 2023: tutelas de salud (Corte Constitucional, datos.gov.co;
+        validado vs Defensoría) e IPS (REPS / MinSalud). Centroides municipales
+        DANE.
       </p>
     </div>
   );

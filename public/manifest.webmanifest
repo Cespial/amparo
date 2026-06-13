@@ -1,14 +1,17 @@
 {
+  "id": "/",
   "name": "Amparo — Centro de Resolución de Disputas en Salud",
   "short_name": "Amparo",
-  "description": "Plataforma ODR de tutelas de salud de Colombia, asistida por IA y respaldada en la jurisprudencia de la Corte Constitucional.",
-  "lang": "es-CO",
-  "start_url": "/atlas",
+  "description": "Amparo es la plataforma ODR de tutelas de salud de Colombia: resuelve disputas con tu EPS de forma ágil, asistida por IA y respaldada en la jurisprudencia de la Corte Constitucional.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "background_color": "#F4F5FC",
-  "theme_color": "#1E2340",
+  "background_color": "#eef0fc",
+  "theme_color": "#20243f",
   "categories": ["health", "government", "legal"],
   "icons": [
     {
@@ -34,6 +37,20 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Atlas de tutelas",
+      "short_name": "Atlas",
+      "description": "Explora el panorama de tutelas de salud en Colombia",
+      "url": "/atlas"
+    },
+    {
+      "name": "Soy demandante",
+      "short_name": "Demandante",
+      "description": "Inicia o sigue tu disputa con la EPS",
+      "url": "/demandante"
     }
   ]
 }

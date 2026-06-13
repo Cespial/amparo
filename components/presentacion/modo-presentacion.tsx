@@ -205,7 +205,7 @@ export function ModoPresentacion() {
           )}
         </div>
 
-        <p className="mt-3 text-center text-[10px] text-[#8B949E]/70">
+        <p className="mt-3 text-center text-[10px] text-[#8B949E]">
           Usa ← / → para navegar · Esc para salir
         </p>
       </div>

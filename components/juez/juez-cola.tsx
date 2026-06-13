@@ -90,7 +90,7 @@ export function JuezCola({ casos, onAbrir, seleccionadoId }: Props) {
                   <p className="truncate text-sm text-muted-foreground">
                     {caso.servicioNegado} · {caso.demandado.nombre}
                   </p>
-                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground/80">
+                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                     {caso.radicado}
                   </p>
 

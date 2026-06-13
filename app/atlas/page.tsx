@@ -22,7 +22,7 @@ export default function AtlasPage() {
             El mapa del problema
           </p>
           <h1 className="font-heading text-3xl font-semibold leading-tight tracking-tight text-balance text-[#E6EDF3] sm:text-4xl lg:text-[2.75rem]">
-            Colombia presenta una tutela de salud cada minuto.
+            Colombia radica una tutela de salud cada 3 minutos.
           </h1>
           <p className="mt-3 text-base leading-relaxed text-[#8B949E] sm:text-lg text-pretty">
             El{" "}
@@ -41,9 +41,10 @@ export default function AtlasPage() {
 
         <footer className="mt-8 max-w-3xl text-xs leading-relaxed text-[#8B949E]/80">
           <p>
-            * Las cifras por departamento y los agregados nacionales son
-            ilustrativos y se presentan únicamente para fines de visualización
-            del demo; no constituyen estadística oficial. Cartografía:{" "}
+            Datos reales 2023: tutelas de salud por departamento (Corte
+            Constitucional, datos.gov.co; total nacional validado al 99,99 %
+            contra la Defensoría del Pueblo) e IPS (REPS / Ministerio de Salud).
+            Cartografía:{" "}
             <span className="glow-num">colombia-departamentos.geojson</span> (33
             departamentos, códigos DANE).
           </p>

@@ -75,21 +75,25 @@ const T016: SentenciaRef = {
   score: 0.9,
 };
 
-const T1059: SentenciaRef = {
-  id: "T-1059/2006",
-  titulo: "Sentencia T-1059 de 2006 — Criterio del médico tratante",
-  anio: 2006,
-  tema: "Prevalencia del concepto del médico tratante",
+// Real corpus sentence (lib/corpus/sentencias.json) on the prevalence of the
+// treating physician's criterion. Replaces the previously hard-wired
+// T-1059/2006, which did not exist in the curated corpus.
+const T195: SentenciaRef = {
+  id: "T-195/2021",
+  titulo:
+    "Sentencia T-195 de 2021 — Suministro de tecnología en salud y criterio del médico tratante",
+  anio: 2021,
+  tema: "Prevalencia del criterio del médico tratante",
   subregla:
-    "El concepto del médico tratante prevalece sobre consideraciones administrativas de la EPS; negar el servicio prescrito vulnera el derecho a la salud.",
+    "Prevalece el criterio del médico tratante sobre los conceptos administrativos de la EPS; el suministro de lo prescrito no puede negarse por razones meramente administrativas o de cobertura.",
   extracto:
-    "La EPS no puede anteponer trámites de pertinencia al criterio del profesional que conoce al paciente y ordenó el procedimiento.",
-  derechos: ["salud", "vida"],
+    "La Corte amparó el acceso a lo prescrito por el médico tratante, reiterando la prevalencia de su criterio frente a las objeciones administrativas de la EPS.",
+  derechos: ["salud", "vida digna"],
   score: 0.88,
 };
 
 /** Sentencias que cita la predicción héroe (alta calidad, anti-alucinación). */
-export const SENTENCIAS_HEROE: SentenciaRef[] = [T760, T016, T1059];
+export const SENTENCIAS_HEROE: SentenciaRef[] = [T760, T016, T195];
 
 // --- Estructuración héroe ---
 
@@ -170,7 +174,7 @@ export const PREDICCION_HEROE: PrediccionResultado = {
   reglaAplicable:
     "El concepto del médico tratante prevalece sobre trámites administrativos de pertinencia. Negar u obstaculizar una cirugía prescrita a un adulto mayor vulnera el derecho fundamental a la salud (T-760/2008), procediendo el amparo y la orden de práctica oportuna.",
   razonamiento:
-    "El caso reúne los factores que el precedente constitucional reconoce como determinantes de un fallo favorable: (i) prescripción expresa del médico tratante; (ii) sujeto de especial protección constitucional (adulta mayor de 68 años); (iii) servicio incluido en el PBS, por lo que la EPS está obligada a prestarlo con cargo a la UPC; (iv) deterioro funcional progresivo que configura urgencia. La jurisprudencia (T-760/2008, T-016/2007, T-1059/2006) ha amparado de forma reiterada la negativa o demora injustificada de procedimientos quirúrgicos ordenados, descartando que trámites administrativos de pertinencia puedan obstruir el acceso. La probabilidad de amparo es muy alta.",
+    "El caso reúne los factores que el precedente constitucional reconoce como determinantes de un fallo favorable: (i) prescripción expresa del médico tratante; (ii) sujeto de especial protección constitucional (adulta mayor de 68 años); (iii) servicio incluido en el PBS, por lo que la EPS está obligada a prestarlo con cargo a la UPC; (iv) deterioro funcional progresivo que configura urgencia. La jurisprudencia (T-760/2008, T-016/2007, T-195/2021) ha amparado de forma reiterada la negativa o demora injustificada de procedimientos quirúrgicos ordenados, descartando que trámites administrativos de pertinencia puedan obstruir el acceso. La probabilidad de amparo es muy alta.",
   sentenciasCitadas: SENTENCIAS_HEROE,
 };
 
@@ -183,7 +187,7 @@ export const PREDICCION_HEROE_CANONICA: Prediccion = {
     "Prescripción expresa del médico tratante",
     "Sujeto de especial protección constitucional (adulta mayor)",
     "Servicio incluido en el PBS (obligación directa de la EPS)",
-    "Precedente reiterado: T-760/2008, T-016/2007, T-1059/2006",
+    "Precedente reiterado: T-760/2008, T-016/2007, T-195/2021",
     "Deterioro funcional progresivo (urgencia)",
   ],
   factoresRiesgo: [
@@ -266,7 +270,7 @@ export const TUTELA_HEROE = `# ACCIÓN DE TUTELA
 - **Vida digna** (art. 1 y 11 C.P.).
 - **Seguridad social** (art. 48 C.P.).
 
-La negativa u obstaculización injustificada de un servicio prescrito por el médico tratante vulnera el derecho fundamental a la salud. El concepto del médico tratante prevalece sobre consideraciones administrativas de la EPS (Sentencias T-760/2008, T-016/2007 y T-1059/2006).
+La negativa u obstaculización injustificada de un servicio prescrito por el médico tratante vulnera el derecho fundamental a la salud. El concepto del médico tratante prevalece sobre consideraciones administrativas de la EPS (Sentencias T-760/2008, T-016/2007 y T-195/2021).
 
 ## III. PRETENSIONES
 
@@ -322,7 +326,7 @@ La accionante, adulta mayor de 68 años afiliada al régimen contributivo, solic
 
 1. **La salud es un derecho fundamental autónomo.** La Sentencia **T-760 de 2008** consolidó la fundamentalidad del derecho a la salud y la obligación de las EPS de garantizar el acceso oportuno, eficaz y de calidad a los servicios requeridos.
 
-2. **Prevalencia del médico tratante.** Conforme a las Sentencias **T-1059 de 2006** y **T-016 de 2007**, el concepto del médico tratante prevalece sobre las consideraciones administrativas de la entidad; los trámites internos de pertinencia no pueden obstaculizar un servicio prescrito.
+2. **Prevalencia del médico tratante.** Conforme a las Sentencias **T-195 de 2021** y **T-016 de 2007**, el concepto del médico tratante prevalece sobre las consideraciones administrativas de la entidad; los trámites internos de pertinencia no pueden obstaculizar un servicio prescrito.
 
 3. **Sujeto de especial protección.** Por tratarse de una adulta mayor con deterioro funcional progresivo, opera una protección reforzada que torna la tutela en el mecanismo idóneo.
 

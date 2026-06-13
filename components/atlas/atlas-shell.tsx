@@ -23,6 +23,7 @@ export function AtlasShell() {
   const [metrica, setMetrica] = useState<MetricaAtlas>("tasaPor10k");
   const [seleccionado, setSeleccionado] = useState<string | null>(null);
   const [sheetAbierto, setSheetAbierto] = useState(false);
+  const [mostrarIps, setMostrarIps] = useState(false);
 
   const casos = useCasoStore((s) => s.casos);
 
@@ -57,9 +58,15 @@ export function AtlasShell() {
               metrica={metrica}
               seleccionado={seleccionado}
               onSeleccionar={seleccionar}
+              mostrarIps={mostrarIps}
             />
           </div>
-          <AtlasLeyenda metrica={metrica} onMetrica={setMetrica} />
+          <AtlasLeyenda
+            metrica={metrica}
+            onMetrica={setMetrica}
+            mostrarIps={mostrarIps}
+            onToggleIps={setMostrarIps}
+          />
         </div>
 
         {/* Panel desktop: detalle o pista de interacción. */}

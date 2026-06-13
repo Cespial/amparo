@@ -527,7 +527,7 @@ export function AsistenteAmparo() {
               Repetir lo último que dijo Amparo
             </button>
             {dictado.escuchando && (
-              <span className="text-xs font-medium text-emerald-600">
+              <span className="text-xs font-medium text-success">
                 Escuchando… habla con tranquilidad
               </span>
             )}

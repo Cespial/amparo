@@ -3,7 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Map, User, Building2, Scale, Menu, Shield, Mic } from "lucide-react";
+import {
+  Map,
+  User,
+  Building2,
+  Scale,
+  Menu,
+  Shield,
+  Mic,
+  Presentation,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -128,6 +137,14 @@ export function SiteNav() {
             Habla con Amparo
           </Link>
           <NavItems />
+          {/* Enlace discreto al deck de pitch */}
+          <Link
+            href="/pitch"
+            className="ml-1 flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-white/55 transition-colors min-h-11 hover:bg-white/10 hover:text-white/90"
+          >
+            <Presentation className="size-4" />
+            Pitch
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
@@ -165,6 +182,15 @@ export function SiteNav() {
                   Habla con Amparo
                 </Link>
                 <NavItems onNavigate={() => setOpen(false)} />
+                {/* Enlace discreto al deck de pitch */}
+                <Link
+                  href="/pitch"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-white/55 transition-colors min-h-11 hover:bg-white/10 hover:text-white/90"
+                >
+                  <Presentation className="size-4" />
+                  Pitch
+                </Link>
               </nav>
               <div className="mt-4 px-4">
                 <RolSelector />

@@ -35,7 +35,7 @@ const PASOS = [
     icon: Scale,
     titulo: "Se resuelve",
     texto:
-      "Tu EPS cede antes del juez, o el juez decide en minutos con un fallo ya fundamentado. Tú decides el camino.",
+      "Tu EPS cede antes del juez, o llega al juez con un fallo ya fundamentado, listo para revisar y firmar. Tú decides el camino.",
   },
 ];
 
@@ -154,14 +154,14 @@ export default function Home() {
           <div className="mt-6 space-y-6">
             {[
               {
-                cifra: "≈ 800.000",
-                unidad: "tutelas al año",
-                nota: "La salud es el principal motivo de tutela en Colombia.",
+                cifra: "197.737",
+                unidad: "tutelas de salud · 2023",
+                nota: "La salud es el principal motivo de tutela en Colombia. Fuente: Corte Constitucional / Defensoría del Pueblo, 2023.",
               },
               {
                 cifra: "80%",
                 unidad: "se conceden",
-                nota: "Porque pedían algo que ya era su derecho.",
+                nota: "Porque pedían algo que ya era su derecho. Fuente: Defensoría del Pueblo, 2023.",
               },
               {
                 cifra: "minutos",
@@ -191,7 +191,7 @@ export default function Home() {
       {/* ───────────── Cómo funciona ───────────── */}
       <section className="py-12 sm:py-16">
         <header className="mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong">
             Cómo funciona
           </p>
           <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -226,7 +226,7 @@ export default function Home() {
         <div className="surface-card overflow-hidden p-8 sm:p-12">
           <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
             <header className="max-w-md">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong">
                 Por qué Amparo
               </p>
               <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
@@ -263,7 +263,7 @@ export default function Home() {
       {/* ───────────── Explorar la plataforma ───────────── */}
       <section className="py-12 sm:py-16">
         <header className="mb-8 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-strong">
             Explora la plataforma
           </p>
           <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -311,11 +311,12 @@ export default function Home() {
               Amparo
             </span>
           </div>
-          <p className="max-w-xl text-xs leading-relaxed text-muted-foreground/80">
-            Amparo es una herramienta de apoyo para el acceso a la justicia; no
-            constituye asesoría jurídica vinculante. Las predicciones son
-            estimaciones basadas en jurisprudencia real de la Corte
-            Constitucional de Colombia. Hackathon ODR 2026.
+          <p className="max-w-xl text-xs leading-relaxed text-muted-foreground">
+            Amparo es una herramienta de apoyo asistida por IA; no constituye
+            asesoría jurídica vinculante y la decisión final siempre es humana.
+            Las predicciones son estimaciones basadas en jurisprudencia real de
+            la Corte Constitucional de Colombia. Los casos y personas de esta
+            demo son ficticios. Hackathon ODR 2026.
           </p>
         </div>
       </footer>

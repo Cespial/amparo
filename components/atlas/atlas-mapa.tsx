@@ -30,6 +30,18 @@ interface AtlasMapaProps {
   /** Código DANE seleccionado (resaltado). */
   seleccionado: string | null;
   onSeleccionar: (codigo: string | null) => void;
+  /** Capa de puntos de IPS por municipio (encendida/apagada desde la leyenda). */
+  mostrarIps: boolean;
+}
+
+/** Un punto de IPS por municipio (centroide DANE + conteo REPS). */
+interface PuntoIps {
+  municipio: string;
+  departamento: string;
+  cod_dane_mpio: string;
+  lat: number;
+  lng: number;
+  ips_total: number;
 }
 
 /** Basemap dark vectorial (estética Tensor / OpenFreeMap). */
@@ -39,15 +51,17 @@ export function AtlasMapa({
   metrica,
   seleccionado,
   onSeleccionar,
+  mostrarIps,
 }: AtlasMapaProps) {
   const mapRef = useRef<MapRef | null>(null);
   const [raw, setRaw] = useState<FeatureCollection | null>(null);
   const [hover, setHover] = useState<{
-    codigo: string;
     nombre: string;
+    sub?: string;
     x: number;
     y: number;
   } | null>(null);
+  const [puntosIps, setPuntosIps] = useState<PuntoIps[] | null>(null);
 
   // Carga local del GeoJSON una sola vez.
   useEffect(() => {
@@ -64,6 +78,49 @@ export function AtlasMapa({
       vivo = false;
     };
   }, []);
+
+  // Carga perezosa de los puntos de IPS: solo la primera vez que se encienden.
+  useEffect(() => {
+    if (!mostrarIps || puntosIps) return;
+    let vivo = true;
+    fetch("/data/ips-puntos.json")
+      .then((r) => r.json())
+      .then((d: { puntos?: PuntoIps[] }) => {
+        if (vivo) setPuntosIps(d.puntos ?? []);
+      })
+      .catch(() => {
+        if (vivo) setPuntosIps([]);
+      });
+    return () => {
+      vivo = false;
+    };
+  }, [mostrarIps, puntosIps]);
+
+  // FeatureCollection de puntos de IPS (centroide municipal + conteo).
+  const ipsData = useMemo<FeatureCollection | null>(() => {
+    if (!puntosIps) return null;
+    return {
+      type: "FeatureCollection",
+      features: puntosIps.map((p) => ({
+        type: "Feature",
+        geometry: { type: "Point", coordinates: [p.lng, p.lat] },
+        properties: {
+          municipio: p.municipio,
+          departamento: p.departamento,
+          ips_total: p.ips_total,
+        },
+      })),
+    };
+  }, [puntosIps]);
+
+  // Radio máximo del set de puntos (para escalar el círculo por ips_total).
+  const ipsMax = useMemo(
+    () =>
+      puntosIps && puntosIps.length
+        ? Math.max(...puntosIps.map((p) => p.ips_total))
+        : 1,
+    [puntosIps],
+  );
 
   // Inyecta el valor de la métrica activa en cada feature como `__valor`.
   const data = useMemo<FeatureCollection | null>(() => {
@@ -89,7 +146,10 @@ export function AtlasMapa({
   const colorExpr = useMemo(() => expresionColor(metrica), [metrica]);
 
   function handleClick(e: MapLayerMouseEvent) {
-    const f = e.features?.[0];
+    // Prioriza el punto de IPS si está bajo el cursor (capa superior).
+    const fIps = e.features?.find((f) => f.layer.id === "ips-circle");
+    if (fIps) return; // los puntos no cambian la selección de departamento
+    const f = e.features?.find((ff) => ff.layer.id === "deptos-fill");
     const codigo = f?.properties?.__codigo as string | undefined;
     if (codigo && statsPorCodigo.has(codigo)) {
       onSeleccionar(seleccionado === codigo ? null : codigo);
@@ -99,13 +159,24 @@ export function AtlasMapa({
   }
 
   function handleMove(e: MapLayerMouseEvent) {
-    const f = e.features?.[0];
-    const codigo = f?.properties?.__codigo as string | undefined;
     const map = mapRef.current?.getMap();
+    const fIps = e.features?.find((f) => f.layer.id === "ips-circle");
+    if (fIps) {
+      if (map) map.getCanvas().style.cursor = "pointer";
+      const ips = Number(fIps.properties?.ips_total ?? 0);
+      setHover({
+        nombre: String(fIps.properties?.municipio ?? ""),
+        sub: `${ips.toLocaleString("es-CO")} IPS · ${fIps.properties?.departamento ?? ""}`,
+        x: e.point.x,
+        y: e.point.y,
+      });
+      return;
+    }
+    const f = e.features?.find((ff) => ff.layer.id === "deptos-fill");
+    const codigo = f?.properties?.__codigo as string | undefined;
     if (codigo && statsPorCodigo.has(codigo)) {
       if (map) map.getCanvas().style.cursor = "pointer";
       setHover({
-        codigo,
         nombre: statsPorCodigo.get(codigo)!.nombre,
         x: e.point.x,
         y: e.point.y,
@@ -127,7 +198,9 @@ export function AtlasMapa({
         touchPitch={false}
         maxZoom={7}
         minZoom={3.4}
-        interactiveLayerIds={["deptos-fill"]}
+        interactiveLayerIds={
+          mostrarIps ? ["ips-circle", "deptos-fill"] : ["deptos-fill"]
+        }
         onClick={handleClick}
         onMouseMove={handleMove}
         onMouseLeave={() => {
@@ -175,14 +248,65 @@ export function AtlasMapa({
             />
           </Source>
         )}
+
+        {/* Capa de IPS por municipio: puntos teal con glow, radio ∝ ips_total. */}
+        {mostrarIps && ipsData && (
+          <Source id="ips" type="geojson" data={ipsData}>
+            {/* Halo difuso (glow Tensor teal) bajo el núcleo. */}
+            <Layer
+              id="ips-glow"
+              type="circle"
+              paint={{
+                "circle-color": "#1B6B6D",
+                "circle-blur": 1,
+                "circle-opacity": 0.35,
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["sqrt", ["get", "ips_total"]],
+                  0,
+                  6,
+                  Math.sqrt(ipsMax),
+                  34,
+                ] as never,
+              }}
+            />
+            {/* Núcleo del punto: teal brillante, borde claro. */}
+            <Layer
+              id="ips-circle"
+              type="circle"
+              paint={{
+                "circle-color": "#2BD9C0",
+                "circle-opacity": 0.92,
+                "circle-stroke-color": "#E6FFFB",
+                "circle-stroke-width": 0.8,
+                "circle-stroke-opacity": 0.7,
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["sqrt", ["get", "ips_total"]],
+                  0,
+                  2.4,
+                  Math.sqrt(ipsMax),
+                  16,
+                ] as never,
+              }}
+            />
+          </Source>
+        )}
       </Map>
 
       {hover && (
         <div
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg border border-white/10 bg-[#161B22]/95 px-2.5 py-1 text-xs font-medium text-[#E6EDF3] shadow-lg backdrop-blur"
+          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-[calc(100%+10px)] rounded-lg border border-white/10 bg-[#161B22]/95 px-2.5 py-1 text-xs text-[#E6EDF3] shadow-lg backdrop-blur"
           style={{ left: hover.x, top: hover.y }}
         >
-          {hover.nombre}
+          <span className="font-medium">{hover.nombre}</span>
+          {hover.sub && (
+            <span className="mt-0.5 block text-[10px] text-[#8B949E]">
+              {hover.sub}
+            </span>
+          )}
         </div>
       )}
     </div>

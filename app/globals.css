@@ -78,6 +78,8 @@
   --primary: #ce3a28;
   --primary-foreground: #ffffff;
   --primary-hover: #b5311f;
+  /* Texto de marca para tamaños pequeños sobre lavanda (AA ≥4.5:1, ≈5.6:1) */
+  --brand-text: #b5311f;
 
   --secondary: #e9ebfb;
   --secondary-foreground: #1b1f38;
@@ -132,6 +134,7 @@
 
   --primary: #d6493d;
   --primary-foreground: #ffffff;
+  --brand-text: #f06a5e;
 
   --secondary: #2a3052;
   --secondary-foreground: #eef0fb;
@@ -204,11 +207,12 @@
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  /* Tamaños táctiles mínimos en móvil */
+  /* Tamaños táctiles mínimos (WCAG 2.5.5/2.5.8: 44×44 en ambos ejes) */
   button,
   a[role="button"],
   [data-slot="button"] {
     min-height: 44px;
+    min-width: 44px;
   }
 }
 
@@ -240,6 +244,12 @@
 /* Realce de marca para el acento rojo en texto */
 .text-brand {
   color: var(--primary);
+}
+
+/* Variante de marca oscurecida para texto PEQUEÑO sobre lavanda (AA ≥4.5:1).
+   Usar en eyebrows/labels chicos; los titulares grandes siguen con .text-brand. */
+.text-brand-strong {
+  color: var(--brand-text);
 }
 
 /* Botón primario con hover institucional */

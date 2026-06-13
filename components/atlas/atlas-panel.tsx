@@ -145,7 +145,7 @@ function PanelContenido({
         </Button>
       </div>
 
-      <p className="text-[10px] leading-tight text-[#8B949E]/70">
+      <p className="text-[10px] leading-tight text-[#8B949E]">
         Datos reales 2023: Corte Constitucional (tutelas) y REPS/MinSalud (IPS).
       </p>
     </div>
@@ -204,7 +204,8 @@ export function AtlasPanelMovil({
         <SheetHeader className="sr-only">
           <SheetTitle>{st?.nombre ?? "Departamento"}</SheetTitle>
           <SheetDescription>
-            Estadísticas ilustrativas de tutelas en salud.
+            Estadísticas reales de tutelas de salud por departamento (2023,
+            Corte Constitucional) e IPS (REPS).
           </SheetDescription>
         </SheetHeader>
         <div className="px-4 pb-6">

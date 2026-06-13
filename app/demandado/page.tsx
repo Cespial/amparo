@@ -155,7 +155,7 @@ export default function DemandadoPage() {
       {/* Encabezado */}
       <header className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <div className="flex items-center gap-2 text-primary">
+          <div className="flex items-center gap-2 text-brand-strong">
             <Building2 className="size-5" />
             <span className="text-xs font-semibold uppercase tracking-wide">
               Portal del demandado · EPS
@@ -168,7 +168,7 @@ export default function DemandadoPage() {
             Resuelva disputas de salud antes del juez. El agente-EPS calcula el
             costo/riesgo de negar y recomienda ceder cuando la tutela se perdería.
           </p>
-          <p className="mt-1.5 max-w-2xl text-xs font-medium text-primary">
+          <p className="mt-1.5 max-w-2xl text-xs font-medium text-brand-strong">
             Amparo es la cuarta parte: asiste con análisis consistentes por
             jurisprudencia. La decisión de autorizar o sostener es suya.
           </p>

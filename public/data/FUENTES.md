@@ -62,6 +62,27 @@ Límites de los 33 departamentos de Colombia.
 
 ---
 
+## 4. `ips-puntos.json` — **REAL (puntos por municipio, geocodificados con centroides DANE)**
+
+IPS por **municipio** como **puntos** para la capa de círculos del Atlas (`/atlas`).
+
+- **Conteo de IPS:** Registro Especial de Prestadores de Servicios de Salud (**REPS**) — MinSalud, datos.gov.co (Socrata) **resource `c36g-9fc2`**. Se filtra `claseprestador='Instituciones Prestadoras de Servicios de Salud - IPS'` y se agrega por `municipio_prestador` (código DANE de **5 dígitos**) con su `municipioprestadordesc`.
+  - Consulta: `?$select=municipio_prestador,municipioprestadordesc,departamentoprestadordesc,count(*)&$where=claseprestador='Instituciones Prestadoras de Servicios de Salud - IPS'&$group=municipio_prestador,municipioprestadordesc,departamentoprestadordesc`
+- **Coordenadas (geocodificación por municipio):** **centroides municipales oficiales** de datos.gov.co (Socrata) **resource `gdxc-w37w`** (*"Municipios de Colombia"*, **1.122 municipios** con `cod_mpio`, `latitud`, `longitud`). lat/lng vienen con **coma decimal** (es-CO) y se normalizan a punto. Join REPS↔centroide por `cod_mpio` (5 dígitos). **No se inventa ninguna coordenada**: los municipios sin centroide oficial se excluyen.
+  - URL: `https://www.datos.gov.co/resource/gdxc-w37w.json`
+- **Cobertura:** de los 923 municipios con IPS en el REPS, el array `puntos` se ordena por `ips_total` desc y se **limita (CAP) a los 500 con más IPS** para mantener el archivo liviano. Esos 500 puntos concentran **19.047 de 19.551 IPS nacionales (~97,4 %)**. 1 municipio (`27086`, 3 IPS) no tenía centroide y se excluyó.
+- **Tamaño:** ~90 KB (< 400 KB). **500** puntos.
+
+Estructura: `{ fuente, url_ips, url_centroides, fecha_corte, nota, total_municipios, total_ips_en_puntos, total_ips_nacional, puntos: [ { municipio, departamento, cod_dane_mpio, lat, lng, ips_total }, ... ] }`
+
+Regenerar: `python3 scripts/build-ips-puntos.py` (requiere internet; consulta Socrata).
+
+> **Importante:** `lat`/`lng` son el **centroide del municipio**, NO la ubicación exacta de cada IPS (el REPS nacional no trae lat/lng por sede). El punto representa "este municipio tiene N IPS", no la dirección de cada institución.
+
+**Estado: REAL** (conteo REPS + centroides DANE oficiales).
+
+---
+
 ## Notas
 
 - Todos los JSON son válidos (verificado con `json.load`).

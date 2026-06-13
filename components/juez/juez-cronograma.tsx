@@ -51,7 +51,7 @@ export function Cronograma({ plazos }: { plazos: PlazoLegal[] }) {
               {fechaCorta(p.fechaLimite)} · {p.dias}{" "}
               {p.habiles ? "días hábiles" : "días calendario"}
             </p>
-            <p className="text-[11px] text-muted-foreground/80">
+            <p className="text-[11px] text-muted-foreground">
               {p.fundamento}
             </p>
           </li>
