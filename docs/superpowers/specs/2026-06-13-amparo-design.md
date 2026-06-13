@@ -212,7 +212,7 @@ El **camino héroe** (Amparo → triaje → predicción → tutela → juez) se 
 
 ---
 
-## 15. Recursos y presupuesto
+## 14. Recursos y presupuesto
 
 **Presupuesto:** hasta **$200 USD** (gasto en APIs/servicios). Holgado para un demo.
 
@@ -232,7 +232,7 @@ El **camino héroe** (Amparo → triaje → predicción → tutela → juez) se 
 
 ---
 
-## 14. Criterios de éxito (jurado)
+## 15. Criterios de éxito (jurado)
 
 - **WOW técnico:** predicción citada real + voz + agentes negociando.
 - **Impacto/acceso a justicia:** la abuela obtiene justicia en 60s; jueces descongestionados.
