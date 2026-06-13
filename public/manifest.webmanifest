@@ -1,0 +1,39 @@
+{
+  "name": "Amparo — Centro de Resolución de Disputas en Salud",
+  "short_name": "Amparo",
+  "description": "Plataforma ODR de tutelas de salud de Colombia, asistida por IA y respaldada en la jurisprudencia de la Corte Constitucional.",
+  "lang": "es-CO",
+  "start_url": "/atlas",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F4F5FC",
+  "theme_color": "#1E2340",
+  "categories": ["health", "government", "legal"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

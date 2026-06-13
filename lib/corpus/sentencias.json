@@ -1,0 +1,295 @@
+{
+  "disclaimer": "Corpus ilustrativo para demostración (hackathon). Los extractos son resúmenes/paráfrasis de las subreglas y NO transcripciones literales. Los números de sentencia corresponden a providencias reales de la Corte Constitucional de Colombia, pero el contenido aquí mostrado debe verificarse contra el texto oficial antes de cualquier uso jurídico. No constituye asesoría legal.",
+  "fuente": "Corte Constitucional de Colombia — providencias de tutela (acción de tutela, art. 86 C.P.; Decreto 2591 de 1991).",
+  "actualizado": "2026-06-13",
+  "sentencias": [
+    {
+      "id": "T-760/2008",
+      "titulo": "Sentencia estructural sobre el derecho a la salud",
+      "anio": 2008,
+      "tema": "Derecho fundamental a la salud y fallas estructurales del SGSSS",
+      "subregla": "La salud es un derecho fundamental autónomo, exigible por tutela; el Estado debe garantizar su goce efectivo y corregir las fallas de regulación del sistema.",
+      "extracto": "La Corte sistematiza la jurisprudencia y reconoce la salud como derecho fundamental autónomo. Imparte órdenes estructurales de actualización y unificación de los planes de beneficios, sostenibilidad financiera, cobertura universal y eliminación de barreras administrativas para el acceso a los servicios.",
+      "derechos": ["salud", "vida digna", "seguridad social"]
+    },
+    {
+      "id": "T-016/2007",
+      "titulo": "Fundamentalidad autónoma del derecho a la salud",
+      "anio": 2007,
+      "tema": "Carácter fundamental del derecho a la salud",
+      "subregla": "El derecho a la salud es fundamental en sí mismo, sin necesidad de conexidad con la vida, cuando se trata de garantizar una existencia digna.",
+      "extracto": "La Corte reitera que la salud dejó de protegerse únicamente por conexidad y se reconoce como derecho fundamental autónomo, lo que habilita su protección directa por vía de tutela frente a su vulneración por las entidades del sistema.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-227/2003",
+      "titulo": "Concepto y contenido del derecho fundamental",
+      "anio": 2003,
+      "tema": "Criterios para identificar derechos fundamentales",
+      "subregla": "Un derecho es fundamental cuando se vincula a la dignidad humana y existe consenso sobre su exigibilidad inmediata.",
+      "extracto": "La sentencia desarrolla el criterio de fundamentalidad a partir de la dignidad humana y la posibilidad de traducir el derecho en un derecho subjetivo, marco que la jurisprudencia posterior aplicó al derecho a la salud.",
+      "derechos": ["vida digna", "igualdad"]
+    },
+    {
+      "id": "T-859/2003",
+      "titulo": "Salud como derecho fundamental por conexidad y autónomo",
+      "anio": 2003,
+      "tema": "Acceso a servicios incluidos y no incluidos en el plan de beneficios",
+      "subregla": "Cuando un servicio está incluido en el plan obligatorio, su negativa vulnera directamente el derecho fundamental a la salud.",
+      "extracto": "La Corte precisa que la negativa a prestar servicios contenidos en el plan obligatorio constituye una afectación directa del derecho a la salud, sin que sea necesario acudir a la conexidad con la vida.",
+      "derechos": ["salud", "vida"]
+    },
+    {
+      "id": "T-548/1992",
+      "titulo": "Protección de la salud por conexidad con la vida",
+      "anio": 1992,
+      "tema": "Procedencia de la tutela en salud (etapa temprana)",
+      "subregla": "La salud se protege por tutela cuando su desconocimiento amenaza la vida o la integridad de la persona.",
+      "extracto": "En la primera etapa jurisprudencial, la Corte amparó la salud por su conexidad con la vida y la integridad, sentando las bases de la posterior fundamentalidad autónoma.",
+      "derechos": ["salud", "vida", "integridad personal"]
+    },
+    {
+      "id": "T-406/1992",
+      "titulo": "Estado Social de Derecho y derechos prestacionales",
+      "anio": 1992,
+      "tema": "Conexidad de derechos sociales con fundamentales",
+      "subregla": "Los derechos prestacionales pueden adquirir carácter fundamental cuando su desconocimiento compromete la dignidad y otros derechos fundamentales.",
+      "extracto": "Decisión fundacional sobre el Estado Social de Derecho que habilitó la protección por conexidad de derechos sociales como la salud cuando se afecta la dignidad humana.",
+      "derechos": ["vida digna", "salud"]
+    },
+    {
+      "id": "T-271/1995",
+      "titulo": "Tratamiento integral a paciente con enfermedad catastrófica",
+      "anio": 1995,
+      "tema": "Continuidad y tratamiento integral",
+      "subregla": "Las entidades de salud deben garantizar el tratamiento integral y continuo de enfermedades catastróficas que amenazan la vida.",
+      "extracto": "La Corte ordenó la atención integral de un paciente con enfermedad de alto costo, fijando el deber de continuidad y no fragmentación del tratamiento médico.",
+      "derechos": ["salud", "vida", "vida digna"]
+    },
+    {
+      "id": "SU-480/1997",
+      "titulo": "Inaplicación de exclusiones del plan obligatorio (medicamentos)",
+      "anio": 1997,
+      "tema": "Suministro de medicamentos no incluidos en el plan",
+      "subregla": "Procede inaplicar las exclusiones del plan cuando el medicamento es necesario para la vida o la integridad y el paciente no puede sufragarlo.",
+      "extracto": "Sentencia de unificación que permitió inaplicar exclusiones reglamentarias para garantizar medicamentos vitales no incluidos en el plan, con repetición posterior contra el sistema.",
+      "derechos": ["salud", "vida", "seguridad social"]
+    },
+    {
+      "id": "T-1204/2000",
+      "titulo": "Suministro de medicamentos no incluidos en el plan obligatorio",
+      "anio": 2000,
+      "tema": "Medicamentos no incluidos en el plan de beneficios",
+      "subregla": "La EPS debe suministrar medicamentos excluidos cuando son indispensables y el paciente carece de capacidad de pago, con derecho a recobro.",
+      "extracto": "La Corte reiteró las reglas para ordenar medicamentos por fuera del plan cuando estén en juego la vida o la integridad y exista incapacidad económica del afiliado.",
+      "derechos": ["salud", "vida"]
+    },
+    {
+      "id": "T-1059/2006",
+      "titulo": "Principio de continuidad en la prestación del servicio de salud",
+      "anio": 2006,
+      "tema": "Continuidad del tratamiento",
+      "subregla": "Una vez iniciado, el tratamiento no puede suspenderse por razones administrativas o económicas.",
+      "extracto": "La Corte amparó la continuidad del servicio, prohibiendo interrupciones por trámites de autorización, mora o controversias entre entidades del sistema.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-171/2018",
+      "titulo": "Continuidad e integralidad del tratamiento en salud",
+      "anio": 2018,
+      "tema": "Tratamiento integral y prohibición de barreras",
+      "subregla": "El derecho a la salud comprende el acceso integral y continuo a los servicios requeridos, sin barreras administrativas.",
+      "extracto": "Bajo la Ley Estatutaria 1751 de 2015, la Corte reafirma la integralidad del tratamiento y la prohibición de imponer trámites que obstaculicen la atención oportuna.",
+      "derechos": ["salud", "vida digna", "seguridad social"]
+    },
+    {
+      "id": "T-121/2015",
+      "titulo": "Acceso oportuno y barreras administrativas",
+      "anio": 2015,
+      "tema": "Barreras administrativas en el acceso a la salud",
+      "subregla": "Las cargas administrativas no pueden trasladarse al usuario ni convertirse en obstáculo para acceder a los servicios.",
+      "extracto": "La Corte protege el acceso oportuno y reitera que los trámites internos de autorización y recobro son responsabilidad de las entidades, no del paciente.",
+      "derechos": ["salud", "petición"]
+    },
+    {
+      "id": "T-307/2006",
+      "titulo": "Atención de urgencias sin barreras de autorización",
+      "anio": 2006,
+      "tema": "Servicios de urgencias",
+      "subregla": "La atención de urgencias debe prestarse de forma inmediata, sin exigir autorizaciones previas ni pagos como condición.",
+      "extracto": "La Corte protege el acceso a urgencias como expresión del derecho a la salud y a la vida, prohibiendo condicionar la atención a trámites administrativos.",
+      "derechos": ["salud", "vida", "integridad personal"]
+    },
+    {
+      "id": "T-760A/1998",
+      "titulo": "Traslado de pacientes y transporte como parte del servicio",
+      "anio": 1998,
+      "tema": "Transporte y traslado del paciente",
+      "subregla": "El transporte y traslado del paciente hacen parte del servicio de salud cuando son indispensables para acceder al tratamiento.",
+      "extracto": "La jurisprudencia reconoce que el traslado y, en su caso, el acompañante, integran el servicio cuando sin ellos el tratamiento se torna ineficaz y el usuario carece de recursos.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-197/2003",
+      "titulo": "Transporte y viáticos del paciente y su acompañante",
+      "anio": 2003,
+      "tema": "Transporte, viáticos y acompañante",
+      "subregla": "Procede ordenar transporte y, excepcionalmente, viáticos del acompañante cuando son necesarios para el acceso efectivo al servicio y el usuario no puede pagarlos.",
+      "extracto": "La Corte fijó las reglas para el cubrimiento del transporte del paciente y su acompañante cuando la falta de recursos impide acceder al tratamiento ordenado.",
+      "derechos": ["salud", "vida digna", "seguridad social"]
+    },
+    {
+      "id": "T-200/2014",
+      "titulo": "Transporte intermunicipal e interveredal para acceso a la salud",
+      "anio": 2014,
+      "tema": "Transporte para acceso a servicios de salud",
+      "subregla": "El sistema debe garantizar el transporte cuando la ausencia de medios económicos impide al paciente acceder al servicio requerido en otra ciudad.",
+      "extracto": "La Corte amparó el derecho al transporte de pacientes de zonas apartadas hacia los centros de atención, como condición material del acceso efectivo a la salud.",
+      "derechos": ["salud", "igualdad", "vida digna"]
+    },
+    {
+      "id": "T-025/2019",
+      "titulo": "Acceso a servicios y tecnologías no financiados con recursos públicos",
+      "anio": 2019,
+      "tema": "Servicios no PBS / no financiados con la UPC",
+      "subregla": "Los servicios no financiados con recursos públicos deben autorizarse cuando son necesarios para preservar la salud y la vida, conforme al procedimiento Mipres.",
+      "extracto": "La Corte reitera las reglas para el acceso a tecnologías no financiadas con la UPC, articulando el deber prestacional con los mecanismos de recobro y prescripción.",
+      "derechos": ["salud", "vida"]
+    },
+    {
+      "id": "T-499/2017",
+      "titulo": "Tratamiento integral y prohibición de interrupciones",
+      "anio": 2017,
+      "tema": "Integralidad del tratamiento",
+      "subregla": "Ordenado un tratamiento, debe garantizarse de manera integral todo lo necesario para su éxito, incluso lo no expresamente solicitado.",
+      "extracto": "La Corte aplica el principio de integralidad para evitar la multiplicación de tutelas, ordenando el cubrimiento completo de los servicios derivados del diagnóstico.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-388/2017",
+      "titulo": "Salud bajo la Ley Estatutaria 1751 de 2015",
+      "anio": 2017,
+      "tema": "Marco estatutario del derecho a la salud",
+      "subregla": "La Ley Estatutaria consagra la salud como derecho fundamental autónomo, con principios de integralidad, continuidad y oportunidad.",
+      "extracto": "La Corte interpreta el alcance de la Ley 1751 de 2015 y los elementos esenciales del derecho: disponibilidad, accesibilidad, aceptabilidad y calidad.",
+      "derechos": ["salud", "vida digna", "seguridad social"]
+    },
+    {
+      "id": "T-543/2017",
+      "titulo": "Cirugías y procedimientos requeridos con urgencia",
+      "anio": 2017,
+      "tema": "Procedimientos quirúrgicos demorados",
+      "subregla": "La demora injustificada en autorizar o practicar una cirugía ordenada por el médico tratante vulnera el derecho a la salud.",
+      "extracto": "La Corte protege el acceso oportuno a procedimientos quirúrgicos prescritos, reprochando las dilaciones administrativas que agravan la condición del paciente.",
+      "derechos": ["salud", "vida digna", "integridad personal"]
+    },
+    {
+      "id": "T-136/2004",
+      "titulo": "Prevalencia del criterio del médico tratante",
+      "anio": 2004,
+      "tema": "Concepto del médico tratante",
+      "subregla": "El concepto del médico tratante prevalece sobre las consideraciones administrativas de la EPS para definir lo que el paciente requiere.",
+      "extracto": "La Corte reitera que la EPS no puede negar servicios prescritos por el médico tratante con base en criterios administrativos o de comités ajenos a la relación clínica.",
+      "derechos": ["salud", "vida"]
+    },
+    {
+      "id": "T-322/2014",
+      "titulo": "Exámenes diagnósticos y oportunidad de la atención",
+      "anio": 2014,
+      "tema": "Exámenes y procedimientos diagnósticos",
+      "subregla": "La negativa o demora en la práctica de exámenes diagnósticos ordenados afecta el derecho a la salud y al diagnóstico oportuno.",
+      "extracto": "La Corte ampara el derecho al diagnóstico, entendido como la garantía de que se practiquen los exámenes necesarios para definir y tratar la patología del paciente.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-021/2017",
+      "titulo": "Derecho al diagnóstico oportuno",
+      "anio": 2017,
+      "tema": "Diagnóstico oportuno",
+      "subregla": "El derecho al diagnóstico implica la realización oportuna de los exámenes y valoraciones necesarios para determinar el tratamiento.",
+      "extracto": "La Corte consolida el derecho al diagnóstico como faceta del derecho a la salud, exigible cuando hay demoras en exámenes o valoraciones por especialistas.",
+      "derechos": ["salud", "integridad personal"]
+    },
+    {
+      "id": "T-1081/2001",
+      "titulo": "Protección reforzada de la salud de niños y niñas",
+      "anio": 2001,
+      "tema": "Salud de la niñez",
+      "subregla": "Los derechos de los niños prevalecen; su salud goza de protección constitucional reforzada y prioritaria.",
+      "extracto": "La Corte aplica la prevalencia de los derechos de la niñez (art. 44 C.P.) para ordenar servicios de salud requeridos por menores, incluso por fuera del plan de beneficios.",
+      "derechos": ["salud", "niñez", "vida"]
+    },
+    {
+      "id": "T-200/2007",
+      "titulo": "Salud de la niñez y servicios excluidos del plan",
+      "anio": 2007,
+      "tema": "Niñez y servicios no incluidos",
+      "subregla": "Tratándose de niños, se flexibilizan los requisitos para ordenar servicios excluidos del plan de beneficios.",
+      "extracto": "La Corte protege de forma reforzada la salud de los menores, ordenando tecnologías y servicios excluidos cuando resultan necesarios para su desarrollo y vida digna.",
+      "derechos": ["salud", "niñez", "vida digna"]
+    },
+    {
+      "id": "T-585/2010",
+      "titulo": "Sujetos de especial protección y enfermedades de alto costo",
+      "anio": 2010,
+      "tema": "Enfermedades de alto costo / ruinosas",
+      "subregla": "Los pacientes con enfermedades de alto costo son sujetos de especial protección y no pueden enfrentar barreras de acceso al tratamiento.",
+      "extracto": "La Corte refuerza la protección de pacientes con patologías ruinosas o catastróficas, prohibiendo exigirles cargas económicas o trámites que dilaten su atención.",
+      "derechos": ["salud", "vida", "seguridad social"]
+    },
+    {
+      "id": "T-557/2017",
+      "titulo": "Acceso a medicamentos de alto costo no financiados con la UPC",
+      "anio": 2017,
+      "tema": "Medicamentos de alto costo",
+      "subregla": "Procede ordenar medicamentos de alto costo no financiados con la UPC cuando son indispensables y existe prescripción del médico tratante.",
+      "extracto": "La Corte reitera el deber de suministrar medicamentos de alto costo necesarios para la vida y la integridad, con cargo al sistema y derecho de recobro de la entidad.",
+      "derechos": ["salud", "vida", "mínimo vital"]
+    },
+    {
+      "id": "T-348/2018",
+      "titulo": "Mínimo vital y salud del adulto mayor",
+      "anio": 2018,
+      "tema": "Adulto mayor / persona de la tercera edad",
+      "subregla": "Las personas de la tercera edad son sujetos de especial protección y su acceso a la salud no puede dilatarse por trámites.",
+      "extracto": "La Corte ampara a un adulto mayor frente a barreras de acceso, reiterando la protección reforzada y la prohibición de cargas administrativas injustificadas.",
+      "derechos": ["salud", "vida digna", "mínimo vital"]
+    },
+    {
+      "id": "T-072/2019",
+      "titulo": "Integralidad del tratamiento y servicios conexos",
+      "anio": 2019,
+      "tema": "Servicios conexos e integralidad",
+      "subregla": "El tratamiento integral incluye insumos, dispositivos y servicios conexos indispensables para su efectividad.",
+      "extracto": "La Corte ordena el cubrimiento de servicios conexos (insumos, dispositivos, terapias) cuando son necesarios para el éxito del tratamiento principal.",
+      "derechos": ["salud", "vida digna"]
+    },
+    {
+      "id": "T-154/2014",
+      "titulo": "Tratamiento integral y atención de personas en situación de discapacidad",
+      "anio": 2014,
+      "tema": "Discapacidad y rehabilitación",
+      "subregla": "Las personas con discapacidad tienen derecho a la atención integral, incluyendo terapias y rehabilitación.",
+      "extracto": "La Corte protege el acceso a terapias y rehabilitación de personas con discapacidad como parte del contenido del derecho a la salud y a la igualdad.",
+      "derechos": ["salud", "igualdad", "integridad personal"]
+    },
+    {
+      "id": "T-014/2014",
+      "titulo": "Oportunidad en la asignación de citas con especialistas",
+      "anio": 2014,
+      "tema": "Citas y consulta con especialistas",
+      "subregla": "La demora desproporcionada en la asignación de citas con especialistas vulnera el acceso oportuno a la salud.",
+      "extracto": "La Corte reprocha las dilaciones en la asignación de citas y autorizaciones de consulta especializada, garantizando la oportunidad de la atención.",
+      "derechos": ["salud", "petición"]
+    },
+    {
+      "id": "T-705/2017",
+      "titulo": "Recobro entre entidades no oponible al usuario",
+      "anio": 2017,
+      "tema": "Recobro y sostenibilidad del sistema",
+      "subregla": "Las controversias de recobro entre las entidades del sistema no pueden afectar el acceso del usuario al servicio.",
+      "extracto": "La Corte separa la prestación del servicio de las controversias financieras entre EPS, IPS y el Estado, reiterando que el usuario no debe asumir esas cargas.",
+      "derechos": ["salud", "seguridad social"]
+    }
+  ]
+}

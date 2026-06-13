@@ -1,0 +1,194 @@
+"use client";
+
+// components/atlas/atlas-panel.tsx
+// Panel de detalle de un departamento (in-place en desktop, Sheet en móvil).
+
+import Link from "next/link";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import {
+  MapPin,
+  Scale,
+  TrendingUp,
+  CheckCircle2,
+  Gavel,
+  UserPlus,
+  X,
+} from "lucide-react";
+import { statsPorCodigo, fmt } from "./atlas-data";
+
+interface AtlasPanelContenidoProps {
+  codigo: string;
+  casosEnDepto: number;
+  onCerrar: () => void;
+}
+
+function PanelContenido({
+  codigo,
+  casosEnDepto,
+  onCerrar,
+}: AtlasPanelContenidoProps) {
+  const st = statsPorCodigo.get(codigo);
+  if (!st) return null;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <div className="flex items-center gap-1.5 text-muted-foreground">
+            <MapPin className="size-4" />
+            <span className="text-xs font-medium uppercase tracking-wide">
+              Departamento
+            </span>
+          </div>
+          <h3 className="font-heading text-xl font-semibold leading-tight">
+            {st.nombre}
+          </h3>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          onClick={onCerrar}
+          aria-label="Cerrar panel"
+          className="hidden lg:inline-flex"
+        >
+          <X className="size-4" />
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <Metric
+          Icono={Scale}
+          tono="text-info"
+          etiqueta="Tutelas de salud / año"
+          valor={`~${fmt(st.totalTutelas)}`}
+        />
+        <Metric
+          Icono={TrendingUp}
+          tono="text-warning"
+          etiqueta="Tasa por 10.000 hab."
+          valor={fmt(st.tasaPor10k)}
+        />
+      </div>
+
+      <div className="surface-card border-0 bg-secondary/60 p-3">
+        <div className="mb-1.5 flex items-center justify-between">
+          <span className="flex items-center gap-1.5 text-sm font-medium">
+            <CheckCircle2 className="size-4 text-success" />
+            Fallos favorables
+          </span>
+          <span className="font-heading text-lg font-semibold tabular-nums text-success">
+            {st.porcentajeFavorable}%
+          </span>
+        </div>
+        <Progress value={st.porcentajeFavorable} className="h-2" />
+        <p className="mt-2 text-xs leading-snug text-muted-foreground">
+          La mayoría de tutelas se conceden porque reclaman un derecho ya
+          reconocido.
+        </p>
+      </div>
+
+      <Separator />
+
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-muted-foreground">Casos en el demo</span>
+        <Badge variant="secondary" className="tabular-nums">
+          {casosEnDepto}
+        </Badge>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <Button render={<Link href="/demandante" />} className="w-full">
+          <UserPlus className="size-4" />
+          Iniciar un caso aquí
+        </Button>
+        <Button
+          render={<Link href="/juez" />}
+          variant="secondary"
+          className="w-full"
+        >
+          <Gavel className="size-4" />
+          Ver casos en despacho
+        </Button>
+      </div>
+
+      {st.ilustrativo && (
+        <p className="text-[10px] leading-tight text-muted-foreground/80">
+          * Cifras ilustrativas por departamento. No constituyen estadística
+          oficial.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Metric({
+  Icono,
+  tono,
+  etiqueta,
+  valor,
+}: {
+  Icono: typeof Scale;
+  tono: string;
+  etiqueta: string;
+  valor: string;
+}) {
+  return (
+    <div className="surface-card border-0 p-3">
+      <span className={tono}>
+        <Icono className="size-4" aria-hidden />
+      </span>
+      <div className="mt-1 font-heading text-lg font-semibold tabular-nums leading-none">
+        {valor}
+      </div>
+      <p className="mt-1 text-[11px] leading-tight text-muted-foreground">
+        {etiqueta}
+      </p>
+    </div>
+  );
+}
+
+/** Versión desktop: tarjeta fija en la columna lateral. */
+export function AtlasPanelDesktop(props: AtlasPanelContenidoProps) {
+  return (
+    <div className="surface-card hidden p-4 lg:block">
+      <PanelContenido {...props} />
+    </div>
+  );
+}
+
+/** Versión móvil: Sheet inferior. */
+export function AtlasPanelMovil({
+  abierto,
+  onOpenChange,
+  ...props
+}: AtlasPanelContenidoProps & {
+  abierto: boolean;
+  onOpenChange: (v: boolean) => void;
+}) {
+  const st = statsPorCodigo.get(props.codigo);
+  return (
+    <Sheet open={abierto} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" className="max-h-[85vh] overflow-auto lg:hidden">
+        <SheetHeader className="sr-only">
+          <SheetTitle>{st?.nombre ?? "Departamento"}</SheetTitle>
+          <SheetDescription>
+            Estadísticas ilustrativas de tutelas en salud.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="px-4 pb-6">
+          <PanelContenido {...props} />
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
