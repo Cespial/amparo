@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AsistenteAmparo } from "@/components/avatar/asistente-amparo";
+import { AsistenteClient } from "@/components/avatar/asistente-client";
 
 export const metadata: Metadata = {
   title: "Asistente · Amparo",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function AsistentePage() {
   return (
     <div className="mx-auto min-h-[calc(100dvh-4rem)] max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
-      <AsistenteAmparo />
+      <AsistenteClient />
     </div>
   );
 }

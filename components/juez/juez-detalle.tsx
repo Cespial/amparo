@@ -336,18 +336,18 @@ export function JuezDetalle({ caso, abierto, onCerrar }: Props) {
                   <p className="text-xs font-medium text-muted-foreground">
                     {t("detail.facts")}
                   </p>
-                  <p className="mt-0.5 leading-relaxed">{caso.hechos}</p>
+                  <p className="mt-0.5 leading-relaxed">{tCaso(caso.hechos, lang)}</p>
                 </div>
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">
                     {t("detail.claim")}
                   </p>
-                  <p className="mt-0.5 leading-relaxed">{caso.pretension}</p>
+                  <p className="mt-0.5 leading-relaxed">{tCaso(caso.pretension, lang)}</p>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pt-1">
                   {caso.derechosInvocados.map((d) => (
                     <Badge key={d} variant="secondary" className="font-normal">
-                      {d}
+                      {tCaso(d, lang)}
                     </Badge>
                   ))}
                 </div>
