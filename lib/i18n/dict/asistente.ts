@@ -124,7 +124,7 @@ export const asistente = {
     meta: {
       title: "Assistant · Amparo",
       description:
-        "Talk to Amparo. She greets you, asks one question at a time, and builds your case for you — no legal jargon, in plain language anyone can follow.",
+        "Talk to Amparo. She greets you, asks one question at a time, and builds your case for you—no legal jargon, in plain language anyone can follow.",
     },
 
     page: {
@@ -206,7 +206,7 @@ export const asistente = {
       inadmissible:
         "I've looked at your case. From what you've told me, I don't yet see clear grounds for a tutela. Don't worry: there are other options, and I'll be right here with you either way.",
       mayProceed:
-        "Your tutela could go through — there are just a couple of details to fine-tune.",
+        "Your tutela could go through—there are just a couple of details to fine-tune.",
       proceeds: "Good news: your tutela can move forward.",
       routeTutela: "Your best option is to go with the tutela (constitutional injunction).",
       routeEps:

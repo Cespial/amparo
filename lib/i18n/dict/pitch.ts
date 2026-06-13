@@ -357,7 +357,7 @@ export const pitch = {
         },
         resolve: {
           title: "It gets resolved",
-          text: "Your EPS yields before the judge, or the judge decides with an already-reasoned ruling.",
+          text: "Your EPS gives in before the judge, or the judge decides with an already-reasoned ruling.",
         },
       },
     },
@@ -428,7 +428,7 @@ export const pitch = {
       },
       bullet2: {
         lead: "The EPS sees the real cost of denying and",
-        strong: "yields on the obvious cases",
+        strong: "backs down on the obvious cases",
         rest: "—with transparency between the parties.",
       },
       statTitle: "Projected decongestion",

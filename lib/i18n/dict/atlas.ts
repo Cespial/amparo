@@ -122,7 +122,7 @@ export const atlas = {
     // — Header / hook headline (Act I of the pitch) —
     hero: {
       eyebrow: "The map of the problem",
-      title: "Colombia files a health tutela — a constitutional injunction — every 3 minutes.",
+      title: "Colombia files a health tutela—a constitutional injunction—every 3 minutes.",
       bodyLead: "",
       emphGranted: "80% of health tutelas are won",
       bodyMid: "… because they were claiming something that",

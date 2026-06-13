@@ -159,7 +159,7 @@ export const demandado = {
       noneTitle: "No clear-cut cases",
       noneDesc: "There are no high-risk claims to resolve in a batch.",
       resolvedToast: "Resolved: {nombre}",
-      resolvedToastDesc: "{prob}% likelihood of relief — authorized without a judge.",
+      resolvedToastDesc: "{prob}% likelihood of relief—authorized without a judge.",
       completeTitle: "Auto-negotiation complete",
       completeDesc: "{count} case(s) cleared from the docket.",
       eventTitle: "Automatic settlement by the EPS agent",
@@ -186,7 +186,7 @@ export const demandado = {
         "The EPS agent estimated a {prob}% likelihood of relief in a tutela. The EPS concedes and authorizes {servicio}.",
       authorizeToast: "Service authorized",
       authorizeToastDesc: "{nombre}: case resolved without going to a judge.",
-      keepEventTitle: "EPS upholds the denial — tutela action now open",
+      keepEventTitle: "EPS upholds the denial—tutela action now open",
       keepEventDetail:
         "The EPS held its position. The claimant is now free to escalate to a tutela action before a judge.",
       keepToast: "Denial upheld",

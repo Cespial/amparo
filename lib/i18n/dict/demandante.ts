@@ -301,7 +301,7 @@ export const demandante = {
     page: {
       title: "From your story to your tutela",
       subtitle:
-        "Tell us what happened with your EPS (health insurer). Amparo organizes your case, assesses whether it qualifies, gives you a forecast backed by real judgments, and drafts your document. You decide the path.",
+        "Tell us what happened with your EPS (health insurer). Amparo organizes your case, assesses whether it qualifies, gives you a forecast backed by real rulings, and drafts your document. You decide the path.",
       tagline:
         "Amparo is the fourth party that stands with you: consistent results, not arbitrary ones. The final decision is always a human's.",
     },
@@ -440,7 +440,7 @@ export const demandante = {
       subtitle:
         "Estimate based on real Constitutional Court cases.",
       reglaAplicable: "Applicable rule",
-      sentenciasTitulo: "Judgments that support your case",
+      sentenciasTitulo: "Rulings that support your case",
       sentenciasNota:
         "Illustrative material. A legal professional must review the case before any formal use.",
       siguiente: "Decide my path",
